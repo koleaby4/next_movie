@@ -14,6 +14,7 @@ import os
 import django_heroku
 import json
 from pathlib import Path
+import re
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -78,10 +79,29 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+database_url = os.environ.get("DATABASE_URL", SECRETS["DATABASE_URL"])
+postgres_pattern = re.compile(r"""
+    postgres:\/\/       # postgres://   literal
+    (?P<username>[^:]+) # username
+    :                   # colon literal
+    (?P<password>[^@]+) # pwd
+    @                   # @ literal
+    (?P<host>[^:]+)     # host
+    :                   # colon literal
+    (?P<port>\d{4})     # port
+    \/                  # / literal
+    (?P<db_name>\w+)$   # db_name
+    """, re.VERBOSE)
+postgres_details =  re.match(postgres_pattern, database_url).groupdict()
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': postgres_details["db_name"],
+        'USER': postgres_details["username"],
+        'PASSWORD': postgres_details["password"],
+        'HOST': postgres_details["host"],
+        'PORT': postgres_details["PORT"],
     }
 }
 
