@@ -101,7 +101,7 @@ DATABASES = {
         'USER': postgres_details["username"],
         'PASSWORD': postgres_details["password"],
         'HOST': postgres_details["host"],
-        'PORT': postgres_details["PORT"],
+        'PORT': postgres_details["port"]
     }
 }
 
