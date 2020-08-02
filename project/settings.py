@@ -12,16 +12,19 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import django_heroku
+import json
+from pathlib import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+SECRETS = json.loads(Path("secrets.json").read_text())
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '90_@hr&98w_655x^b-21ccm*%y59^ry=6=kt-a8t&d^5)1p2q7'
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", SECRETS["DJANGO_SECRET_KEY"])
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
