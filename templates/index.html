@@ -3,5 +3,11 @@
 {% block title %}Index title{% endblock title %}
 
 {% block content %}
-We are on the home page...
+
+<ul>
+    {% for movie in movies %}
+        <li>{{movie}}</li>
+    {% endfor %}
+</ul>
+
 {% endblock content %}

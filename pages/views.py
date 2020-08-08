@@ -1,4 +1,15 @@
+from pathlib import Path
+import sys
+
 from django.shortcuts import render, HttpResponse, render
+from movies_collector.imdb_collector import get_top_rated
+
+project_root = str(Path(__file__).parents[1])
+sys.path.append(project_root)
+
+from utils.utilities import get_secret
 
 def index(request):
-    return render(request, 'index.html')
+    top_rated_movies = get_top_rated()
+    context = {"movies" : top_rated_movies}
+    return render(request, 'index.html', context=context)
