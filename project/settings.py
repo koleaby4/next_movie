@@ -15,17 +15,16 @@ import django_heroku
 import json
 from pathlib import Path
 import re
+from utils.utilities import get_secret
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = str(Path(__file__).parent.parent)
-
-SECRETS = json.loads(Path("secrets.json").read_text())
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", SECRETS["DJANGO_SECRET_KEY"])
+SECRET_KEY = get_secret("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -80,7 +79,8 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-database_url = os.environ.get("DATABASE_URL", SECRETS["DATABASE_URL"])
+database_url = get_secret("DATABASE_URL")
+
 postgres_pattern = re.compile(r"""
     postgres:\/\/       # postgres://   literal
     (?P<username>[^:]+) # username
