@@ -4,6 +4,13 @@
 
 {% block content %}
 
+{% if user.is_authenticated %}
+    <p>Hello, {{user.email}}</p>
+{% else %}
+    <p>Hello, stranger!</p>
+    <p>Please login <a href="{% url 'login' %}">here</a></p>
+{% endif %}
+
 <ul>
     {% for movie in movies %}
         <li>{{movie}}</li>
