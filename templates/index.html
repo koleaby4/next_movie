@@ -9,7 +9,8 @@
     <p>Feel free to log out <a href="{% url 'logout' %}">here.</a></p>
 {% else %}
     <p>Hello, stranger!</p>
-    <p>Please login <a href="{% url 'login' %}">here</a></p>
+    <p>If you are already registered - please <a href="{% url 'login' %}">login here</a>.</p>
+    <p>Alternatively, please <a href="{% url 'signup' %}">sign up</a>.</p>
 {% endif %}
 
 <ul>
