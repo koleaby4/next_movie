@@ -15,7 +15,7 @@ import django_heroku
 import json
 from pathlib import Path
 import re
-from utils.utilities import get_secret
+from utils.utilities import get_secret, get_prostgres_auth_dict
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = str(Path(__file__).parent.parent)
@@ -79,25 +79,7 @@ WSGI_APPLICATION = "project.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-database_url = get_secret("DATABASE_URL")
-
-postgres_pattern = re.compile(
-    r"""
-    postgres:\/\/       # postgres://   literal
-    (?P<username>[^:]+) # username
-    :                   # colon literal
-    (?P<password>[^@]+) # pwd
-    @                   # @ literal
-    (?P<host>[^:]+)     # host
-    :                   # colon literal
-    (?P<port>\d{4})     # port
-    \/                  # / literal
-    (?P<db_name>\w+)$   # db_name
-    """,
-    re.VERBOSE,
-)
-
-postgres_details = re.match(postgres_pattern, database_url).groupdict()
+postgres_details = get_prostgres_auth_dict()
 
 DATABASES = {
     "default": {
