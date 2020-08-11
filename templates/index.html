@@ -4,14 +4,6 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
-    <p>Hello, {{user.email}}</p>
-    <p>Feel free to log out <a href="{% url 'logout' %}">here.</a></p>
-{% else %}
-    <p>Hello, stranger!</p>
-    <p>If you are already registered - please <a href="{% url 'login' %}">login here</a>.</p>
-    <p>Alternatively, please <a href="{% url 'signup' %}">sign up</a>.</p>
-{% endif %}
 
 <ul>
     {% for movie in movies %}
