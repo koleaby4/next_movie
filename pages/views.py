@@ -4,8 +4,6 @@ import sys
 from django.shortcuts import render, HttpResponse, render
 from movies_collector.imdb_collector import get_top_rated
 
-project_root = str(Path(__file__).parents[1])
-sys.path.append(project_root)
 
 from utils.utilities import get_secret
 

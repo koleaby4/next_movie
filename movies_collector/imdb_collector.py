@@ -1,12 +1,9 @@
-import os
-import requests
-import sys
 import json
-
+import os
+import sys
 from pathlib import Path
 
-project_root = str(Path(__file__).parents[1])
-sys.path.append(project_root)
+import requests
 
 from utils.utilities import get_secret
 
