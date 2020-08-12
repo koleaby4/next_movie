@@ -1,16 +1,20 @@
 from django.test import TestCase
+from django.urls import reverse
 
 class PagesTests(TestCase):
 
-    def setUp(self):
-        self.response = self.client.get('')
+    def test_content_of_index_page(self):
+        url = reverse('index')
+        response = self.client.get(url)
 
+        self.assertEqual(200, response.status_code)
+        self.assertTemplateUsed(response, 'index.html')
+        self.assertContains(response, 'tt0111161')
 
-    def test_implicit_index_response_200(self):
-        self.assertEqual(200, self.response.status_code)
+    def test_content_of_about_page(self):
+        url = reverse('about')
+        response = self.client.get(url)
 
-    def test_index_template_used(self):
-        self.assertTemplateUsed(self.response, 'index.html')
-
-    def test_index_page_contains_movie_id(self):
-        self.assertContains(self.response, 'tt0111161')
+        self.assertEqual(200, response.status_code)
+        self.assertTemplateUsed(response, 'about.html')
+        self.assertContains(response, 'On about page')
