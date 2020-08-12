@@ -11,3 +11,6 @@ def index(request):
     top_rated_movies = get_top_rated()
     context = {"movies" : top_rated_movies}
     return render(request, 'index.html', context=context)
+
+def about(request):
+    return render(request, 'about.html')
