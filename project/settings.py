@@ -42,8 +42,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    # local
     "pages.apps.PagesConfig",
     "users.apps.UsersConfig",
+
+    # 3rd party
+    "crispy_forms",
 ]
 
 MIDDLEWARE = [
@@ -136,3 +141,6 @@ STATIC_FILES_FINDERS = [
 django_heroku.settings(locals())
 
 AUTH_USER_MODEL = "users.CustomUser"
+
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
