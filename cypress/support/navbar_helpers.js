@@ -3,49 +3,45 @@ import * as login_helpers from './login_helpers'
 
 export const navbar_selectors = {
     logo: '.logo',
-    search_input: '.search-input',
-    search_button: '.search-button',
-    signup_link: '.sign-up',
-    login_link: '.login',
-    logout_link: '.logout',
+    searchInput: '.search-input',
+    searchButton: '.search-button',
+    signupLink: '.sign-up',
+    loginLink: '.login',
+    logoutLink: '.logout',
     profile: '.profile'
 }
 
 
-export function clickSingUp() {
-    cy.get(navbar_selectors.signup_link).click()
+export const clickSingUp = () => {
+    cy.get(navbar_selectors.signupLink).click()
     signup_helpers.assertOnSignUpPage()
 }
 
-export function clickLogin() {
-    cy.get(navbar_selectors.login_link).click()
+export const clickLogin = () => {
+    cy.get(navbar_selectors.loginLink).click()
     login_helpers.assertOnLoginPage()
 }
 
-export function clickLogOut() {
-    cy.get(navbar_selectors.logout_link).click()
-}
+export const clickLogOut = () =>
+    cy.get(navbar_selectors.logoutLink).click()
 
-export function assertAlwaysPresentNavbarElements() {
+export const assertAlwaysPresentNavbarElements = () => {
     cy.get(navbar_selectors.logo).should('be.visible')
-    cy.get(navbar_selectors.search_input).should('be.visible')
-    cy.get(navbar_selectors.search_button).should('be.visible')
+    cy.get(navbar_selectors.searchInput).should('be.visible')
+    cy.get(navbar_selectors.searchButton).should('be.visible')
 }
 
-export function assertUnauthenticatedUserNavbar() {
+export const assertUnauthenticatedUserNavbar = () => {
     assertAlwaysPresentNavbarElements()
-    cy.get(navbar_selectors.signup_link).should('be.visible')
-    cy.get(navbar_selectors.login_link).should('be.visible')
+    cy.get(navbar_selectors.signupLink).should('be.visible')
+    cy.get(navbar_selectors.loginLink).should('be.visible')
 }
 
-export function assertAuthenticatedUserNavbar() {
+export const assertAuthenticatedUserNavbar = () => {
     assertAlwaysPresentNavbarElements()
     cy.get(navbar_selectors.profile).should('be.visible')
-    cy.get(navbar_selectors.logout_link).should('be.visible')
+    cy.get(navbar_selectors.logoutLink).should('be.visible')
 }
 
-
-export function assertOnLoginPage(){
+export const assertOnLoginPage = () =>
     assertUnauthenticatedUserNavbar()
-
-}

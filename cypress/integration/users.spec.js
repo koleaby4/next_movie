@@ -26,7 +26,7 @@ context('User Tests', () => {
     navbar_helpers.clickLogin()
     navbar_helpers.assertUnauthenticatedUserNavbar()
 
-    login_helpers.login_as(data.REGISTERED_EMAIL)
+    login_helpers.loginAs(data.REGISTERED_EMAIL)
     navbar_helpers.assertAuthenticatedUserNavbar()
 
     navbar_helpers.clickLogOut()

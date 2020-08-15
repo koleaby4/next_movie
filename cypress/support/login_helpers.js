@@ -4,19 +4,19 @@ import * as data from './data'
 export const selectors = {
     email: 'input[type=email]',
     password: 'input[type=password]',
-    login_button: '.login-button'
+    loginButton: '.login-button'
 }
 
-export function assertOnLoginPage(){
+export const assertOnLoginPage = () => {
     navbar_helpers.assertUnauthenticatedUserNavbar()
     cy.get(selectors.email).should('be.visible')
     cy.get(selectors.password).should('be.visible')
-    cy.get(selectors.login_button).should('be.visible')
+    cy.get(selectors.loginButton).should('be.visible')
 }
 
-export const login_as = (email, password=data.PASSWORD) => {
-    cy.log(selectors.login_button)
+export const loginAs = (email, password=data.PASSWORD) => {
+    cy.log(selectors.loginButton)
     cy.get(selectors.email).type(email)
     cy.get(selectors.password).type(password)
-    cy.get(selectors.login_button).click()
+    cy.get(selectors.loginButton).click()
 }
