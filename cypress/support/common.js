@@ -8,8 +8,3 @@ export const gotoLandingPage = (authenticated = false) => {
     navbar_helpers.assertUnauthenticatedUserNavbar()
   }
 }
-
-
-
-export const random_email = () => Date.now().toString() + "@test.co.uk"
-export const PASSWORD = "Str0ngP@ssw0rd!"

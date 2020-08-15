@@ -1,4 +1,5 @@
 import * as signup_helpers from './signup_helpers'
+import * as login_helpers from './login_helpers'
 
 export const navbar_selectors = {
     logo: '.logo',
@@ -14,6 +15,15 @@ export const navbar_selectors = {
 export function clickSingUp() {
     cy.get(navbar_selectors.signup_link).click()
     signup_helpers.assertOnSignUpPage()
+}
+
+export function clickLogin() {
+    cy.get(navbar_selectors.login_link).click()
+    login_helpers.assertOnLoginPage()
+}
+
+export function clickLogOut() {
+    cy.get(navbar_selectors.logout_link).click()
 }
 
 export function assertAlwaysPresentNavbarElements() {
@@ -32,4 +42,10 @@ export function assertAuthenticatedUserNavbar() {
     assertAlwaysPresentNavbarElements()
     cy.get(navbar_selectors.profile).should('be.visible')
     cy.get(navbar_selectors.logout_link).should('be.visible')
+}
+
+
+export function assertOnLoginPage(){
+    assertUnauthenticatedUserNavbar()
+
 }

@@ -1,7 +1,7 @@
-import * as common_helpers from './common'
+import * as data from './data'
 
 export const selectors = {
-    email: "input[name=email]",
+    email: "input[type=email]",
     password: "input[type=password]",
     signup_button : "form button[type=submit]"
 }
@@ -16,9 +16,9 @@ export function assertOnSignUpPage(){
 }
 
 export const createNewUser = () => {
-    const email = common_helpers.random_email()
+    const email = data.get_random_email()
     cy.get(selectors.email).type(email)
-    cy.get(selectors.password).type(common_helpers.PASSWORD)
+    cy.get(selectors.password).type(data.PASSWORD)
     clickSignUpButton()
     return email
 }
