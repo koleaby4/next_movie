@@ -15,9 +15,9 @@ class CreateUserTests(TestCase):
 
 class SignupTests(TestCase):
     def test_signup_page(self):
-        signup_page_url = reverse("signup")
+        signup_page_url = reverse("account_signup")
         response = self.client.get(signup_page_url)
 
         self.assertEqual(200, response.status_code)
-        self.assertTemplateUsed(response, "signup.html")
+        self.assertTemplateUsed(response, "account/signup.html")
         self.assertContains(response, "Sign up")
