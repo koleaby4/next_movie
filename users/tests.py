@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 
-class CreateUserTests(TestCase):
+class CreateUserModelTests(TestCase):
     def test_create_user(self):
         user = get_user_model().objects.create_user(
             username="James", email="james_007@mi6.co.uk", password="Str0ngP@ssword!"
@@ -13,7 +13,8 @@ class CreateUserTests(TestCase):
         self.assertTrue(user.is_active)
 
 
-class SignupTests(TestCase):
+class SignupViewTests(TestCase):
+
     def test_signup_page(self):
         signup_page_url = reverse("account_signup")
         response = self.client.get(signup_page_url)
