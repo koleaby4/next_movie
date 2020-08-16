@@ -6,17 +6,18 @@
 {% block content %}
 
 {% if confirmation %}
-    {% user_display confirmation.email_address.user as user_display %}
-    <p>Please confirm that <a href="mailto:{{email}}">{{email}}</a>is an email address for user{{user_display}}.</p>
+<p>Please confirm registration of a new account with email address
+    <a href="mailto:{{confirmation.email_address.email}}">{{confirmation.email_address.email}}</a>
+</p>
 
-    <form action="{% url 'account_confirm_email' confirmation.key %}" method="post">
-        {% csrf_token %}
-        <button class="btn btn-primary" type="submit">Confirm</button>
+<form action="{% url 'account_confirm_email' confirmation.key %}" method="post">
+    {% csrf_token %}
+    <button class="btn btn-primary" type="submit">Confirm</button>
 
-    </form>
+</form>
 
 {% else %}
-    {% url 'account_email' as email_url %}
+{% url 'account_email' as email_url %}
 
 {% endif %}
 
