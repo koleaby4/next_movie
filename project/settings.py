@@ -150,6 +150,7 @@ LOGIN_REDIRECT_URL = "index"
 ACCOUNT_LOGOUT_REDIRECT = "index"
 
 SITE_ID = 1
+USE_I18N = False
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
@@ -166,3 +167,5 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
+
+DEFAULT_FROM_EMAIL = "admin@next-movie.co.uk"

@@ -1,0 +1,23 @@
+{% extends '_base.html' %}
+{% load account %}
+
+{% block title %}Confirm email address{% endblock title %}
+
+{% block content %}
+
+{% if confirmation %}
+    {% user_display confirmation.email_address.user as user_display %}
+    <p>Please confirm that <a href="mailto:{{email}}">{{email}}</a>is an email address for user{{user_display}}.</p>
+
+    <form action="{% url 'account_confirm_email' confirmation.key %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-primary" type="submit">Confirm</button>
+
+    </form>
+
+{% else %}
+    {% url 'account_email' as email_url %}
+
+{% endif %}
+
+{% endblock content %}
