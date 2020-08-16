@@ -15,8 +15,7 @@ export function assertOnSignUpPage(){
     cy.get(selectors.signupButton).should('be.visible')
 }
 
-export const createNewUser = () => {
-    const email = data.getRandomEmail()
+export const createNewUser = (email=data.getRandomEmail()) => {
     cy.get(selectors.email).type(email)
     cy.get(selectors.password).type(data.PASSWORD)
     clickSignUpButton()
