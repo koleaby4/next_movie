@@ -16,9 +16,8 @@ context('User Tests', () => {
   it('New user can be registered', () => {
 
     navbar_helpers.clickSingUp()
-    const email = signup_helpers.createNewUser()
+    signup_helpers.createNewUser()
     navbar_helpers.assertAuthenticatedUserNavbar()
-
   })
 
   it('Existing user can login and log out', () => {
@@ -31,6 +30,13 @@ context('User Tests', () => {
 
     navbar_helpers.clickLogOut()
     logout_helpers.logOut()
+  })
+
+
+  it('Validation error when trying to sign up with known email', () => {
+    navbar_helpers.clickSingUp()
+    signup_helpers.createNewUser(data.REGISTERED_EMAIL)
+    cy.contains("A user is already registered with this e-mail address.")
   })
 
 })
