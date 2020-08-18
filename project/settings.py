@@ -159,7 +159,15 @@ AUTHENTICATION_BACKENDS = (
 
 ACCOUNT_SESSION_REMEMBER = True
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = get_secret("SENDGRID_API_KEY")
+EMAIL_PORT = 587
+EMAIL_USE_TSL = True
+EMAIL_SUBJECT_PREFIX = '[Next Movie]'
+
 
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
