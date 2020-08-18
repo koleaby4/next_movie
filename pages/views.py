@@ -14,3 +14,6 @@ def index(request):
 
 def about(request):
     return render(request, 'about.html')
+
+def validate_domain(request):
+    return HttpResponse("ok")
