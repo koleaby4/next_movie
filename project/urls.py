@@ -15,11 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from pages.views import validate_domain
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('', include('pages.urls')),
-    path('9f378c81abd1b78a7d482ecf42a85f93', validate_domain, name="TMP stub"),
 ]
