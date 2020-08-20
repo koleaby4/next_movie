@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     "allauth.account",
 
     # local
-    "pages.apps.PagesConfig",
+    "movies.apps.MoviesConfig",
     "users.apps.UsersConfig",
 ]
 

@@ -23,7 +23,7 @@ def get_prostgres_auth_dict():
         @                   # @ literal
         (?P<host>[^:]+)     # host
         :                   # colon literal
-        (?P<port>\d{4})     # port
+        (?P<port>\d+)     # port
         \/                  # / literal
         (?P<db_name>\w+)$   # db_name
         """,
