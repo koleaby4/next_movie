@@ -1,4 +1,7 @@
 from django.contrib import admin
 from movies.models import Movie
 
-admin.site.register(Movie)
+class MovieAdmin(admin.ModelAdmin):
+    list_display = ("imdb_id", "title", "year", "imdb_rating")
+
+admin.site.register(Movie, MovieAdmin)
