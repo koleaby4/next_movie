@@ -16,3 +16,7 @@ class Movie(models.Model):
     plot = models.CharField(max_length=2000)
     poster_url = models.URLField()
     imdb_rating = models.DecimalField(max_digits=3, decimal_places=1)
+    full_json_details = models.JSONField(default=None)
+
+    def __str__(self):
+        return self.title
