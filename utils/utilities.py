@@ -8,7 +8,7 @@ FILE_SECRETS = json.loads(Path("secrets.json").read_text())
 
 
 def get_secret(key):
-    return os.environ.get(key, FILE_SECRETS[key])
+    return os.environ.get(key) or FILE_SECRETS[key]
 
 
 def get_prostgres_auth_dict():
