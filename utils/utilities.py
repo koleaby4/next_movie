@@ -3,11 +3,12 @@ import os
 from pathlib import Path
 import re
 
-SECRETS = json.loads(Path("secrets.json").read_text())
+
+FILE_SECRETS = json.loads(Path("secrets.json").read_text())
 
 
 def get_secret(key):
-    return os.environ.get(key, SECRETS[key])
+    return os.environ.get(key, FILE_SECRETS[key])
 
 
 def get_prostgres_auth_dict():
