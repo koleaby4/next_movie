@@ -9,4 +9,16 @@
     <p>{{movie.imdb_id}}</p>
     <p>{{movie.plot}}</p>
     <p>{{movie.imdb_rating}}</p>
+    <div>
+        <h3>Reviews:</h3>
+        {% if movie.reviews.all %}
+            <ul>
+                {% for review in movie.reviews.all %}
+                <li>{{review.review}} (by {{review.author}})</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Be the first to review this movie</p>
+        {% endif %}
+    </div>
 {% endblock content %}
