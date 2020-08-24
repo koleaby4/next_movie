@@ -1,0 +1,12 @@
+{% extends '_base.html' %}
+
+{% load static %}
+
+{% block title %}Movie Detail{% endblock title %}
+
+{% block content %}
+    <p>{{movie.title}}</p>
+    <p>{{movie.imdb_id}}</p>
+    <p>{{movie.plot}}</p>
+    <p>{{movie.imdb_rating}}</p>
+{% endblock content %}

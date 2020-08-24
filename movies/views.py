@@ -5,7 +5,7 @@ import sys
 from pathlib import Path
 
 from django.shortcuts import HttpResponse, render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from movies.models import Movie
 from movies_collector.imdb_collector import get_movie_details, get_top_rated_movies
@@ -13,10 +13,19 @@ from utils.utilities import get_secret
 
 log = logging.getLogger(__name__)
 
+
 class MovieListView(ListView):
     model = Movie
     template_name = "movies/movie_list.html"
     context_object_name = "movies"
+
+
+class MovieDetailView(DetailView):
+    model = Movie
+    template_name = "movies/movie_detail.html"
+    context_object_name = "movie"
+
+
 
 def index(request):
 
