@@ -5,20 +5,21 @@
 {% block title %}Movie Detail{% endblock title %}
 
 {% block content %}
-    <p>{{movie.title}}</p>
-    <p>{{movie.imdb_id}}</p>
-    <p>{{movie.plot}}</p>
-    <p>{{movie.imdb_rating}}</p>
+    <p class="title">{{movie.title}}</p>
+    <p class="imdb_id">{{movie.imdb_id}}</p>
+    <p class="plot">{{movie.plot}}</p>
+    <p class="imdb_rating">{{movie.imdb_rating}}</p>
+
     <div>
-        <h3>Reviews:</h3>
+        <h3 class="reviews-header">Reviews:</h3>
         {% if movie.reviews.all %}
-            <ul>
+            <ul class="reviews-list">
                 {% for review in movie.reviews.all %}
                 <li>{{review.review}} (by {{review.author}})</li>
                 {% endfor %}
             </ul>
         {% else %}
-            <p>Be the first to review this movie</p>
+            <p class="no-reviews">Be the first to review this movie</p>
         {% endif %}
     </div>
 {% endblock content %}
