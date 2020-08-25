@@ -6,7 +6,7 @@ from pathlib import Path
 
 from django.shortcuts import HttpResponse, render
 from django.views.generic import ListView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 from movies.models import Movie
 from movies_collector.imdb_collector import get_movie_details, get_top_rated_movies
@@ -21,11 +21,12 @@ class MovieListView(ListView):
     context_object_name = "movies"
 
 
-class MovieDetailView(LoginRequiredMixin, DetailView):
+class MovieDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = Movie
     template_name = "movies/movie_detail.html"
     context_object_name = "movie"
     login_url = 'account_login'
+    permission_required = 'movies.paid_for_membership'
 
 
 

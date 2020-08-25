@@ -21,7 +21,7 @@ context('Movies Tests', () => {
     common.gotoLandingPage()
 
     navbar_helpers.clickLogin()
-    login_helpers.loginAs(data.REGISTERED_EMAIL)
+    login_helpers.loginAs(data.REGISTERED_PAID_EMAIL)
 
     common.gotoMoviesPage(true)
     movies_helpers.assertMovieCard("The Dark Knight")
@@ -39,7 +39,7 @@ context('Movies Tests', () => {
     common.gotoLandingPage()
 
     navbar_helpers.clickLogin()
-    login_helpers.loginAs(data.REGISTERED_EMAIL)
+    login_helpers.loginAs(data.REGISTERED_PAID_EMAIL)
 
     common.gotoMoviesPage(true)
     movies_helpers.assertMovieCard("Portrait of a Lady on Fire")

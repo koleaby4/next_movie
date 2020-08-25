@@ -26,6 +26,10 @@ class Movie(models.Model):
     def get_absolute_url(self):
         return reverse("movie_detail", args=[str(self.imdb_id)])
 
+    class Meta:
+        permissions = [
+            ('paid_for_membership', 'Has access to premium content'),
+        ]
 
 class Review(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="reviews")
