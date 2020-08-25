@@ -16,7 +16,7 @@ class Movie(models.Model):
     title = models.CharField(max_length=200)
     year = models.PositiveIntegerField(validators=[MinValueValidator(1900), max_value_current_year])
     plot = models.CharField(max_length=2000)
-    poster_url = models.URLField()
+    poster_url = models.URLField(blank=True, null=True)
     imdb_rating = models.DecimalField(max_digits=3, decimal_places=1)
     full_json_details = models.JSONField(default=None)
 
