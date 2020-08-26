@@ -58,6 +58,3 @@ def store_movie(movie_details):
         full_json_details=json.dumps(movie_details),
     ).save()
 
-
-def about(request):
-    return render(request, "about.html")
