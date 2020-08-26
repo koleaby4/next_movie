@@ -19,8 +19,9 @@ from django.urls import path, include
 from movies.views import index
 
 urlpatterns = [
+    path("", lambda r: redirect("movie_list"), name="index"),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path("movies/", include("movies.urls")),
-    path("", lambda r: redirect("movie_list"), name="index"),
+    path("memberships/", include("memberships.urls")),
 ]
