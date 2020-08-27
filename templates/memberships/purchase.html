@@ -4,10 +4,7 @@
 
 {% block content %}
 
-
-<p>{{stripe_key}}</p>
-
-<form action="{% url 'charge' %}" method="post">
+<form action="{% url 'charge' %}" method="post" test-data="payment-form">
     {% csrf_token %}
 
     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{stripe_key}}"
