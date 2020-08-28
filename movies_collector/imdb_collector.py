@@ -2,8 +2,9 @@ import json
 import os
 import sys
 from pathlib import Path
-
+from urllib.parse import quote
 import requests
+from typing import List
 
 from utils.utilities import get_secret
 
@@ -45,3 +46,21 @@ def get_movie_details(movie_id):
     response = requests.request("GET", movie_by_imdb_id_url)
 
     return json.loads(response.text)
+
+def search_movies(search_term: str) -> List[str]:
+    encoded_term = quote(search_term)
+
+    movie_by_search_url = f"http://www.omdbapi.com/?s={encoded_term}&apikey={OMDB_API_KEY}"
+    response = requests.request("GET", movie_by_search_url)
+
+    response_json = json.loads(response.text)
+    if response_json.get("Response") == "False":
+        return []
+
+    return response_json.get("Search")
+
+def url_exists(url):
+    try:
+        return requests.get(url).status_code == 200
+    except Exception:
+        return False
