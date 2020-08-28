@@ -6,7 +6,7 @@ import json
 
 
 class PagesTests(TestCase):
-    def test_content_of_index_page(self):
+    def test_content_of_movies_page(self):
         url = reverse("movie_list")
         response = self.client.get(url)
 
