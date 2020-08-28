@@ -10,16 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
-import os
 import django_heroku
-import json
 from pathlib import Path
-import re
 from utils.utilities import get_secret, get_prostgres_auth_dict
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR_PATH = Path(__file__).parent.parent
-BASE_DIR = str(BASE_DIR_PATH)
+BASE_DIR = Path(__file__).parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -68,7 +64,7 @@ ROOT_URLCONF = "project.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "DIRS": [BASE_DIR /"templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -131,9 +127,9 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    BASE_DIR / "static",
 ]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # this is for prod
+STATIC_ROOT = BASE_DIR / "staticfiles"  # this is for prod
 
 STATIC_FILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
