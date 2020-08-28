@@ -2,7 +2,13 @@
 
 {% load static %}
 
-{% block title %}Movie List{% endblock title %}
+{% block title %}
+    {% if 'search' in request.path %}
+        Search Results
+    {% else %}
+        Movie List
+    {% endif %}
+{% endblock title %}
 
 {% block content %}
 
@@ -27,6 +33,8 @@
                             </div>
                         </div>
                     </div>
+                {% empty %}
+                    No movies found
                 {% endfor %}
             </div>
         </div>

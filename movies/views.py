@@ -63,7 +63,7 @@ def store_movie(movie_details):
 
 class SearchResultsListView(ListView):
     model = Movie
-    template_name = "movies/search_results.html"
+    template_name = "movies/index.html"
     context_object_name = "movies"
 
     def get_queryset(self):
