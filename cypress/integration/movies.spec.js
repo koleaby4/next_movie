@@ -45,6 +45,6 @@ context('Movies Tests', () => {
     movies_helpers.assertMovieCard("Portrait of a Lady on Fire")
       .click()
 
-    movie_detail_helpers.assertHasReview("Wonderful movie (by abc)")
+    movie_detail_helpers.assertHasReview("Wonderful movie (by registered_paid_user)")
   })
 })
