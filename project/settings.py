@@ -43,12 +43,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.sites",
     "django.contrib.staticfiles",
-
     # 3rd party
     "crispy_forms",
     "allauth",
     "allauth.account",
-
     # local
     "movies.apps.MoviesConfig",
     "users.apps.UsersConfig",
@@ -132,8 +130,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles") # this is for prod
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # this is for prod
 
 STATIC_FILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -147,34 +147,34 @@ AUTH_USER_MODEL = "users.CustomUser"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
-LOGIN_REDIRECT_URL = "index"
-ACCOUNT_LOGOUT_REDIRECT = "index"
+LOGIN_REDIRECT_URL = "movie_list"
+ACCOUNT_LOGOUT_REDIRECT = "movie_list"
 
 SITE_ID = 1
 USE_I18N = False
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
 )
 
 ACCOUNT_SESSION_REMEMBER = True
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.sendgrid.net"
+EMAIL_HOST_USER = "apikey"
 EMAIL_HOST_PASSWORD = get_secret("SENDGRID_API_KEY")
 EMAIL_PORT = 587
 EMAIL_USE_TSL = True
-EMAIL_SUBJECT_PREFIX = '[Next Movie]'
+EMAIL_SUBJECT_PREFIX = "[Next Movie]"
 
 
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_UNIQUE_EMAIL = True
 
 DEFAULT_FROM_EMAIL = get_secret("SENDGRID_VERIFIED_EMAIL")

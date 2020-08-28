@@ -28,26 +28,8 @@ class MovieDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     model = Movie
     template_name = "movies/movie_detail.html"
     context_object_name = "movie"
-    login_url = 'account_login'
-    permission_required = 'movies.paid_for_membership'
-
-
-
-
-def index(request):
-
-    for movie in get_top_rated_movies():
-        movie_id = re.search(r"(?<=/title/)\w+", movie["id"])[0]
-        try:
-            Movie.objects.get(imdb_id=movie_id)
-        except Movie.DoesNotExist as e:
-            log.info(f"Movie {movie_id} not found in DB - fetching details...")
-            movie_details = get_movie_details(movie_id)
-            store_movie(movie_details)
-
-    context = {"movies": Movie.objects.all()}
-
-    return render(request, "index.html", context=context)
+    login_url = "account_login"
+    permission_required = "movies.paid_for_membership"
 
 
 def store_movie(movie_details):
@@ -61,13 +43,12 @@ def store_movie(movie_details):
         full_json_details=json.dumps(movie_details),
     ).save()
 
+
 class SearchResultsListView(ListView):
     model = Movie
-    template_name = "movies/index.html"
+    template_name = "movies/movie_list.html"
     context_object_name = "movies"
 
     def get_queryset(self):
         query = self.request.GET.get("q")
-        return Movie.objects.filter(
-            Q(title__icontains = query)
-        )
+        return Movie.objects.filter(Q(title__icontains=query))
