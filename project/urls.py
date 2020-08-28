@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import path, include
-from movies.views import index
 
 urlpatterns = [
     path("", lambda r: redirect("movie_list"), name="index"),
