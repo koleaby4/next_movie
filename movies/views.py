@@ -4,12 +4,15 @@ import re
 import sys
 from pathlib import Path
 
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
+from django.db.models import Q
 from django.shortcuts import HttpResponse, render
-from django.views.generic import ListView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.views.generic import DetailView, ListView
 
 from movies.models import Movie
-from movies_collector.imdb_collector import get_movie_details, get_top_rated_movies
+from movies_collector.imdb_collector import (get_movie_details,
+                                             get_top_rated_movies)
 from utils.utilities import get_secret
 
 log = logging.getLogger(__name__)
@@ -58,3 +61,13 @@ def store_movie(movie_details):
         full_json_details=json.dumps(movie_details),
     ).save()
 
+class SearchResultsListView(ListView):
+    model = Movie
+    template_name = "movies/search_results.html"
+    context_object_name = "movies"
+
+    def get_queryset(self):
+        query = self.request.GET.get("q")
+        return Movie.objects.filter(
+            Q(title__icontains = query)
+        )
