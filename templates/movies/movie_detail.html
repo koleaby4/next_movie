@@ -10,6 +10,8 @@
     <p class="plot">{{movie.plot}}</p>
     <p class="imdb_rating">{{movie.imdb_rating}}</p>
 
+    {% include 'components/seen_movie_icon.html' %}
+
     <div>
         <h3 class="reviews-header">Reviews:</h3>
         {% if movie.reviews.all %}

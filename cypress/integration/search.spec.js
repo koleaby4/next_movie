@@ -10,11 +10,11 @@ context('Search Tests', () => {
   })
 
   it('Search for a single match', () => {
-    navbar_helpers.searchFor("Schindler's List", 1)
+    navbar_helpers.searchFor("Schindler's List", 3)
   })
 
   it('Search with multiple matches', () => {
-    navbar_helpers.searchFor("The Lord of the Rings", 3)
+    navbar_helpers.searchFor("The Lord of the Rings", 10)
   })
 
   it('Search with NO matches found', () => {

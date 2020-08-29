@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
+from users.models import CustomUser
 
 
 def max_value_current_year(value):
@@ -19,6 +20,7 @@ class Movie(models.Model):
     poster_url = models.URLField(blank=True, null=True)
     imdb_rating = models.DecimalField(max_digits=3, decimal_places=1)
     full_json_details = models.JSONField(default=None)
+    watched_by = models.ManyToManyField(CustomUser, related_name='watched_by', blank=True)
 
     def __str__(self):
         return self.title

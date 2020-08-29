@@ -1,0 +1,11 @@
+{% load static %}
+
+<div class="seen-movie-icon">
+    <a href="{% url 'toggle_seen' movie.pk %}">
+        {% if seen %}
+            <ion-icon class="seen-icon" name="eye-sharp"></ion-icon>
+        {% else %}
+            <ion-icon class="not-seen-icon" name="eye-off-outline"></ion-icon>
+        {% endif %}
+    </a>
+</div>
