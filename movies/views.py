@@ -26,7 +26,7 @@ class MovieListView(ListView):
     context_object_name = "movies"
 
 
-class MovieDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class MovieDetailView(LoginRequiredMixin, DetailView):
     model = Movie
     template_name = "movies/movie_detail.html"
     context_object_name = "movie"
@@ -46,20 +46,20 @@ class MovieDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
             full_json_details=json.dumps(movie_details),
         ).save()
 
-    # @login_required
     @staticmethod
     def toggle_seen(request, pk):
         movie = Movie.objects.get(pk=pk)
 
         user = request.user
+
         if movie.watched_by.filter(pk=user.pk).exists():
             movie.watched_by.remove(user)
-            seen = False
         else:
             movie.watched_by.add(user)
-            seen = True
 
-        return render(request, 'movies/movie_detail.html', {'movie': movie, 'seen': seen})
+        movie.save()
+
+        return redirect(reverse('movie_detail', args=[movie.pk]))
 
 class SearchResultsListView(ListView):
     model = Movie

@@ -1,10 +1,10 @@
 from django.urls import path
-
+from django.contrib.auth.decorators import login_required
 from .views import MovieDetailView, MovieListView, SearchResultsListView
 
 urlpatterns = [
     path("", MovieListView.as_view(), name="movie_list"),
-    path("<slug:pk>", MovieDetailView.as_view(), name="movie_detail"),
-    path("<slug:pk>/seen", MovieDetailView.toggle_seen, name="toggle_seen"),
+    path("<slug:pk>", login_required(MovieDetailView.as_view()), name="movie_detail"),
+    path("<slug:pk>/seen", login_required(MovieDetailView.toggle_seen), name="toggle_seen"),
     path("search/", SearchResultsListView.as_view(), name="search_results"),
 ]

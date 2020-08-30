@@ -17,11 +17,11 @@ context('Movies Tests', () => {
     login_helpers.assertOnLoginPage()
   })
 
-  it('Movie details shown for authenticated users', () => {
+  it('Movie details shown for authenticated non-prime users', () => {
     common.gotoLandingPage()
 
     navbar_helpers.clickLogin()
-    login_helpers.loginAs(data.REGISTERED_PAID_EMAIL)
+    login_helpers.loginAs(data.REGISTERED_EMAIL)
 
     common.gotoMoviesPage(true)
     movies_helpers.assertMovieCard("The Dark Knight")
@@ -33,6 +33,7 @@ context('Movies Tests', () => {
     movie_detail_helpers.assertPlot(plot)
 
     movie_detail_helpers.assertNoReviews()
+    movie_detail_helpers.assertPrimeInvitationShown()
   })
 
   it('Reviews are shown on movie details', () => {
@@ -46,5 +47,27 @@ context('Movies Tests', () => {
       .click()
 
     movie_detail_helpers.assertHasReview("Wonderful movie (by registered_paid_user)")
+    movie_detail_helpers.assertSeenMovieBlockShown()
+
   })
+
+  it.only('Seen / Not Seen toggle for prime members', () => {
+    common.gotoLandingPage()
+
+    navbar_helpers.clickLogin()
+    login_helpers.loginAs(data.REGISTERED_PAID_EMAIL)
+
+    common.gotoMoviesPage(true)
+    movies_helpers.assertMovieCard("Portrait of a Lady on Fire")
+      .click()
+
+    movie_detail_helpers.assertSeenMovieBlockShown()
+
+    movie_detail_helpers.assureMovieMarkedNotSeen()
+
+    movie_detail_helpers.toggleSeenMovieStatus()
+    movie_detail_helpers.assertMovieMarkedSeen()
+
+  })
+
 })
