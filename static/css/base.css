@@ -2,7 +2,16 @@ h1 {
     color: red;
 }
 
-
-ion-icon{
+ion-icon {
     font-size: 40px;
+}
+
+.card {
+    position: relative;
+}
+
+.card ion-icon {
+    top: 2.5%;
+    right: 5%;
+    position: absolute;
 }

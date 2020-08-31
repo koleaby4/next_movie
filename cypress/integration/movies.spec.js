@@ -22,6 +22,7 @@ context('Movies Tests', () => {
 
     navbar_helpers.clickLogin()
     login_helpers.loginAs(data.REGISTERED_EMAIL)
+    navbar_helpers.assertPrimeMembershipLink(true)
 
     common.gotoMoviesPage(true)
     movies_helpers.assertMovieCard("The Dark Knight")
@@ -36,11 +37,12 @@ context('Movies Tests', () => {
     movie_detail_helpers.assertPrimeInvitationShown()
   })
 
-  it('Reviews are shown on movie details', () => {
+  it.only('Reviews are shown on movie details', () => {
     common.gotoLandingPage()
 
     navbar_helpers.clickLogin()
     login_helpers.loginAs(data.REGISTERED_PAID_EMAIL)
+    navbar_helpers.assertPrimeMembershipLink(false)
 
     common.gotoMoviesPage(true)
     movies_helpers.assertMovieCard("Portrait of a Lady on Fire")

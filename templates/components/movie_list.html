@@ -15,6 +15,10 @@
                                 {% else %}
                                     <img class="card-img-top img-fluid" src="{% static 'images/image_placeholder.svg' %}" alt="{{ movie.title }}">
                                 {% endif %}
+
+                                {% if user in movie.watched_by.all %}
+                                    <ion-icon class="seen-icon" name="eye-sharp"></ion-icon>
+                                {% endif %}
                             </a>
                             <div class="card-body pb-0">
                                 <p class="mb-0">{{ movie.title }}</p>

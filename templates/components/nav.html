@@ -20,25 +20,29 @@
         <a class="nav-link" href="{% url 'watched' %}" >Watched</a>
       </li>
 
-      <li class="nav-item">
-        <a class="nav-link about" href="/about">About</a>
-      </li>
 
       {% if user.is_authenticated %}
-      <li class="nav-item">
-        <a class="nav-link profile" href="#">Profile</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link logout" href="{% url 'account_logout' %}">Log out</a>
-      </li>
+
+        {% if not perms.movies.paid_for_membership %}
+          <li class="nav-item">
+            <a class="nav-link prime-membership-link" href="{% url 'memberships' %}">Join Prime Membership</a>
+          </li>
+        {% endif %}
+
+        <li class="nav-item">
+          <a class="nav-link logout" href="{% url 'account_logout' %}">Log out</a>
+        </li>
+
       {% else %}
+
       <li class="nav-item">
-        <a class="nav-link login" href="{% url 'account_login' %}">Login</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link sign-up" href="{% url 'account_signup' %}">Sign up</a>
-      </li>
-      {% endif %}
+          <a class="nav-link login" href="{% url 'account_login' %}">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link sign-up" href="{% url 'account_signup' %}">Sign up</a>
+        </li>
+
+        {% endif %}
 
     </ul>
 

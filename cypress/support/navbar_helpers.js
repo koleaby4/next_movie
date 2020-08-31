@@ -8,7 +8,7 @@ export const selectors = {
     signupLink: '.sign-up',
     loginLink: '.login',
     logoutLink: '.logout',
-    profile: '.profile'
+    primeMembershipLink: '.prime-membership-link',
 }
 
 
@@ -39,12 +39,14 @@ export const assertUnauthenticatedUserNavbar = () => {
 
 export const assertAuthenticatedUserNavbar = () => {
     assertAlwaysPresentNavbarElements()
-    cy.get(selectors.profile).should('be.visible')
     cy.get(selectors.logoutLink).should('be.visible')
 }
 
 export const assertOnLoginPage = () =>
     assertUnauthenticatedUserNavbar()
+
+export const assertPrimeMembershipLink = (expect_visible=true) =>
+    cy.get(selectors.primeMembershipLink).should(expect_visible ? 'be.visible' : 'not.exist')
 
 export const searchFor = (term, expected_matches_count) => {
     cy.get(selectors.searchInput).type(term)
