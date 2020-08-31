@@ -51,7 +51,7 @@ context('Movies Tests', () => {
 
   })
 
-  it.only('Seen / Not Seen toggle for prime members', () => {
+  it('Seen / Not Seen toggle for prime members', () => {
     common.gotoLandingPage()
 
     navbar_helpers.clickLogin()

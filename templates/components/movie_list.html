@@ -1,16 +1,4 @@
-{% extends '_base.html' %}
-
 {% load static %}
-
-{% block title %}
-    {% if 'search' in request.path %}
-        Search Results
-    {% else %}
-        Movie List
-    {% endif %}
-{% endblock title %}
-
-{% block content %}
 
 <div class="overlay"></div>
 <div class="container-fluid">
@@ -40,6 +28,3 @@
         </div>
     </div>
 </div>
-
-
-{% endblock content %}

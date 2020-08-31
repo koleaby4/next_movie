@@ -1,0 +1,21 @@
+{% extends '_base.html' %}
+
+{% load static %}
+
+{% block title %}
+    {% if request.path == '/movies/' %}
+        Best Movies
+    {% endif %}
+
+    {% if '/movies/search/' in request.path %}
+        Search Results
+    {% endif %}
+
+    {% if request.path == '/movies/watched' %}
+        Watched Movies
+    {% endif %}
+{% endblock title %}
+
+{% block content %}
+    {% include 'components/movie_list.html' %}
+{% endblock content %}

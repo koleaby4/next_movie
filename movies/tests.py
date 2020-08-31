@@ -11,7 +11,7 @@ class PagesTests(TestCase):
         response = self.client.get(url)
 
         self.assertEqual(200, response.status_code)
-        self.assertTemplateUsed(response, "movies/movie_list.html")
+        self.assertTemplateUsed(response, "movies/movies.html")
 
 
 class ModelsTests(TestCase):

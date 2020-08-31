@@ -22,7 +22,7 @@ log = logging.getLogger(__name__)
 
 class MovieListView(ListView):
     model = Movie
-    template_name = "movies/movie_list.html"
+    template_name = "movies/movies.html"
     context_object_name = "movies"
 
 
@@ -63,7 +63,7 @@ class MovieDetailView(LoginRequiredMixin, DetailView):
 
 class SearchResultsListView(ListView):
     model = Movie
-    template_name = "movies/movie_list.html"
+    template_name = "movies/movies.html"
     context_object_name = "movies"
 
     def get_queryset(self):
@@ -85,3 +85,12 @@ class SearchResultsListView(ListView):
                     log.error(json.dumps(movie_details))
 
         return Movie.objects.filter(Q(title__icontains=search_term))
+
+
+class WatchedMoviesListView(ListView):
+    model = Movie
+    template_name = "movies/movies.html"
+    context_object_name = "movies"
+
+    def get_queryset(self):
+        return Movie.objects.filter(Q(watched_by=self.request.user))
