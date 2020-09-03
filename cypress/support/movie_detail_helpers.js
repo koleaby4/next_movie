@@ -7,10 +7,10 @@ export const selectors = {
     reviews_list: '.reviews-list',
     no_reviews: '.no-reviews',
     prime_invitation: '.prime-invitation',
-    seen_movie_block: '.seen-movie-block',
-    seen_movie_block_icon: '.seen-movie-block ion-icon',
-    not_seen_movie_icon: ".not-seen-icon",
-    seen_movie_icon: ".seen-icon",
+    watched_movie_block: '.watched-movie-block',
+    watched_movie_block_icon: '.watched-movie-block ion-icon',
+    not_watched_movie_icon: ".not-watched-icon",
+    watched_movie_icon: ".watched-icon",
 }
 
 export const assertMovieDetail = (title, imdb_rating) => {
@@ -40,24 +40,24 @@ export const assertHasReview = (reviewText) =>
 export const assertPrimeInvitationShown = () =>
     cy.get(selectors.prime_invitation).should('be.visible')
 
-export const assertSeenMovieBlockShown = () =>
-    cy.get(selectors.seen_movie_block).should('be.visible')
+export const assertWatchedMovieBlockShown = () =>
+    cy.get(selectors.watched_movie_block).should('be.visible')
 
-export const assertMovieMarkedSeen = () =>
-    cy.get(selectors.seen_movie_icon).should('be.visible')
+export const assertMovieMarkedWatched = () =>
+    cy.get(selectors.watched_movie_icon).should('be.visible')
 
-export const assertMovieMarkedNotSeen = () =>
-    cy.get(selectors.not_seen_movie_icon).should('be.visible')
+export const assertMovieMarkedNotWatched = () =>
+    cy.get(selectors.not_watched_movie_icon).should('be.visible')
 
-export const toggleSeenMovieStatus = () =>
-    cy.get(selectors.seen_movie_block_icon).click()
+export const toggleWatchedStatus = () =>
+    cy.get(selectors.watched_movie_block_icon).click()
 
-export const assureMovieMarkedNotSeen = () => {
-    cy.get(selectors.seen_movie_block).then(seen_block => {
-        if (seen_block.find(selectors.seen_movie_icon).length > 0) {
-            toggleSeenMovieStatus()
+export const assureMovieMarkedNotWatched = () => {
+    cy.get(selectors.watched_movie_block).then(watched_block => {
+        if (watched_block.find(selectors.watched_movie_icon).length > 0) {
+            toggleWatchedStatus()
         }
     });
 
-    assertMovieMarkedNotSeen()
+    assertMovieMarkedNotWatched()
 }

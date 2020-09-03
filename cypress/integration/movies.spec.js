@@ -37,7 +37,7 @@ context('Movies Tests', () => {
     movie_detail_helpers.assertPrimeInvitationShown()
   })
 
-  it.only('Reviews are shown on movie details', () => {
+  it('Reviews are shown on movie details', () => {
     common.gotoLandingPage()
 
     navbar_helpers.clickLogin()
@@ -49,11 +49,11 @@ context('Movies Tests', () => {
       .click()
 
     movie_detail_helpers.assertHasReview("Wonderful movie (by registered_paid_user)")
-    movie_detail_helpers.assertSeenMovieBlockShown()
+    movie_detail_helpers.assertWatchedMovieBlockShown()
 
   })
 
-  it('Seen / Not Seen toggle for prime members', () => {
+  it('Watched / Not Watched toggle for prime members', () => {
     common.gotoLandingPage()
 
     navbar_helpers.clickLogin()
@@ -63,12 +63,12 @@ context('Movies Tests', () => {
     movies_helpers.assertMovieCard("Portrait of a Lady on Fire")
       .click()
 
-    movie_detail_helpers.assertSeenMovieBlockShown()
+    movie_detail_helpers.assertWatchedMovieBlockShown()
 
-    movie_detail_helpers.assureMovieMarkedNotSeen()
+    movie_detail_helpers.assureMovieMarkedNotWatched()
 
-    movie_detail_helpers.toggleSeenMovieStatus()
-    movie_detail_helpers.assertMovieMarkedSeen()
+    movie_detail_helpers.toggleWatchedStatus()
+    movie_detail_helpers.assertMovieMarkedWatched()
 
   })
 

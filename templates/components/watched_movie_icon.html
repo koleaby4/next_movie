@@ -1,0 +1,21 @@
+{% load static %}
+
+<h4>Mark movies as 'Watched' or 'Not Watched'</h4>
+
+{% if perms.movies.paid_for_membership %}
+    <div class="watched-movie-block">
+        {% if user in movie.watched_by.all %}
+            <a href="{% url 'toggle_watched' movie.pk %}">
+                <ion-icon class="watched-icon" name="eye-sharp"></ion-icon>
+            </a>
+            <span>Watched</span>
+        {% else %}
+            <a href="{% url 'toggle_watched' movie.pk %}">
+                <ion-icon class="not-watched-icon" name="eye-off-outline"></ion-icon>
+            </a>
+                <span>Not watched</span>
+        {% endif %}
+    </div>
+{% else %}
+    {% include 'components/prime_invitation.html' %}
+{% endif %}

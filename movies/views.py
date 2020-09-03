@@ -47,7 +47,7 @@ class MovieDetailView(LoginRequiredMixin, DetailView):
         ).save()
 
     @staticmethod
-    def toggle_seen(request, pk):
+    def toggle_watched(request, pk):
         movie = Movie.objects.get(pk=pk)
 
         user = request.user
