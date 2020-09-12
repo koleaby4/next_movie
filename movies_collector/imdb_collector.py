@@ -21,7 +21,7 @@ def get_top_rated_movies():
     # records = json.loads(response.text)
 
     # temporary stub. ToDo: replace when going live
-    content = (Path(__file__).parent / "top_rated_movies.json").read_text()
+    content = (Path(__file__).parent / "top_rated_movies_subset.json").read_text()
     records = json.loads(content)
     imdb_ids = [re.search(r"/title/(tt[0-9]+)/", entry["id"]).group(1) for entry in records]
     return imdb_ids
