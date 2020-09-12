@@ -10,7 +10,7 @@ context('Search Tests', () => {
   })
 
   it('Search for a single match', () => {
-    navbar_helpers.searchFor("Schindler's List", 3)
+    navbar_helpers.searchFor("Throne of Blood", 1)
   })
 
   it('Search with multiple matches', () => {
