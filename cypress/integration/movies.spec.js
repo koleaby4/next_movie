@@ -25,15 +25,15 @@ context('Movies Tests', () => {
     navbar_helpers.assertPrimeMembershipLink(true)
 
     common.gotoMoviesPage(true)
-    movies_helpers.assertMovieCard("The Dark Knight")
+    movies_helpers.assertMovieCard("Throne of Blood")
       .click()
 
-    movie_detail_helpers.assertMovieDetail("The Dark Knight", "9.0")
+    movie_detail_helpers.assertMovieDetail("Throne of Blood", "8.1")
 
-    const plot = "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice."
+    const plot = "A war-hardened general, egged on by his ambitious wife, works to fulfill a prophecy that he would become lord of Spider's Web Castle."
     movie_detail_helpers.assertPlot(plot)
 
-    movie_detail_helpers.assertNoReviews()
+    movie_detail_helpers.assertReviewsHidden()
     movie_detail_helpers.assertPrimeInvitationShown()
   })
 
@@ -48,7 +48,7 @@ context('Movies Tests', () => {
     movies_helpers.assertMovieCard("Portrait of a Lady on Fire")
       .click()
 
-    movie_detail_helpers.assertHasReview("Wonderful movie (by registered_paid_user)")
+    movie_detail_helpers.assertHasReview("Every frame a painting")
     movie_detail_helpers.assertWatchedMovieBlockShown()
 
   })

@@ -6,6 +6,7 @@ export const selectors = {
     imdb_rating: '.imdb_rating',
     reviews_list: '.reviews-list',
     no_reviews: '.no-reviews',
+    reviews_hidden: '.reviews-container .prime-invitation',
     prime_invitation: '.prime-invitation',
     watched_movie_block: '.watched-movie-block',
     watched_movie_block_icon: '.watched-movie-block ion-icon',
@@ -31,8 +32,8 @@ export const assertPlot = plot =>
 export const assertImdbRating = imdb_rating =>
     cy.get(selectors.imdb_rating).contains(imdb_rating)
 
-export const assertNoReviews = () =>
-    cy.get(selectors.no_reviews).contains('Be the first to review this movie')
+export const assertReviewsHidden = () =>
+    cy.get(selectors.reviews_hidden).should("be.visible")
 
 export const assertHasReview = (reviewText) =>
     cy.get(selectors.reviews_list).contains(reviewText)

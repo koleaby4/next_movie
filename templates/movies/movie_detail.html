@@ -12,16 +12,25 @@
 
     {% include 'components/watched_movie_icon.html' %}
 
-    <div>
+    <div class="reviews-container">
         <h3 class="reviews-header">Reviews:</h3>
-        {% if movie.reviews.all %}
-            <ul class="reviews-list">
+
+        {% if perms.movies.paid_for_membership %}
+            <div class="reviews-list">
                 {% for review in movie.reviews.all %}
-                <li>{{review.review}} (by {{review.author}})</li>
+                    <div>
+                        <p>Title: {{review.review_title}}</p>
+                        <p>Review Text: {{review.review_text}}</p>
+                        <p>Submission Date: {{review.submission_date}}</p>
+                        <p>Author Rating: {{review.author_rating}}</p>
+                    </div>
+                {% empty %}
+                    <p class="no-reviews">There are no reviews for this movies</p>
                 {% endfor %}
-            </ul>
+            </div>
         {% else %}
-            <p class="no-reviews">Be the first to review this movie</p>
+            {% include 'components/prime_invitation.html' %}
         {% endif %}
+
     </div>
 {% endblock content %}

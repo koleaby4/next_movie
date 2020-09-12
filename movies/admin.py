@@ -9,5 +9,8 @@ class MovieAdmin(admin.ModelAdmin):
     inlines = [
         ReviewInline,
     ]
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ("pk", "movie", "review_title", "submission_date", "author_rating", "contains_spoilers")
 
 admin.site.register(Movie, MovieAdmin)
+admin.site.register(Review, ReviewAdmin)

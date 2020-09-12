@@ -5,16 +5,19 @@ import sys
 from pathlib import Path
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import (LoginRequiredMixin,
-                                        PermissionRequiredMixin)
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.db.models import Q
 from django.shortcuts import HttpResponse, redirect, render, reverse
 from django.views.generic import DetailView, ListView
 
-from movies.models import Movie
-from movies_collector.imdb_collector import (get_movie_details,
-                                             get_top_rated_movies,
-                                             search_movies, url_exists)
+from movies.models import Movie, Review  # , LatestMovie
+from movies_collector.imdb_collector import (
+    get_movie_details,
+    get_movie_reviews,
+    get_top_rated_movies,
+    search_movies,
+    url_exists,
+)
 from utils.utilities import get_secret
 
 log = logging.getLogger(__name__)
@@ -25,6 +28,18 @@ class MovieListView(ListView):
     template_name = "movies/movies.html"
     context_object_name = "movies"
 
+    def get_queryset(self):
+        results = []
+
+        for imdb_id in get_top_rated_movies():
+            if not Movie.objects.filter(pk=imdb_id).exists():
+                movie = persist_movie(imdb_id)
+                results.append(movie)
+            else:
+                results.append(Movie.objects.get(pk=imdb_id))
+
+        return results
+
 
 class MovieDetailView(LoginRequiredMixin, DetailView):
     model = Movie
@@ -32,19 +47,6 @@ class MovieDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "movie"
     login_url = "account_login"
     permission_required = "movies.paid_for_membership"
-
-    @staticmethod
-    def store_movie(movie_details):
-        poster_url = movie_details.get("Poster")
-        Movie(
-            imdb_id=movie_details.get("imdbID"),
-            title=movie_details.get("Title"),
-            year=int(movie_details.get("Year")),
-            plot=movie_details.get("Plot"),
-            poster_url=poster_url if url_exists(poster_url) else None,
-            imdb_rating=movie_details.get("imdbRating"),
-            full_json_details=json.dumps(movie_details),
-        ).save()
 
     @staticmethod
     def toggle_watched(request, pk):
@@ -59,7 +61,8 @@ class MovieDetailView(LoginRequiredMixin, DetailView):
 
         movie.save()
 
-        return redirect(reverse('movie_detail', args=[movie.pk]))
+        return redirect(reverse("movie_detail", args=[movie.pk]))
+
 
 class SearchResultsListView(ListView):
     model = Movie
@@ -67,6 +70,7 @@ class SearchResultsListView(ListView):
     context_object_name = "movies"
 
     def get_queryset(self):
+
         search_term = self.request.GET.get("q")
         log.warning(f"Searching movies: {search_term}")
 
@@ -74,17 +78,32 @@ class SearchResultsListView(ListView):
         log.warning(f"Matching IDs: {', '.join(found_ids)}")
 
         for imdb_id in found_ids:
+
             if not Movie.objects.filter(pk=imdb_id).exists():
-                movie_details = get_movie_details(imdb_id)
-                log.warning(f"Fetched movie details: {movie_details}")
+                movie = persist_movie(imdb_id)
 
-                try:
-                    MovieDetailView.store_movie(movie_details)
-                except Exception as e:
-                    log.error(f"/!\ Unable to save the following movie details /!\ \n{e}")
-                    log.error(json.dumps(movie_details))
-
+        # ToDo: change to pk in found_ids ?
         return Movie.objects.filter(Q(title__icontains=search_term))
+
+
+def persist_reviews(movie):
+    reviews = []
+
+    for review_details in get_movie_reviews(movie.imdb_id):
+        review = Review.from_review_details(movie, review_details)
+        reviews.append(review)
+
+    return reviews
+
+
+def persist_movie(imdb_id):
+    movie_details = get_movie_details(imdb_id)
+    log.warning(f"Fetched movie details: {movie_details}")
+
+    movie = Movie.from_movie_details(movie_details)
+    persist_reviews(movie)
+
+    return movie
 
 
 class WatchedMoviesListView(ListView):
@@ -94,3 +113,12 @@ class WatchedMoviesListView(ListView):
 
     def get_queryset(self):
         return Movie.objects.filter(Q(watched_by=self.request.user))
+
+
+# class LatestMoviesListView(ListView):
+#     model = Movie
+#     template_name = "movies/movies.html"
+#     context_object_name = "movies"
+
+#     def get_queryset(self):
+#         return Movie.objects.filter(Q(pk in [x.pk for x in LatestMovie.objects.all]))
