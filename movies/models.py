@@ -21,10 +21,11 @@ def max_value_current_year(value):
 class Movie(models.Model):
     imdb_id = models.SlugField(primary_key=True, max_length=20, editable=False)
     title = models.CharField(max_length=200)
-    year = models.PositiveIntegerField(validators=[MinValueValidator(1900), max_value_current_year])
+    year = models.PositiveIntegerField(blank=True, null=True, validators=[MinValueValidator(1900), max_value_current_year])
     plot = models.CharField(max_length=2000)
     poster_url = models.URLField(blank=True, null=True)
     imdb_rating = models.DecimalField(max_digits=3, decimal_places=1)
+    genre = models.CharField(max_length=200, blank=True, null=True)
     full_json_details = models.JSONField(default=None)
     watched_by = models.ManyToManyField(CustomUser, related_name="watched_by", blank=True)
 
@@ -56,6 +57,7 @@ class Movie(models.Model):
             plot=movie_details.get("Plot"),
             poster_url=poster_url if url_exists(poster_url) else None,
             imdb_rating=imdb_rating,
+            genre=movie_details.get("Genre"),
             full_json_details=json.dumps(movie_details),
         )
 
