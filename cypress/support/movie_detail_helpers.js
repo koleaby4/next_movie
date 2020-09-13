@@ -2,6 +2,7 @@ export const selectors = {
     title: '.title',
     plot: '.plot',
     imdb_rating: '.imdb_rating',
+    rating: '.ratings .rating',
     reviews_header: '.reviews-header',
     reviews_list: '.reviews-list',
     no_reviews: '.no-reviews',
@@ -13,13 +14,13 @@ export const selectors = {
     watched_movie_icon: ".watched-icon",
 }
 
-export const assertMovieDetail = (title, imdb_rating) => {
+export const assertMovieDetail = (title, rating) => {
     assertTitle(title)
 
     cy.get(selectors.plot).should('be.visible')
     cy.get(selectors.reviews_header).should('be.visible')
 
-    // assertImdbRating(imdb_rating)
+    assertRating(rating)
 }
 
 export const assertTitle = title =>
@@ -28,8 +29,8 @@ export const assertTitle = title =>
 export const assertPlot = plot =>
     cy.get(selectors.plot).contains(plot)
 
-export const assertImdbRating = imdb_rating =>
-    cy.get(selectors.imdb_rating).contains(imdb_rating)
+export const assertRating = rating =>
+    cy.get(selectors.rating).contains(rating)
 
 export const assertReviewsHidden = () =>
     cy.get(selectors.reviews_hidden).should("be.visible")
