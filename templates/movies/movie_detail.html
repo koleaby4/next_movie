@@ -9,7 +9,13 @@
         <p class="title">{{movie.title}}</p>
         <p class="imdb_id">{{movie.imdb_id}}</p>
         <p class="plot">{{movie.plot}}</p>
-        <p class="imdb_rating">{{movie.imdb_rating}}</p>
+
+        <div class="ratings">
+            <p>Ratings:</p>
+                {% for rating_entry in movie.ratings%}
+                    <p class="rating">{{rating_entry.Source}}: {{rating_entry.Value}}</p>
+                {% endfor %}
+        </div>
     </section>
 
     {% include 'components/watched_movie_icon.html' %}

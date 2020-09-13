@@ -25,6 +25,7 @@ class Movie(models.Model):
     plot = models.CharField(max_length=2000)
     poster_url = models.URLField(blank=True, null=True)
     imdb_rating = models.DecimalField(max_digits=3, decimal_places=1)
+    ratings = models.JSONField(default=None, null=True)
     genre = models.CharField(max_length=200, blank=True, null=True)
     full_json_details = models.JSONField(default=None)
     watched_by = models.ManyToManyField(CustomUser, related_name="watched_by", blank=True)
@@ -57,6 +58,7 @@ class Movie(models.Model):
             plot=movie_details.get("Plot"),
             poster_url=poster_url if url_exists(poster_url) else None,
             imdb_rating=imdb_rating,
+            ratings=movie_details.get("Ratings"),
             genre=movie_details.get("Genre"),
             full_json_details=json.dumps(movie_details),
         )
