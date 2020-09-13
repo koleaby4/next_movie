@@ -1,0 +1,33 @@
+{% load static %}
+
+<section class="reviews-section">
+
+    <div class="reviews-container">
+        <h5 class="reviews-header">Reviews:</h5>
+
+        {% if perms.movies.paid_for_membership %}
+            <div class="reviews-list">
+                {% for review in movie.reviews.all %}
+                    <div class="review-detail">
+                        <h6 class="review-title">Title: {{review.review_title}}</h6>
+                        <p class="review-rating">Author Rating: {{review.author_rating}}</p>
+                        {% if review.contains_spoilers %}
+                            <p class="review-spoiler">/!\ SPOILER ALERT /!\</p>
+                        {% endif %}
+                        <p class="review-rating">Author Rating: {{review.author_rating}}</p>
+                        <blockquote>
+                            <p class="review-text">{{review.review_text}}</p>
+                            <footer class="review-date">Review Date: {{review.submission_date}}</footer>
+                        </blockquote>
+                    </div>
+                {% empty %}
+                    <p class="no-reviews">There are no reviews for this movies</p>
+                {% endfor %}
+            </div>
+        {% else %}
+            {% include 'components/prime_invitation.html' %}
+        {% endif %}
+
+    </div>
+
+</section>
