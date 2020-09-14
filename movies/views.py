@@ -86,24 +86,14 @@ class SearchResultsListView(ListView):
         return Movie.objects.filter(Q(title__icontains=search_term))
 
 
-def persist_reviews(movie):
-    reviews = []
 
-    for review_details in get_movie_reviews(movie.imdb_id):
-        review = Review.from_review_details(movie, review_details)
-        reviews.append(review)
-
-    return reviews
 
 
 def persist_movie(imdb_id):
     movie_details = get_movie_details(imdb_id)
     log.warning(f"Fetched movie details: {movie_details}")
 
-    movie = Movie.from_movie_details(movie_details)
-    persist_reviews(movie)
-
-    return movie
+    return Movie.from_movie_details(movie_details)
 
 
 class WatchedMoviesListView(ListView):

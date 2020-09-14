@@ -12,7 +12,7 @@
 
         <div class="ratings">
             <p>Ratings:</p>
-                {% for rating_entry in movie.ratings%}
+                {% for rating_entry in movie.ratings %}
                     <p class="rating">{{rating_entry.Source}}: {{rating_entry.Value}}</p>
                 {% endfor %}
         </div>

@@ -7,7 +7,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 
-from movies_collector.imdb_collector import url_exists
+from movies_collector.imdb_collector import get_movie_reviews, url_exists
 from users.models import CustomUser
 
 log = logging.getLogger(__name__)
@@ -24,7 +24,7 @@ class Movie(models.Model):
     year = models.PositiveIntegerField(blank=True, null=True, validators=[MinValueValidator(1900), max_value_current_year])
     plot = models.CharField(max_length=2000)
     poster_url = models.URLField(blank=True, null=True)
-    imdb_rating = models.DecimalField(max_digits=3, decimal_places=1)
+    imdb_rating = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True)
     ratings = models.JSONField(default=None, null=True)
     genre = models.CharField(max_length=200, blank=True, null=True)
     full_json_details = models.JSONField(default=None)
@@ -60,16 +60,36 @@ class Movie(models.Model):
             imdb_rating=imdb_rating,
             ratings=movie_details.get("Ratings"),
             genre=movie_details.get("Genre"),
-            full_json_details=json.dumps(movie_details),
+            full_json_details=movie_details,
         )
 
         try:
             movie.save()
         except Exception as e:
-            log.error(fr"\n\n/!\ Unable to save movie details /!\ \n{json.dumps(movie_details)}")
-            log.error(f"Error details: {e}")
+            log.error(f"\n\n/!\\ Unable to save movie details /!\\ \n{json.dumps(movie_details)}")
+            log.error(f"Error info: type: {type(e)}, details: {e}")
+            return
+
+        try:
+            persist_reviews(movie)
+        except Exception as e:
+            log.error(f"\n\n/!\\ Unable to persist reviews")
+            log.error(f"Error info: type: {type(e)}, details: {e}")
+            return movie
 
         return movie
+
+
+def persist_reviews(movie):
+    log.warning(f"Inside persist_reviews")
+
+    reviews = get_movie_reviews(movie.imdb_id)
+    log.warning(f"Reviews to save: {reviews}")
+
+    for review_details in reviews:
+        log.warning(f"\n\nPrepating to safe review: {json.dumps(review_details)}")
+        review = Review.from_review_details(movie, review_details)
+        log.warning(f"\n\nReview created")
 
 
 # class LatestMovie(models.Model):
