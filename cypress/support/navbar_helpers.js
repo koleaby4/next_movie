@@ -8,6 +8,7 @@ export const selectors = {
     signupLink: '.sign-up',
     loginLink: '.login',
     logoutLink: '.logout',
+    nowPlayingLink: '.now-playing',
     primeMembershipLink: '.prime-membership-link',
 }
 
@@ -29,6 +30,7 @@ export const assertAlwaysPresentNavbarElements = () => {
     cy.get(selectors.logo).should('be.visible')
     cy.get(selectors.searchInput).should('be.visible')
     cy.get(selectors.searchButton).should('be.visible')
+    cy.get(selectors.nowPlayingLink).should('be.visible')
 }
 
 export const assertUnauthenticatedUserNavbar = () => {
@@ -56,4 +58,9 @@ export const searchFor = (term, expected_matches_count) => {
         cy.get('.card-body p').each( el => cy.wrap(el).contains(term))
         cy.get('.card-body p').its('length').should('eq', expected_matches_count)
     }
+}
+
+export const clickNowPlaying = () => {
+    cy.get(selectors.nowPlayingLink).click()
+    cy.get('.card').its('length').should('be.gt', 6)
 }

@@ -15,6 +15,7 @@ log = logging.getLogger(__name__)
 
 RAPID_API_IMDB8_KEY = get_secret("RAPID_API_IMDB8_KEY")
 OMDB_API_KEY = get_secret("OMDB_API_KEY")
+TMDB_API_KEY = get_secret("TMDB_API_KEY")
 
 
 
@@ -29,13 +30,17 @@ def get_top_rated_movies():
     # temporary stub. ToDo: replace when going live
     content = (Path(__file__).parent / "top_rated_movies_subset.json").read_text()
     records = json.loads(content)
-    imdb_ids = [re.search(r"/title/(tt[0-9]+)/", entry["id"]).group(1) for entry in records]
-    return imdb_ids
+
+    for entry in records:
+        yield re.search(r"/title/(tt[0-9]+)/", entry["id"]).group(1)
 
 
 def get_movie_details(movie_id):
     movie_by_imdb_id_url = f"http://www.omdbapi.com/?i={movie_id}&apikey={OMDB_API_KEY}"
-    return requests.get(movie_by_imdb_id_url).json()
+    result = requests.get(movie_by_imdb_id_url).json()
+    log.warning(f"\n\nFetched movie details from omdbapi: {result}")
+    return result
+
 
 def search_movies(search_term: str) -> List[str]:
     encoded_term = quote(search_term)
@@ -62,7 +67,7 @@ def get_movie_reviews(movie_id, count=5):
         'x-rapidapi-key': RAPID_API_IMDB8_KEY
         }
 
-    log.warning(f"Fetching reviews for movie: {movie_id}")
+    log.warning(f"\n\nFetching reviews for movie: {movie_id}")
     response = requests.request("GET", url, headers=headers, params={"tconst":movie_id}).json()
 
     number_of_reviews_found = response.get("totalReviews")
@@ -72,3 +77,21 @@ def get_movie_reviews(movie_id, count=5):
         return []
 
     return response.get("reviews")[:count-1]
+
+
+def get_now_playing_imdb_ids():
+    url = fr"https://api.themoviedb.org/3/movie/now_playing?api_key={TMDB_API_KEY}&language=en-GB&page=1"
+
+    log.warning(f"\n\nFetching now playing movies")
+    response = requests.request("GET", url).json()
+    tmdb_results = response["results"]
+
+    for entry in tmdb_results:
+        tmdb_detail = get_tmdb_movie_detail(entry["id"])
+        log.warning(f"TMDB detail: {tmdb_detail}")
+        yield tmdb_detail["imdb_id"]
+
+def get_tmdb_movie_detail(tmdb_id):
+    url = fr"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={TMDB_API_KEY}&language=en-GB"
+    log.warning(f"\n\nFetching tmdb movie detail by id {tmdb_id}")
+    return requests.request("GET", url).json()

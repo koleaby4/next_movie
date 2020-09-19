@@ -17,6 +17,7 @@ from movies_collector.imdb_collector import (
     get_top_rated_movies,
     search_movies,
     url_exists,
+    get_now_playing_imdb_ids
 )
 from utils.utilities import get_secret
 
@@ -104,6 +105,25 @@ class WatchedMoviesListView(ListView):
     def get_queryset(self):
         return Movie.objects.filter(Q(watched_by=self.request.user))
 
+
+class NowPlayingMoviesListView(ListView):
+    model = Movie
+    template_name = "movies/movies.html"
+    context_object_name = "movies"
+
+    def get_queryset(self):
+        imdb_ids = list(get_now_playing_imdb_ids())
+        log.warning(f"\n\n/!\\ List of now playing movies: {imdb_ids}")
+
+        new_movie_imdb_ids = [imdb_id for imdb_id in imdb_ids if not Movie.objects.filter(Q(pk=imdb_id)).exists()]
+        log.warning(f"\n\n/!\\ List of new movies: {new_movie_imdb_ids}")
+
+        for id in new_movie_imdb_ids:
+            movie_details = get_movie_details(id)
+            Movie.from_movie_details(movie_details)
+
+        matches = Movie.objects.filter(Q(pk__in=imdb_ids))
+        return matches
 
 # class LatestMoviesListView(ListView):
 #     model = Movie

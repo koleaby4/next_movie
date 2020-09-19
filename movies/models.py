@@ -87,9 +87,9 @@ def persist_reviews(movie):
     log.warning(f"Reviews to save: {reviews}")
 
     for review_details in reviews:
-        log.warning(f"\n\nPrepating to safe review: {json.dumps(review_details)}")
+        log.warning(f"\n\nPreparing to safe review:\n{json.dumps(review_details)}")
         review = Review.from_review_details(movie, review_details)
-        log.warning(f"\n\nReview created")
+        log.warning(f"\nReview created")
 
 
 # class LatestMovie(models.Model):

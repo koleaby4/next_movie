@@ -10,8 +10,7 @@ import * as data from "../support/data";
 context('Movies Tests', () => {
 
   it('Unauthenticated user redirected to login page when navigating to movie details', () => {
-
-    common.gotoMoviesPage()
+    common.gotoLandingPage()
     movies_helpers.assertMovieCard("The Shawshank Redemption")
       .click()
     login_helpers.assertOnLoginPage()
@@ -72,4 +71,8 @@ context('Movies Tests', () => {
 
   })
 
+  it.only('Now playing page is populated', () => {
+    common.gotoMoviesPage()
+    navbar_helpers.clickNowPlaying()
+  })
 })
