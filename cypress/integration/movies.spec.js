@@ -71,7 +71,7 @@ context('Movies Tests', () => {
 
   })
 
-  it.only('Now playing page is populated', () => {
+  it('Now playing page is populated', () => {
     common.gotoMoviesPage()
     navbar_helpers.clickNowPlaying()
   })

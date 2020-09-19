@@ -112,18 +112,16 @@ class NowPlayingMoviesListView(ListView):
     context_object_name = "movies"
 
     def get_queryset(self):
-        imdb_ids = list(get_now_playing_imdb_ids())
-        log.warning(f"\n\n/!\\ List of now playing movies: {imdb_ids}")
+        results = []
+        for id in get_now_playing_imdb_ids():
+            try:
+                movie = Movie.objects.get(pk=id)
+            except Movie.DoesNotExist:
+                movie_details = get_movie_details(id)
+                movie = Movie.from_movie_details(movie_details)
+            results.append(movie)
 
-        new_movie_imdb_ids = [imdb_id for imdb_id in imdb_ids if not Movie.objects.filter(Q(pk=imdb_id)).exists()]
-        log.warning(f"\n\n/!\\ List of new movies: {new_movie_imdb_ids}")
-
-        for id in new_movie_imdb_ids:
-            movie_details = get_movie_details(id)
-            Movie.from_movie_details(movie_details)
-
-        matches = Movie.objects.filter(Q(pk__in=imdb_ids))
-        return matches
+        return results
 
 # class LatestMoviesListView(ListView):
 #     model = Movie
