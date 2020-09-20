@@ -94,6 +94,10 @@ class Movie(models.Model):
 def notify_users_of_new_movie(sender, instance, created, **kwargs):
     payload = {"head": "Welcome!", "body": "Hello World"}
 
+    imdb_rating = instance.imdb_rating
+    if imdb_rating is None or imdb_rating < 7:
+        return
+
     paid_for_membership_permission = Permission.objects.get(codename="paid_for_membership")
     for user in CustomUser.objects.filter(Q(user_permissions=paid_for_membership_permission)):
         log.warning(f"\n\nPreparing push notification for prime membership user: {user}")
