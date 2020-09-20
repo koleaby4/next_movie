@@ -8,6 +8,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models.signals import post_save
 from django.urls import reverse
+from django.dispatch import receiver
 
 from movies_collector.imdb_collector import get_movie_reviews, url_exists
 from users.models import CustomUser
@@ -86,6 +87,8 @@ class Movie(models.Model):
         return movie
 
 
+# fetch and save reviews when a new movie is created
+@receiver(post_save, sender=Movie)
 def persist_reviews(sender, instance, created, **kwargs):
     reviews = get_movie_reviews(instance.imdb_id)
     log.warning(f"\n\nFetched reviews: {reviews}")
@@ -94,10 +97,6 @@ def persist_reviews(sender, instance, created, **kwargs):
         log.warning(f"\n\nPreparing to safe review:\n{json.dumps(review_details)}")
         Review.from_review_details(instance, review_details)
         log.warning(f"\nReview saved")
-
-
-# fetch and save reviews when a new movie is created
-post_save.connect(persist_reviews, sender=Movie)
 
 
 class Review(models.Model):
