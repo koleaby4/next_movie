@@ -5,21 +5,18 @@ import sys
 from pathlib import Path
 
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
 from django.db.models import Q
 from django.shortcuts import HttpResponse, redirect, render, reverse
 from django.views.generic import DetailView, ListView
 
-from movies.models import Movie, Review  # , LatestMovie
-from movies_collector.imdb_collector import (
-    get_movie_details,
-    get_movie_reviews,
-    get_top_rated_movies,
-    search_movies,
-    url_exists,
-    get_now_playing_imdb_ids
-)
-from utils.utilities import get_secret
+from movies.models import Movie, Review
+from movies_collector.imdb_collector import (get_movie_details,
+                                             get_movie_reviews,
+                                             get_now_playing_imdb_ids,
+                                             get_top_rated_movies,
+                                             search_movies, url_exists)
 
 log = logging.getLogger(__name__)
 
@@ -112,21 +109,13 @@ class NowPlayingMoviesListView(ListView):
     context_object_name = "movies"
 
     def get_queryset(self):
-        results = []
-        for id in get_now_playing_imdb_ids():
+        movies = []
+        for imdb_id in get_now_playing_imdb_ids():
             try:
-                movie = Movie.objects.get(pk=id)
+                movie = Movie.objects.get(pk=imdb_id)
             except Movie.DoesNotExist:
-                movie_details = get_movie_details(id)
+                movie_details = get_movie_details(imdb_id)
                 movie = Movie.from_movie_details(movie_details)
-            results.append(movie)
+            movies.append(movie)
 
-        return results
-
-# class LatestMoviesListView(ListView):
-#     model = Movie
-#     template_name = "movies/movies.html"
-#     context_object_name = "movies"
-
-#     def get_queryset(self):
-#         return Movie.objects.filter(Q(pk in [x.pk for x in LatestMovie.objects.all]))
+        return movies

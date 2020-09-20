@@ -1,6 +1,7 @@
 import datetime
 import json
 import logging
+import re
 
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -21,7 +22,9 @@ def max_value_current_year(value):
 class Movie(models.Model):
     imdb_id = models.SlugField(primary_key=True, max_length=20, editable=False)
     title = models.CharField(max_length=200)
-    year = models.PositiveIntegerField(blank=True, null=True, validators=[MinValueValidator(1900), max_value_current_year])
+    year = models.PositiveIntegerField(
+        blank=True, null=True, validators=[MinValueValidator(1900), max_value_current_year]
+    )
     plot = models.CharField(max_length=2000)
     poster_url = models.URLField(blank=True, null=True)
     imdb_rating = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True)
@@ -35,6 +38,15 @@ class Movie(models.Model):
 
     def get_absolute_url(self):
         return reverse("movie_detail", args=[str(self.imdb_id)])
+
+    @staticmethod
+    def get_release_year(year_str):
+        try:
+            year = int(year_str)
+        except ValueError:
+            year_matches = re.match(r"[0-9]{4}", year_str)
+            year = int(year_matches[0]) if year_matches else None
+        return year
 
     class Meta:
         permissions = [
@@ -54,7 +66,7 @@ class Movie(models.Model):
         movie = Movie(
             imdb_id=movie_details.get("imdbID"),
             title=movie_details.get("Title"),
-            year=int(movie_details.get("Year")),
+            year=Movie.get_release_year(movie_details.get("Year")),
             plot=movie_details.get("Plot"),
             poster_url=poster_url if url_exists(poster_url) else None,
             imdb_rating=imdb_rating,
@@ -81,15 +93,13 @@ class Movie(models.Model):
 
 
 def persist_reviews(movie):
-    log.warning(f"Inside persist_reviews")
-
     reviews = get_movie_reviews(movie.imdb_id)
-    log.warning(f"Reviews to save: {reviews}")
+    log.warning(f"\n\nFetched reviews: {reviews}")
 
     for review_details in reviews:
         log.warning(f"\n\nPreparing to safe review:\n{json.dumps(review_details)}")
-        review = Review.from_review_details(movie, review_details)
-        log.warning(f"\nReview created")
+        Review.from_review_details(movie, review_details)
+        log.warning(f"\nReview saved")
 
 
 # class LatestMovie(models.Model):

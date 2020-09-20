@@ -82,14 +82,21 @@ def get_movie_reviews(movie_id, count=5):
 def get_now_playing_imdb_ids():
     url = fr"https://api.themoviedb.org/3/movie/now_playing?api_key={TMDB_API_KEY}&language=en-GB&page=1"
 
-    log.warning(f"\n\nFetching now playing movies")
+    log.warning(f"\nFetching 'Now Playing' movies")
     response = requests.request("GET", url).json()
     tmdb_results = response["results"]
+    log.warning(f"\n'Now Playing' movies: {tmdb_results}")
 
     for entry in tmdb_results:
         tmdb_detail = get_tmdb_movie_detail(entry["id"])
         log.warning(f"TMDB detail: {tmdb_detail}")
-        yield tmdb_detail["imdb_id"]
+
+        imdb_id = tmdb_detail["imdb_id"]
+        if imdb_id:
+            yield imdb_id
+        else:
+            log.error(f"\n\nEmpty imdb_id field in TMDB database. Skipping this movie: {tmdb_detail}")
+            continue
 
 def get_tmdb_movie_detail(tmdb_id):
     url = fr"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={TMDB_API_KEY}&language=en-GB"
