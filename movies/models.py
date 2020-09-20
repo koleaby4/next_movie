@@ -6,6 +6,7 @@ import re
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models.signals import post_save
 from django.urls import reverse
 
 from movies_collector.imdb_collector import get_movie_reviews, url_exists
@@ -82,28 +83,21 @@ class Movie(models.Model):
             log.error(f"Error info: type: {type(e)}, details: {e}")
             return
 
-        try:
-            persist_reviews(movie)
-        except Exception as e:
-            log.error(f"\n\n/!\\ Unable to persist reviews")
-            log.error(f"Error info: type: {type(e)}, details: {e}")
-            return movie
-
         return movie
 
 
-def persist_reviews(movie):
-    reviews = get_movie_reviews(movie.imdb_id)
+def persist_reviews(sender, instance, created, **kwargs):
+    reviews = get_movie_reviews(instance.imdb_id)
     log.warning(f"\n\nFetched reviews: {reviews}")
 
     for review_details in reviews:
         log.warning(f"\n\nPreparing to safe review:\n{json.dumps(review_details)}")
-        Review.from_review_details(movie, review_details)
+        Review.from_review_details(instance, review_details)
         log.warning(f"\nReview saved")
 
 
-# class LatestMovie(models.Model):
-#     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="latest_movie")
+# fetch and save reviews when a new movie is created
+post_save.connect(persist_reviews, sender=Movie)
 
 
 class Review(models.Model):
@@ -136,5 +130,6 @@ class Review(models.Model):
         except Exception as e:
             log.error(f"\n\n/!\ Unable to save review details /!\ \n{json.dumps(review_details)}")
             log.error(f"Error details: {e}")
+            return
 
         return review
