@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.shortcuts import redirect
-from django.urls import path, include
+from django.urls import path, re_path, include
 
 urlpatterns = [
     path("", lambda r: redirect("movie_list"), name="index"),
     path("admin/", admin.site.urls),
     path("accounts/", include("allauth.urls")),
+    path('webpush/', include('webpush.urls')),
     path("movies/", include("movies.urls")),
     path("memberships/", include("memberships.urls")),
 ]

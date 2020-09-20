@@ -1,4 +1,6 @@
 {% load static %}
+{% load webpush_notifications %}
+{% webpush_header %}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand logo" href="{% url 'movie_list' %}"><img src="{% static 'images/logo.jpg' %}" alt="logo"></a>
@@ -33,19 +35,24 @@
         {% endif %}
 
         <li class="nav-item">
+          {% webpush_button with_class="btn btn-outline-info" %}
+        </li>
+
+        <li class="nav-item">
           <a class="nav-link logout" href="{% url 'account_logout' %}">Log out</a>
         </li>
 
+
       {% else %}
 
-      <li class="nav-item">
+        <li class="nav-item">
           <a class="nav-link login" href="{% url 'account_login' %}">Login</a>
         </li>
         <li class="nav-item">
           <a class="nav-link sign-up" href="{% url 'account_signup' %}">Sign up</a>
         </li>
 
-        {% endif %}
+      {% endif %}
 
     </ul>
 

@@ -4,11 +4,14 @@ import logging
 import re
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.db.models import Q
 from django.db.models.signals import post_save
-from django.urls import reverse
 from django.dispatch import receiver
+from django.urls import reverse
+from webpush import send_user_notification
 
 from movies_collector.imdb_collector import get_movie_reviews, url_exists
 from users.models import CustomUser
@@ -86,6 +89,15 @@ class Movie(models.Model):
 
         return movie
 
+
+@receiver(post_save, sender=Movie)
+def notify_users_of_new_movie(sender, instance, created, **kwargs):
+    payload = {"head": "Welcome!", "body": "Hello World"}
+
+    paid_for_membership_permission = Permission.objects.get(codename="paid_for_membership")
+    for user in CustomUser.objects.filter(Q(user_permissions=paid_for_membership_permission)):
+        log.warning(f"\n\nPreparing push notification for prime membership user: {user}")
+        send_user_notification(user=user, payload=payload)
 
 # fetch and save reviews when a new movie is created
 @receiver(post_save, sender=Movie)

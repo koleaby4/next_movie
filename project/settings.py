@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "allauth",
     "allauth.account",
+    "webpush",
     # local
     "movies.apps.MoviesConfig",
     "users.apps.UsersConfig",
@@ -180,3 +181,12 @@ DEFAULT_FROM_EMAIL = get_secret("SENDGRID_VERIFIED_EMAIL")
 
 STRIPE_PUBLISHABLE_KEY = get_secret("STRIPE_PUBLISHABLE_KEY")
 STRIPE_SECRET_KEY = get_secret("STRIPE_SECRET_KEY")
+
+
+# webpush notifications
+
+WEBPUSH_SETTINGS = {
+    "VAPID_PUBLIC_KEY": get_secret("VAPID_PUBLIC_KEY"),
+    "VAPID_PRIVATE_KEY": get_secret("VAPID_PRIVATE_KEY"),
+    "VAPID_ADMIN_EMAIL": get_secret("VAPID_ADMIN_EMAIL")
+}
