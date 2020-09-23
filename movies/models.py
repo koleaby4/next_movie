@@ -98,7 +98,15 @@ class Movie(models.Model):
 
 @receiver(post_save, sender=Movie)
 def notify_users_of_new_movie(sender, instance, created, **kwargs):
-    payload = {"head": "Welcome!", "body": "Hello World"}
+    payload = {
+        "head": "Another good movie",
+        "body": instance.title,
+        "url": reverse("movie_detail", args=[instance.pk])
+    }
+
+    if instance.poster_url:
+        payload["icon"] = instance.poster_url
+
 
     log.warning("\n\nMovie's post_save triggered 'notify_users_of_new_movie' function")
 
