@@ -13,7 +13,7 @@ from django.dispatch import receiver
 from django.urls import reverse
 from webpush import send_user_notification
 
-from movies_collector.imdb_collector import get_movie_reviews, url_exists
+from movies_collector.imdb_collector import get_movie_reviews, url_exists, get_movie_details
 from users.models import CustomUser
 
 log = logging.getLogger(__name__)
@@ -59,6 +59,12 @@ class Movie(models.Model):
         ]
 
     @staticmethod
+    def persist_movie(imdb_id):
+        movie_details = get_movie_details(imdb_id)
+        log.warning(f"Fetched movie details: {movie_details}")
+        return Movie.from_movie_details(movie_details)
+
+    @staticmethod
     def from_movie_details(movie_details):
         log.warning(f"\n\nPreparing to save movie: {movie_details}")
         poster_url = movie_details.get("Poster")
@@ -94,13 +100,21 @@ class Movie(models.Model):
 def notify_users_of_new_movie(sender, instance, created, **kwargs):
     payload = {"head": "Welcome!", "body": "Hello World"}
 
+    log.warning("\n\nMovie's post_save triggered 'notify_users_of_new_movie' function")
+
     imdb_rating = instance.imdb_rating
-    if imdb_rating is None or imdb_rating < 7:
+
+    good_movie_imdb_threshold = 7
+    if imdb_rating is None or imdb_rating < good_movie_imdb_threshold:
+        log.warning(f"IMDB rating too low ({imdb_rating}). Skipping notifications.")
         return
 
+    log.warning(f"Movie {instance} has a rating of {imdb_rating}. Preparing to notify subscribers")
+
     paid_for_membership_permission = Permission.objects.get(codename="paid_for_membership")
+
     for user in CustomUser.objects.filter(Q(user_permissions=paid_for_membership_permission)):
-        log.warning(f"\n\nPreparing push notification for prime membership user: {user}")
+        log.warning(f"\n\nSending push notification to prime membership user: {user}")
         send_user_notification(user=user, payload=payload)
 
 # fetch and save reviews when a new movie is created
@@ -110,9 +124,7 @@ def persist_reviews(sender, instance, created, **kwargs):
     log.warning(f"\n\nFetched reviews: {reviews}")
 
     for review_details in reviews:
-        log.warning(f"\n\nPreparing to safe review:\n{json.dumps(review_details)}")
         Review.from_review_details(instance, review_details)
-        log.warning(f"\nReview saved")
 
 
 class Review(models.Model):
@@ -143,8 +155,9 @@ class Review(models.Model):
         try:
             review.save()
         except Exception as e:
-            log.error(f"\n\n/!\ Unable to save review details /!\ \n{json.dumps(review_details)}")
+            log.error(f"\n\n/!\ Unable to save review  /!\ \n{json.dumps(review_details)}")
             log.error(f"Error details: {e}")
             return
 
+        log.warning(f"\nReview saved.")
         return review

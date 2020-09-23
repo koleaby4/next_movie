@@ -12,11 +12,9 @@ from django.shortcuts import HttpResponse, redirect, render, reverse
 from django.views.generic import DetailView, ListView
 
 from movies.models import Movie, Review
-from movies_collector.imdb_collector import (get_movie_details,
-                                             get_movie_reviews,
-                                             get_now_playing_imdb_ids,
+from movies_collector.imdb_collector import (get_now_playing_imdb_ids,
                                              get_top_rated_movies,
-                                             search_movies, url_exists)
+                                             search_movies)
 
 log = logging.getLogger(__name__)
 
@@ -31,7 +29,7 @@ class MovieListView(ListView):
 
         for imdb_id in get_top_rated_movies():
             if not Movie.objects.filter(pk=imdb_id).exists():
-                movie = persist_movie(imdb_id)
+                movie = Movie.persist_movie(imdb_id)
                 results.append(movie)
             else:
                 results.append(Movie.objects.get(pk=imdb_id))
@@ -78,20 +76,10 @@ class SearchResultsListView(ListView):
         for imdb_id in found_ids:
 
             if not Movie.objects.filter(pk=imdb_id).exists():
-                movie = persist_movie(imdb_id)
+                movie = Movie.persist_movie(imdb_id)
 
         # ToDo: change to pk in found_ids ?
         return Movie.objects.filter(Q(title__icontains=search_term))
-
-
-
-
-
-def persist_movie(imdb_id):
-    movie_details = get_movie_details(imdb_id)
-    log.warning(f"Fetched movie details: {movie_details}")
-
-    return Movie.from_movie_details(movie_details)
 
 
 class WatchedMoviesListView(ListView):
@@ -114,8 +102,7 @@ class NowPlayingMoviesListView(ListView):
             try:
                 movie = Movie.objects.get(pk=imdb_id)
             except Movie.DoesNotExist:
-                movie_details = get_movie_details(imdb_id)
-                movie = Movie.from_movie_details(movie_details)
+                movie = Movie.persist_movie(imdb_id)
             movies.append(movie)
 
         return movies
