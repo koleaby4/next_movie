@@ -24,4 +24,5 @@ urlpatterns = [
     path('webpush/', include('webpush.urls')),
     path("movies/", include("movies.urls")),
     path("memberships/", include("memberships.urls")),
+    path("profile/", include("profiles.urls")),
 ]

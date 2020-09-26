@@ -31,7 +31,6 @@ class Movie(models.Model):
     ratings = models.JSONField(default=None, null=True)
     genre = models.CharField(max_length=200, blank=True, null=True)
     full_json_details = models.JSONField(default=None)
-    watched_by = models.ManyToManyField(CustomUser, related_name="watched_by", blank=True)
 
     def __str__(self):
         return self.title

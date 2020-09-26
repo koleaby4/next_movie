@@ -35,6 +35,10 @@
         {% endif %}
 
         <li class="nav-item">
+          <a class="nav-link profile-link" href="{% url 'profile' %}">Profile</a>
+        </li>
+
+        <li class="nav-item">
           {% webpush_button with_class="btn btn-outline-info" %}
         </li>
 
