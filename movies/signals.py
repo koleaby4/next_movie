@@ -17,6 +17,10 @@ log = logging.getLogger(__name__)
 # fetch and save reviews when a new movie is created
 @receiver(post_save, sender=Movie)
 def persist_reviews(sender, instance, created, **kwargs):
+
+    if not created:
+        return
+
     reviews = get_movie_reviews(instance.imdb_id)
     log.warning(f"\n\nFetched reviews: {reviews}")
 
@@ -26,6 +30,10 @@ def persist_reviews(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=Movie)
 def notify_users_of_new_movie(sender, instance, created, **kwargs):
+
+    if not created:
+        return
+
     payload = {
         "head": "Another good movie",
         "body": instance.title,

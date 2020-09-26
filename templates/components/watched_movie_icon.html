@@ -5,7 +5,7 @@
 
     {% if perms.movies.paid_for_membership %}
     <div class="watched-movie-block">
-        {% if user in movie.watched_by.all %}
+        {% if user.profile in movie.profile_set.all %}
         <a href="{% url 'toggle_watched' movie.pk %}">
             <ion-icon class="watched-icon" name="eye-sharp"></ion-icon>
         </a>

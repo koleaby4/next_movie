@@ -49,11 +49,15 @@ class MovieDetailView(LoginRequiredMixin, DetailView):
         movie = Movie.objects.get(pk=pk)
 
         user = request.user
+        profile = user.profile
 
-        if movie.watched_by.filter(pk=user.pk).exists():
-            movie.watched_by.remove(user)
+        if profile.watched_movies.filter(pk = movie.pk).exists():
+
+            log.warn(f"Removing movie ({movie}) from profile ({profile})")
+            profile.watched_movies.remove(movie)
         else:
-            movie.watched_by.add(user)
+            log.warn(f"Adding movie ({movie}) to profile ({profile})")
+            profile.watched_movies.add(movie)
 
         movie.save()
 
@@ -88,7 +92,7 @@ class WatchedMoviesListView(ListView):
     context_object_name = "movies"
 
     def get_queryset(self):
-        return Movie.objects.filter(Q(watched_by=self.request.user))
+        return Movie.objects.filter(Q(profile=self.request.user.profile))
 
 
 class NowPlayingMoviesListView(ListView):

@@ -16,7 +16,7 @@
                                     <img class="card-img-top img-fluid" src="{% static 'images/image_placeholder.svg' %}" alt="{{ movie.title }}">
                                 {% endif %}
 
-                                {% if user in movie.watched_by.all %}
+                                {% if user.profile in movie.profile_set.all %}
                                     <ion-icon class="watched-icon" name="eye-sharp"></ion-icon>
                                 {% endif %}
                             </a>
