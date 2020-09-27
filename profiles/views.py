@@ -9,3 +9,6 @@ class ProfileView(LoginRequiredMixin, ListView):
     template_name = "profiles/profile.html"
     context_object_name = "profile"
     login_url = "account_login"
+
+    def get_queryset(self):
+        return self.request.user.profile

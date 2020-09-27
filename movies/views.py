@@ -51,14 +51,14 @@ class MovieDetailView(LoginRequiredMixin, DetailView):
         profile = user.profile
 
         if profile.watched_movies.filter(pk = movie.pk).exists():
-
-            log.warn(f"Removing movie ({movie}) from profile ({profile})")
+            log.warn(f"\nRemoving movie ({movie}) from profile ({profile})")
             profile.watched_movies.remove(movie)
         else:
-            log.warn(f"Adding movie ({movie}) to profile ({profile})")
+            log.warn(f"\nAdding movie ({movie}) to profile ({profile})")
             profile.watched_movies.add(movie)
 
-        movie.save()
+        profile.save()
+        # movie.save()
 
         return redirect(reverse("movie_detail", args=[movie.pk]))
 
