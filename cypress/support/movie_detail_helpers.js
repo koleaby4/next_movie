@@ -59,6 +59,14 @@ export const assureMovieMarkedNotWatched = () => {
             toggleWatchedStatus()
         }
     });
-
     assertMovieMarkedNotWatched()
+}
+
+export const assureMovieMarkedWatched = () => {
+    cy.get(selectors.watched_movie_block).then(watched_block => {
+        if (watched_block.find(selectors.watched_movie_icon).length == 0) {
+            toggleWatchedStatus()
+        }
+    });
+    assertMovieMarkedWatched()
 }

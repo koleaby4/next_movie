@@ -11,6 +11,7 @@ class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
     watched_movies = models.ManyToManyField(Movie, blank=True, null=True)
     watched_movies_average_rating = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True)
+    watched_movies_genres = models.TextField(blank=True, null=True, default="")
 
     def __str__(self):
         return f"Profile for user {self.user}"

@@ -20,6 +20,7 @@ def update_profile_stats(sender, instance: Profile, created: bool, **kwargs):
     post_save.disconnect(update_profile_stats, sender=sender)
 
     recalculate_watched_movies_average_rating(sender, instance)
+    recalculate_watched_movies_genres(sender, instance)
 
     # rec-nnect listeners
     post_save.connect(update_profile_stats, sender=sender)
@@ -33,4 +34,15 @@ def recalculate_watched_movies_average_rating(sender, instance: Profile):
     log.warning(f"Old average_rating: {instance.watched_movies_average_rating}.\n New average_rating: {new_average_rating}")
 
     instance.watched_movies_average_rating = new_average_rating
+    instance.save()
+
+def recalculate_watched_movies_genres(sender, instance: Profile):
+
+    watched_movies_genres = [m.genre.strip() for m in instance.watched_movies.all() if m.genre]
+    new_watched_movies_genres = ", ".join(watched_movies_genres) if watched_movies_genres else ""
+
+    log.warning(f"\nRecalculating watched_movies_genres for profile: {instance}")
+    log.warning(f"Old watched_movies_genres: {instance.watched_movies_genres}.\n New watched_movies_genres: {new_watched_movies_genres}")
+
+    instance.watched_movies_genres = new_watched_movies_genres
     instance.save()

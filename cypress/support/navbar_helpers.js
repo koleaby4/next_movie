@@ -9,6 +9,7 @@ export const selectors = {
     loginLink: '.login',
     logoutLink: '.logout',
     nowPlayingLink: '.now-playing',
+    profileLink: '.profile-link',
     primeMembershipLink: '.prime-membership-link',
 }
 
@@ -26,6 +27,11 @@ export const clickLogin = () => {
 export const clickLogOut = () =>
     cy.get(selectors.logoutLink).click()
 
+export const clickProfile = () => {
+    cy.get(selectors.profileLink).click()
+
+}
+
 export const assertAlwaysPresentNavbarElements = () => {
     cy.get(selectors.logo).should('be.visible')
     cy.get(selectors.searchInput).should('be.visible')
@@ -42,6 +48,7 @@ export const assertUnauthenticatedUserNavbar = () => {
 export const assertAuthenticatedUserNavbar = () => {
     assertAlwaysPresentNavbarElements()
     cy.get(selectors.logoutLink).should('be.visible')
+    cy.get(selectors.profileLink).should('be.visible')
 }
 
 export const assertOnLoginPage = () =>

@@ -5,6 +5,6 @@
 {% block title %}Profile{% endblock title %}
 
 {% block content %}
-    <p>Email address: {{profile.user.email}}</p>
-    <p>Average rating of watched movies: {{profile.watched_movies_average_rating}}</p>
+    <div class="email">Email address: {{profile.user.email}}</div>
+    <div class="watched-movies-average-rating">Average rating of watched movies: {{profile.watched_movies_average_rating}}</div>
 {% endblock content %}
