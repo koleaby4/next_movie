@@ -21,8 +21,11 @@ def update_profile_stats(sender, instance: Profile, created: bool, **kwargs):
     # temporarily disconnect listeners to prevent recursive call of update_profile_stats
     post_save.disconnect(update_profile_stats, sender=sender)
 
+    log.warning(f"\nRecalculating profile stats for: {instance}\n")
+
     recalculate_watched_movies_average_rating(sender, instance)
     recalculate_watched_movies_genres(sender, instance)
+    recalculate_watched_movies_years(sender, instance)
 
     # rec-nnect listeners
     post_save.connect(update_profile_stats, sender=sender)
@@ -32,8 +35,7 @@ def recalculate_watched_movies_average_rating(sender, instance: Profile):
     ratings_of_watched_movies = [m.imdb_rating for m in instance.watched_movies.all() if m.imdb_rating]
     new_average_rating = mean(ratings_of_watched_movies) if ratings_of_watched_movies else None
 
-    log.warning(f"\nRecalculating average average_rating for profile: {instance}")
-    log.warning(f"Old average_rating: {instance.watched_movies_average_rating}.\nNew average_rating: {new_average_rating}")
+    log.warning(f"\nOld average_rating: {instance.watched_movies_average_rating}.\nNew average_rating: {new_average_rating}")
 
     instance.watched_movies_average_rating = new_average_rating
     instance.save()
@@ -53,8 +55,23 @@ def recalculate_watched_movies_genres(sender, instance: Profile):
 
     new_watched_movies_genres = dict(Counter(new_watched_movies_genres))
 
-    log.warning(f"\nRecalculating watched_movies_genres for profile: {instance}")
-    log.warning(f"Old watched_movies_genres: {instance.watched_movies_genres}.\n New watched_movies_genres: {new_watched_movies_genres}")
+    log.warning(f"\nOld watched_movies_genres: {instance.watched_movies_genres}.\nNew watched_movies_genres: {new_watched_movies_genres}")
 
     instance.watched_movies_genres = new_watched_movies_genres
+    instance.save()
+
+def recalculate_watched_movies_years(sender, instance: Profile):
+
+    watched_movies_years = [x.year for x in instance.watched_movies.all() if x.year]
+
+    if not watched_movies_years:
+        instance.watched_movies_years = None
+        instance.save()
+        return
+
+    watched_movies_years = dict(Counter(watched_movies_years))
+
+    log.warning(f"\nOld watched_movies_years: {instance.watched_movies_years}.\nNew watched_movies_years: {watched_movies_years}")
+
+    instance.watched_movies_years = watched_movies_years
     instance.save()
