@@ -6,58 +6,33 @@
 
 {% block content %}
 
-    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 
-    <div class="email">Email address: {{profile.user.email}}</div>
-    <div class="watched-movies-average-rating">Average rating of watched movies: {{profile.watched_movies_average_rating}}</div>
-    <div id='myDiv'></div>
+<div class="email">Email address: {{profile.user.email}}</div>
+<div class="watched-movies-average-rating">Average rating of watched movies: {{profile.watched_movies_average_rating}}</div>
+<div class="watched-movies-genres-chart" id='watchedMoviesGenreChart'></div>
+<div class="watched-movies-years-chart" id='watchedMoviesYearChart'></div>
 
 
-    <script>
-        try {
-            let watched_genres = JSON.parse("{{profile.watched_movies_genres}}".replaceAll(`&#x27;`, `"`))
-            let sum = Object.values(watched_genres).reduce((a, b) => a + b, 0)
+<script src='{% static "js/profile_charts.js" %}'></script>
 
-            let items_count = (Object.keys(watched_genres)).length
-            console.log(items_count)
+<script>
+    try {
+        let watched_genres = JSON.parse("{{profile.watched_movies_genres}}".replaceAll(`&#x27;`, `"`))
+        let data = getWatchedMoviesGenreChartData(watched_genres)
 
-            let labels = Object.keys(watched_genres)
-            labels.unshift("Genres")
-            console.log(labels)
-
-            let values = Object.values(watched_genres)
-            values.unshift(sum)
-            console.log(values)
-
-            let parents = Array(items_count).fill("Genres")
-            parents.unshift("")
-            console.log(parents)
-
-            // alert(watched_genres)
-            // console.log(watched_genres)
-            var data = [{
-            type: "sunburst",
-            labels: labels,
-            parents: parents,
-            values: values,
-            outsidetextfont: {size: 20, color: "#377eb8"},
-            leaf: {opacity: 0.4},
-            marker: {line: {width: 2}},
-            }];
-
-            var layout = {
-            margin: {l: 0, r: 0, b: 0, t: 0},
+        let layout = {
+            margin: { l: 0, r: 0, b: 0, t: 0 },
             width: 500,
             height: 500
-            };
+        };
 
-            Plotly.newPlot('myDiv', data, layout);
+        Plotly.newPlot('watchedMoviesGenreChart', data, layout);
 
-        } catch (error) {
-            console.warn(`Unable to generate watched_genres. Error detail: {error}`)
-        }
+    } catch (error) {
+        console.warn(`Unable to generate watchedMoviesGenreChart. Error detail: {error}`)
+    }
 
-
-    </script>
+</script>
 
 {% endblock content %}
