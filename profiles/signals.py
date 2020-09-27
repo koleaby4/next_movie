@@ -5,6 +5,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from statistics import mean
 from .models import Profile
+from collections import Counter
+import re
 
 log = logging.getLogger(__name__)
 
@@ -31,7 +33,7 @@ def recalculate_watched_movies_average_rating(sender, instance: Profile):
     new_average_rating = mean(ratings_of_watched_movies) if ratings_of_watched_movies else None
 
     log.warning(f"\nRecalculating average average_rating for profile: {instance}")
-    log.warning(f"Old average_rating: {instance.watched_movies_average_rating}.\n New average_rating: {new_average_rating}")
+    log.warning(f"Old average_rating: {instance.watched_movies_average_rating}.\nNew average_rating: {new_average_rating}")
 
     instance.watched_movies_average_rating = new_average_rating
     instance.save()
@@ -39,7 +41,17 @@ def recalculate_watched_movies_average_rating(sender, instance: Profile):
 def recalculate_watched_movies_genres(sender, instance: Profile):
 
     watched_movies_genres = [m.genre.strip() for m in instance.watched_movies.all() if m.genre]
-    new_watched_movies_genres = ", ".join(watched_movies_genres) if watched_movies_genres else ""
+
+    if not watched_movies_genres:
+        instance.watched_movies_genres = None
+        instance.save()
+        return
+
+    new_watched_movies_genres = ",".join(watched_movies_genres)
+    new_watched_movies_genres = re.sub(r",\s*", ",", new_watched_movies_genres)
+    new_watched_movies_genres = new_watched_movies_genres.split(",")
+
+    new_watched_movies_genres = dict(Counter(new_watched_movies_genres))
 
     log.warning(f"\nRecalculating watched_movies_genres for profile: {instance}")
     log.warning(f"Old watched_movies_genres: {instance.watched_movies_genres}.\n New watched_movies_genres: {new_watched_movies_genres}")
