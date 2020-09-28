@@ -11,8 +11,8 @@ class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
     watched_movies = models.ManyToManyField(Movie, blank=True, null=True)
     watched_movies_average_rating = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True)
-    watched_movies_genres = models.JSONField(default={}, blank=True, null=True)
-    watched_movies_years = models.JSONField(default={}, blank=True, null=True)
+    watched_movies_genres = models.JSONField(default=dict, blank=True, null=True)
+    watched_movies_years = models.JSONField(default=dict, blank=True, null=True)
 
     def __str__(self):
         return f"""
