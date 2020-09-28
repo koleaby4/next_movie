@@ -10,6 +10,7 @@
 
 <div class="email">Email address: {{profile.user.email}}</div>
 <div class="watched-movies-average-rating">Average rating of watched movies: {{profile.watched_movies_average_rating}}</div>
+<p>Charts</p>
 <div class="watched-movies-genres-chart" id='watchedMoviesGenreChart'></div>
 <div class="watched-movies-years-chart" id='watchedMoviesYearChart'></div>
 
@@ -17,21 +18,29 @@
 <script src='{% static "js/profile_charts.js" %}'></script>
 
 <script>
-    try {
-        let watched_genres = JSON.parse("{{profile.watched_movies_genres}}".replaceAll(`&#x27;`, `"`))
-        let data = getWatchedMoviesGenreChartData(watched_genres)
 
-        let layout = {
-            margin: { l: 0, r: 0, b: 0, t: 0 },
-            width: 500,
-            height: 500
-        };
-
-        Plotly.newPlot('watchedMoviesGenreChart', data, layout);
-
-    } catch (error) {
-        console.warn(`Unable to generate watchedMoviesGenreChart. Error detail: {error}`)
+    function javaScriptObjectFromDjangoJson(djangoPayload){
+        if (djangoPayload === "None"){
+            return {}
+        }
+        try {
+            return JSON.parse(djangoPayload.replaceAll(`&#x27;`, `"`))
+        } catch (error){
+            console.error(error)
+            return {}
+        }
     }
+
+// chart for watched_movies_genres
+        const watched_genres = javaScriptObjectFromDjangoJson("{{profile.watched_movies_genres}}")
+        const any_watched_movies = Object.keys(watched_genres).length > 0
+
+        if (any_watched_movies){
+            renderWatchedMoviesGenreChart(getWatchedMoviesGenreChartData(watched_genres), 'watchedMoviesGenreChart')
+
+            const watched_movies_years = javaScriptObjectFromDjangoJson("{{profile.watched_movies_years}}")
+            renderWatchedMoviesYearsChart(getWatchedMoviesYearsChartData(watched_movies_years), 'watchedMoviesYearChart')
+        }
 
 </script>
 

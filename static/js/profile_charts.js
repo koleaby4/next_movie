@@ -2,7 +2,6 @@ console.log("profile_charts.js imported successfully")
 
 function getWatchedMoviesGenreChartData(watched_genres){
     let items_count = (Object.keys(watched_genres)).length
-    console.log(items_count)
 
     let labels = Object.keys(watched_genres)
     labels.unshift("Genres")
@@ -26,4 +25,51 @@ function getWatchedMoviesGenreChartData(watched_genres){
     ];
 
     return data
+}
+
+
+function getWatchedMoviesYearsChartData(watchedMoviesYears){
+
+    var data = {
+        type: 'bar',
+        x: Object.keys(watchedMoviesYears),
+        y: Object.values(watchedMoviesYears),
+        marker: {
+            color: '#C8A2C8',
+            line: {
+                width: 2.5
+            }
+        }
+    };
+
+    return [ data ];
+}
+
+
+
+function renderWatchedMoviesGenreChart(data, divId){
+
+    const layout = {
+        title: "Watched movies by genre",
+        font: {size: 18},
+        // margin: { l: 30, r: 30, b: 30, t: 30 },
+        // width: 500,
+        // height: 500
+    };
+
+    const config = {responsive: true}
+    Plotly.newPlot(divId, data, layout, config);
+}
+
+
+function renderWatchedMoviesYearsChart(data, divId){
+
+    const layout = {
+        title: 'Responsive to window\'s size!',
+        font: {size: 18}
+    };
+
+    const config = {responsive: true}
+    Plotly.newPlot(divId, data, layout, config );
+
 }
