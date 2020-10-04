@@ -3,7 +3,7 @@ import logging
 import re
 import sys
 from pathlib import Path
-
+import threading
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
 from django.db.models import Q
@@ -76,10 +76,15 @@ class SearchResultsListView(ListView):
         found_ids = [x["imdbID"] for x in search_movies(search_term)]
         log.warning(f"Matching IDs: {', '.join(found_ids)}")
 
+        threads = []
         for imdb_id in found_ids:
-
             if not Movie.objects.filter(pk=imdb_id).exists():
-                movie = Movie.persist_movie(imdb_id)
+                t = threading.Thread(target=Movie.persist_movie, args=(imdb_id,))
+                t.start()
+                threads.append(t)
+
+        for t in threads:
+            t.join()
 
         # ToDo: change to pk in found_ids ?
         return Movie.objects.filter(Q(title__icontains=search_term))

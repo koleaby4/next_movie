@@ -8,7 +8,8 @@ from typing import List
 from urllib.parse import quote
 
 import requests
-
+from datetime import datetime
+import concurrent.futures
 from utils.utilities import get_secret
 
 log = logging.getLogger(__name__)
@@ -16,9 +17,6 @@ log = logging.getLogger(__name__)
 RAPID_API_IMDB8_KEY = get_secret("RAPID_API_IMDB8_KEY")
 OMDB_API_KEY = get_secret("OMDB_API_KEY")
 TMDB_API_KEY = get_secret("TMDB_API_KEY")
-
-
-
 
 def get_top_rated_movies():
 
@@ -34,13 +32,11 @@ def get_top_rated_movies():
     for entry in records:
         yield re.search(r"/title/(tt[0-9]+)/", entry["id"]).group(1)
 
-
 def get_movie_details(movie_id):
     movie_by_imdb_id_url = f"http://www.omdbapi.com/?i={movie_id}&apikey={OMDB_API_KEY}"
     result = requests.get(movie_by_imdb_id_url).json()
     log.warning(f"\n\nFetched movie details from omdbapi: {result}")
     return result
-
 
 def search_movies(search_term: str) -> List[str]:
     encoded_term = quote(search_term)
@@ -57,7 +53,6 @@ def url_exists(url):
         return requests.get(url).status_code == 200
     except Exception:
         return False
-
 
 def get_movie_reviews(movie_id, count=5):
     url = "https://imdb8.p.rapidapi.com/title/get-user-reviews"
@@ -80,25 +75,33 @@ def get_movie_reviews(movie_id, count=5):
 
 
 def get_now_playing_imdb_ids():
-    url = fr"https://api.themoviedb.org/3/movie/now_playing?api_key={TMDB_API_KEY}&language=en-GB&page=1"
+    entry = fr"https://api.themoviedb.org/3/movie/now_playing?api_key={TMDB_API_KEY}&language=en-GB&page=1"
 
     log.warning(f"\nFetching 'Now Playing' movies")
-    response = requests.request("GET", url).json()
+    response = requests.request("GET", entry).json()
     tmdb_results = response["results"]
     log.warning(f"\n'Now Playing' movies: {tmdb_results}")
 
-    for entry in tmdb_results:
-        tmdb_detail = get_tmdb_movie_detail(entry["id"])
-        log.warning(f"TMDB detail: {tmdb_detail}")
+    results = []
 
-        imdb_id = tmdb_detail["imdb_id"]
-        if imdb_id:
-            yield imdb_id
-        else:
-            log.error(f"\n\nEmpty imdb_id field in TMDB database. Skipping this movie: {tmdb_detail}")
-            continue
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        promises = []
+        for entry in tmdb_results:
+            promises.append(executor.submit(get_tmdb_movie_detail, tmdb_id=entry["id"]))
+
+        for promise in concurrent.futures.as_completed(promises):
+            tmdb_detail = promise.result()
+            imdb_id = tmdb_detail.get("imdb_id")
+            if imdb_id:
+                results.append(imdb_id)
+            else:
+                log.error(f"\n\nEmpty imdb_id field in TMDB database. Skipping this movie: {tmdb_detail}")
+
+    return results
 
 def get_tmdb_movie_detail(tmdb_id):
     url = fr"https://api.themoviedb.org/3/movie/{tmdb_id}?api_key={TMDB_API_KEY}&language=en-GB"
     log.warning(f"\n\nFetching tmdb movie detail by id {tmdb_id}")
-    return requests.request("GET", url).json()
+    result = requests.request("GET", url).json()
+    log.warning(f"TMDB detail: {result}")
+    return result
