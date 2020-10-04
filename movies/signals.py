@@ -1,15 +1,16 @@
 import logging
+import threading
 
 from django.contrib.auth.models import Permission
 from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse
+from movies_collector.imdb_collector import get_movie_reviews
+from users.models import CustomUser
 from webpush import send_user_notification
 
 from movies.models import Movie, Review
-from movies_collector.imdb_collector import get_movie_reviews
-from users.models import CustomUser
 
 log = logging.getLogger(__name__)
 
@@ -25,7 +26,8 @@ def persist_reviews(sender, instance, created, **kwargs):
     log.warning(f"\n\nFetched reviews: {reviews}")
 
     for review_details in reviews:
-        Review.from_review_details(instance, review_details)
+        t = threading.Thread(target=Review.from_review_details, args=(instance, review_details))
+        t.start()
 
 
 @receiver(post_save, sender=Movie)
