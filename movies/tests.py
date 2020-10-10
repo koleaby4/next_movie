@@ -7,7 +7,7 @@ import json
 
 class PagesTests(TestCase):
     def test_content_of_movies_page(self):
-        url = reverse("movie_list")
+        url = reverse("best_ever")
         response = self.client.get(url)
 
         self.assertEqual(200, response.status_code)

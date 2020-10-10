@@ -4,10 +4,9 @@ import re
 import sys
 from pathlib import Path
 import threading
-from django.contrib.auth.mixins import (LoginRequiredMixin,
-                                        PermissionRequiredMixin)
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.shortcuts import HttpResponse, redirect, render, reverse
+from django.shortcuts import redirect, render, reverse
 from django.views.generic import DetailView, ListView
 
 from movies.models import Movie, Review
@@ -18,7 +17,7 @@ from movies_collector.imdb_collector import (get_now_playing_imdb_ids,
 log = logging.getLogger(__name__)
 
 
-class MovieListView(ListView):
+class BestEverMovieListView(ListView):
     model = Movie
     template_name = "movies/movies.html"
     context_object_name = "movies"
@@ -114,3 +113,6 @@ class NowPlayingMoviesListView(ListView):
             movies.append(movie)
 
         return movies
+
+def index(request):
+    return render(request, "index.html")

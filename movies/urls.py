@@ -1,9 +1,9 @@
 from django.urls import path
 from django.contrib.auth.decorators import login_required
-from .views import MovieDetailView, MovieListView, SearchResultsListView, WatchedMoviesListView, NowPlayingMoviesListView
+from .views import MovieDetailView, BestEverMovieListView, SearchResultsListView, WatchedMoviesListView, NowPlayingMoviesListView
 
 urlpatterns = [
-    path("", MovieListView.as_view(), name="movie_list"),
+    path("", BestEverMovieListView.as_view(), name="best_ever"),
     path("watched/", login_required(WatchedMoviesListView.as_view()), name="watched"),
     path("now_playing/", NowPlayingMoviesListView.as_view(), name="now_playing"),
     path("search/", SearchResultsListView.as_view(), name="search_results"),

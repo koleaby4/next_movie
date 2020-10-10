@@ -145,8 +145,8 @@ AUTH_USER_MODEL = "users.CustomUser"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
-LOGIN_REDIRECT_URL = "movie_list"
-ACCOUNT_LOGOUT_REDIRECT = "movie_list"
+LOGIN_REDIRECT_URL = "best_ever"
+ACCOUNT_LOGOUT_REDIRECT = "best_ever"
 
 SITE_ID = 1
 USE_I18N = False
