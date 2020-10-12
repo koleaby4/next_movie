@@ -1,34 +1,29 @@
 {% load static %}
 
-<div class="overlay"></div>
-<div class="container-fluid">
     <div class="row">
-        <div class="product-container col-10 offset-1">
-            <div class="row">
+        {% for movie in movies %}
+        <div class="col-lg-4 col-sm-6 portfolio-item">
+            <div class="card h-100">
+                <a href="{{ movie.get_absolute_url }}">
+                    {% if movie.poster_url %}
+                        <img class="card-img-top img-fluid" src="{{ movie.poster_url }}" alt="{{ movie.title }}">
+                    {% else %}
+                        <img class="card-img-top img-fluid" src="{% static 'images/image_placeholder.svg' %}" alt="{{ movie.title }}">
+                    {% endif %}
 
-                {% for movie in movies %}
-                    <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
-                        <div class="card h-100 border-0">
-                            <a href="{{ movie.get_absolute_url }}">
-                                {% if movie.poster_url %}
-                                    <img class="card-img-top img-fluid" src="{{ movie.poster_url }}" alt="{{ movie.title }}">
-                                {% else %}
-                                    <img class="card-img-top img-fluid" src="{% static 'images/image_placeholder.svg' %}" alt="{{ movie.title }}">
-                                {% endif %}
-
-                                {% if user.profile in movie.profile_set.all %}
-                                    <ion-icon class="watched-icon" name="eye-sharp"></ion-icon>
-                                {% endif %}
-                            </a>
-                            <div class="card-body pb-0">
-                                <p class="mb-0">{{ movie.title }}</p>
-                            </div>
-                        </div>
-                    </div>
-                {% empty %}
-                    No movies found
-                {% endfor %}
+                    {% if user.profile in movie.profile_set.all %}
+                        <ion-icon class="watched-icon" name="eye-sharp"></ion-icon>
+                    {% endif %}
+                </a>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <p>{{ movie.title }}</p>
+                    </h4>
+                    <p class="card-text">{{ movie.plot }}</p>
+                </div>
             </div>
         </div>
+        {% empty %}
+            No movies found
+        {% endfor %}
     </div>
-</div>

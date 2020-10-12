@@ -52,3 +52,8 @@ We also use [system tests](https://en.wikipedia.org/wiki/System_testing) to veri
    2. navigating to the project directory
    3. running the following command `npm run cypress:open`
 4. Click "Run all specs"  button to run the tests
+
+# Resources
+
+1. Front-end style inspirations https://startbootstrap.com/templates/
+2.
