@@ -2,20 +2,46 @@
 
 {% load static %}
 
+
 {% block title %}Profile{% endblock title %}
 
 {% block content %}
 
-<script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 
-<div class="email">Email address: {{profile.user.email}}</div>
-<div class="watched-movies-average-rating">Average rating of watched movies: {{profile.watched_movies_average_rating}}</div>
-<p>Charts</p>
-<div class="watched-movies-genres-chart" id='watchedMoviesGenreChart'></div>
-<div class="watched-movies-years-chart" id='watchedMoviesYearChart'></div>
+<div class="row">
+        <div class="col-lg-6">
+            <h3>At a glance</h3>
+            <p>This is where you can find some insights about your watching preferences:</p>
+            <ul>
+                <li>What if the average rating of the movies you watched</li>
+                <li>Which genres do you prefer</li>
+                <li>Which year movies do you watch the most</li>
+            </ul>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, omnis doloremque non cum id
+                reprehenderit, quisquam totam aspernatur tempora minima unde aliquid ea culpa sunt. Reiciendis quia
+                dolorum ducimus unde.</p>
+        </div>
+        <div class="col-lg-6">
+            <h3>Core Info</h3>
+            <div class="email">Email address: {{profile.user.email}}</div>
+            <div class="watched-movies-average-rating">Average rating of watched movies: {{profile.watched_movies_average_rating}}</div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <!-- <img class="img-fluid rounded" src="http://placehold.it/700x450" alt=""> -->
+            <div class="watched-movies-genres-chart" id='watchedMoviesGenreChart'></div>
+        </div>
+        <div class="col-lg-6">
+            <!-- <img class="img-fluid rounded" src="http://placehold.it/700x450" alt=""> -->
+            <div class="watched-movies-years-chart" id='watchedMoviesYearChart'></div>
+        </div>
+    </div>
 
 
-<script src='{% static "js/profile_charts.js" %}'></script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    <script src='{% static "js/profile_charts.js" %}'></script>
 
 <script>
 
@@ -31,16 +57,16 @@
         }
     }
 
-// chart for watched_movies_genres
-        const watched_genres = javaScriptObjectFromDjangoJson("{{profile.watched_movies_genres}}")
-        const any_watched_movies = Object.keys(watched_genres).length > 0
+    // chart for watched_movies_genres
+    const watched_genres = javaScriptObjectFromDjangoJson("{{profile.watched_movies_genres}}")
+    const any_watched_movies = Object.keys(watched_genres).length > 0
 
-        if (any_watched_movies){
-            renderWatchedMoviesGenreChart(getWatchedMoviesGenreChartData(watched_genres), 'watchedMoviesGenreChart')
+    if (any_watched_movies){
+        renderWatchedMoviesGenreChart(getWatchedMoviesGenreChartData(watched_genres), 'watchedMoviesGenreChart')
 
-            const watched_movies_years = javaScriptObjectFromDjangoJson("{{profile.watched_movies_years}}")
-            renderWatchedMoviesYearsChart(getWatchedMoviesYearsChartData(watched_movies_years), 'watchedMoviesYearChart')
-        }
+        const watched_movies_years = javaScriptObjectFromDjangoJson("{{profile.watched_movies_years}}")
+        renderWatchedMoviesYearsChart(getWatchedMoviesYearsChartData(watched_movies_years), 'watchedMoviesYearChart')
+    }
 
 </script>
 

@@ -6,9 +6,9 @@ function getWatchedMoviesGenreChartData(watched_genres){
     let labels = Object.keys(watched_genres)
     labels.unshift("Genres")
 
+    // dummy empty value for "Genres" central element
     let values = Object.values(watched_genres)
     values.unshift(null)
-
     let parents = Array(items_count).fill("Genres")
     parents.unshift("")
 
@@ -65,8 +65,9 @@ function renderWatchedMoviesGenreChart(data, divId){
 function renderWatchedMoviesYearsChart(data, divId){
 
     const layout = {
-        title: 'Responsive to window\'s size!',
-        font: {size: 18}
+        title: 'Watched movies by release year',
+        font: {size: 18},
+        xaxis_tickformat : ',d'
     };
 
     const config = {responsive: true}
