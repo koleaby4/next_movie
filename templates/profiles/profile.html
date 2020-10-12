@@ -64,7 +64,20 @@
     if (any_watched_movies){
         renderWatchedMoviesGenreChart(getWatchedMoviesGenreChartData(watched_genres), 'watchedMoviesGenreChart')
 
-        const watched_movies_years = javaScriptObjectFromDjangoJson("{{profile.watched_movies_years}}")
+        let watched_movies_years = javaScriptObjectFromDjangoJson("{{profile.watched_movies_years}}")
+
+        // Manually add several empty years to prevent years to be shown as decimals
+        // layout.tickformat was supposed to fix this, but it did not work
+        const known_years = Object.keys(watched_movies_years)
+        const min_year = Math.min(known_years)
+
+        if (known_years.length < 5) {
+            for (let i=1; i < 5; i++){
+                let prev_year = min_year - i
+                watched_movies_years[prev_year] = 0
+            }
+        }
+
         renderWatchedMoviesYearsChart(getWatchedMoviesYearsChartData(watched_movies_years), 'watchedMoviesYearChart')
     }
 
