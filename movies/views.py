@@ -46,8 +46,9 @@ class MovieDetailView(LoginRequiredMixin, DetailView):
     def toggle_watched(request, pk):
         movie = Movie.objects.get(pk=pk)
 
-        user = request.user
-        profile = user.profile
+        profile = request.user.profile
+
+        log.warn(f"\nWatched movies before: {profile.watched_movies.all()}")
 
         if profile.watched_movies.filter(pk = movie.pk).exists():
             log.warn(f"\nRemoving movie ({movie}) from profile ({profile})")
@@ -55,6 +56,8 @@ class MovieDetailView(LoginRequiredMixin, DetailView):
         else:
             log.warn(f"\nAdding movie ({movie}) to profile ({profile})")
             profile.watched_movies.add(movie)
+
+        log.warn(f"\nWatched movies after: {profile.watched_movies.all()}")
 
         profile.save()
         # movie.save()
