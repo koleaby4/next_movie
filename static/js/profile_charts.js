@@ -50,8 +50,8 @@ function getWatchedMoviesYearsChartData(watchedMoviesYears){
 function renderWatchedMoviesGenreChart(data, divId){
 
     const layout = {
-        title: "Watched movies by genre",
-        font: {size: 18},
+        title: "By genre",
+        font: {size: 16, color: "dodgerblue" },
         // margin: { l: 30, r: 30, b: 30, t: 30 },
         // width: 500,
         // height: 500
@@ -65,8 +65,8 @@ function renderWatchedMoviesGenreChart(data, divId){
 function renderWatchedMoviesYearsChart(data, divId){
 
     const layout = {
-        title: 'Watched movies by release year',
-        font: {size: 18},
+        title: 'By release year',
+        font: {size: 16, color: "dodgerblue" },
         xaxis_tickformat : ',d'
     };
 

@@ -29,3 +29,12 @@ ion-icon {
 .movie-item {
   margin-bottom: 30px;
 }
+
+
+.profile-item {
+  margin-bottom: 30px;
+}
+
+.profile-item .card-title {
+  color: dodgerblue
+}

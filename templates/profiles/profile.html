@@ -9,24 +9,43 @@
 
 
 <div class="row">
-        <div class="col-lg-6">
-            <h3>At a glance</h3>
-            <p>This is where you can find some insights about your watching preferences:</p>
-            <ul>
-                <li>What if the average rating of the movies you watched</li>
-                <li>Which genres do you prefer</li>
-                <li>Which year movies do you watch the most</li>
-            </ul>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, omnis doloremque non cum id
-                reprehenderit, quisquam totam aspernatur tempora minima unde aliquid ea culpa sunt. Reiciendis quia
-                dolorum ducimus unde.</p>
-        </div>
-        <div class="col-lg-6">
-            <h3>Core Info</h3>
-            <div class="email">Email address: {{profile.user.email}}</div>
-            <div class="watched-movies-average-rating">Average rating of watched movies: {{profile.watched_movies_average_rating}}</div>
+    <div class="col-lg-6 col-sm-6 profile-item">
+        <div class="card h-100">
+            <div class="card-body">
+                <h4 class="card-title">Summary</h4>
+                <div class="card-text">
+                    <div class="row justify-content-start">
+                        <div class="email col-lg-4 col-md-auto col-sm-auto"><strong>Email address</strong></div>
+                        <div class="col">{{profile.user.email}}</div>
+                    </div>
+                    <div class="row justify-content-start">
+                        <div class="watched-movies-count col-lg-4 col-md-auto col-sm-auto"><strong>Movies watched</strong></div>
+                        <div class="col">{{profile.watched_movies.all|length}}</div>
+                    </div>
+                    <div class="row justify-content-start">
+                        <div class="watched-movies-average-rating col-lg-4 col-md-auto col-sm-auto"><strong>Average rating</strong></div>
+                        <div class="col">{{profile.watched_movies_average_rating}}</div>
+                    </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
+        <div class="col-lg-6 col-sm-6 profile-item">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4 class="card-title">Description</h4>
+                    <div class="card-text">
+                        <p>This is where you can find some insights about your watching preferences:</p>
+                        <ul>
+                            <li>average rating of the movies you watched</li>
+                            <li>preferred genres</li>
+                            <li>which year movies do you watch the most</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-lg-6">
@@ -43,44 +62,44 @@
     <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
     <script src='{% static "js/profile_charts.js" %}'></script>
 
-<script>
+    <script>
 
-    function javaScriptObjectFromDjangoJson(djangoPayload){
-        if (djangoPayload === "None"){
-            return {}
-        }
-        try {
-            return JSON.parse(djangoPayload.replaceAll(`&#x27;`, `"`))
-        } catch (error){
-            console.error(error)
-            return {}
-        }
-    }
-
-    // chart for watched_movies_genres
-    const watched_genres = javaScriptObjectFromDjangoJson("{{profile.watched_movies_genres}}")
-    const any_watched_movies = Object.keys(watched_genres).length > 0
-
-    if (any_watched_movies){
-        renderWatchedMoviesGenreChart(getWatchedMoviesGenreChartData(watched_genres), 'watchedMoviesGenreChart')
-
-        let watched_movies_years = javaScriptObjectFromDjangoJson("{{profile.watched_movies_years}}")
-
-        // Manually add several empty years to prevent years to be shown as decimals
-        // layout.tickformat was supposed to fix this, but it did not work
-        const known_years = Object.keys(watched_movies_years)
-        const min_year = Math.min(known_years)
-
-        if (known_years.length < 5) {
-            for (let i=1; i < 5; i++){
-                let prev_year = min_year - i
-                watched_movies_years[prev_year] = 0
+        function javaScriptObjectFromDjangoJson(djangoPayload) {
+            if (djangoPayload === "None") {
+                return {}
+            }
+            try {
+                return JSON.parse(djangoPayload.replaceAll(`&#x27;`, `"`))
+            } catch (error) {
+                console.error(error)
+                return {}
             }
         }
 
-        renderWatchedMoviesYearsChart(getWatchedMoviesYearsChartData(watched_movies_years), 'watchedMoviesYearChart')
-    }
+        // chart for watched_movies_genres
+        const watched_genres = javaScriptObjectFromDjangoJson("{{profile.watched_movies_genres}}")
+        const any_watched_movies = Object.keys(watched_genres).length > 0
 
-</script>
+        if (any_watched_movies) {
+            renderWatchedMoviesGenreChart(getWatchedMoviesGenreChartData(watched_genres), 'watchedMoviesGenreChart')
 
-{% endblock content %}
+            let watched_movies_years = javaScriptObjectFromDjangoJson("{{profile.watched_movies_years}}")
+
+            // Manually add several empty years to prevent years to be shown as decimals
+            // layout.tickformat was supposed to fix this, but it did not work
+            const known_years = Object.keys(watched_movies_years)
+            const min_year = Math.min(known_years)
+
+            if (known_years.length < 5) {
+                for (let i = 1; i < 5; i++) {
+                    let prev_year = min_year - i
+                    watched_movies_years[prev_year] = 0
+                }
+            }
+
+            renderWatchedMoviesYearsChart(getWatchedMoviesYearsChartData(watched_movies_years), 'watchedMoviesYearChart')
+        }
+
+    </script>
+
+    {% endblock content %}
