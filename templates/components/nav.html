@@ -28,11 +28,11 @@
                     <a class="nav-link now-playing" href="{% url 'now_playing' %}">Now Playing</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPortfolio" data-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAccount" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         My Account
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPortfolio">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownAccount">
 
                         {% if user.is_authenticated %}
 
