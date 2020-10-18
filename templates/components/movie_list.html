@@ -2,7 +2,7 @@
 
     <div class="row">
         {% for movie in movies %}
-        <div class="col-lg-4 col-sm-6 portfolio-item">
+        <div class="col-lg-4 col-sm-6 movie-item">
             <div class="card h-100">
                 <a href="{{ movie.get_absolute_url }}">
                     {% if movie.poster_url %}
