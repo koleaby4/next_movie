@@ -13,23 +13,26 @@
                 {% for review in movie.reviews.all %}
 
                 <div class="card">
-                    <div class="card-header" role="tab" id="heading_{{forloop.counter}}">
-                        <h5 class="mb-0">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{forloop.counter}}"
-                                aria-expanded="true"
-                                aria-controls="collapse_{{forloop.counter}}">
-                                {% if review.contains_spoilers %}
-                                <div class="alert alert-danger" role="alert">
-                                    {{review.review_title}}&emsp;/SPOILER ALERT/
-                                  </div>
-                                {% else %}
-                                    {{review.review_title}}
-                                {% endif %}
-                            </a>
-                        </h5>
-                    </div>
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{forloop.counter}}"
+                        aria-expanded="true" aria-controls="collapse_{{forloop.counter}}" >
 
-                    <div id="collapse_{{forloop.counter}}" class="collapse show" role="tabpanel"
+                        {% if review.contains_spoilers %}
+                            <div class="card-header alert-danger" role="tab alert" id="heading_{{forloop.counter}}">
+                                <h5 class="mb-0">
+                                        {{review.review_title}}&emsp;/SPOILER ALERT/
+                                </h5>
+                            </div>
+                        {% else %}
+                            <div class="card-header" role="tab" id="heading_{{forloop.counter}}">
+                                <h5 class="mb-0">
+                                    {{review.review_title}}
+                                </h5>
+                            </div>
+                        {% endif %}
+
+                    </a>
+
+                    <div id="collapse_{{forloop.counter}}" class="collapse" role="tabpanel"
                         aria-labelledby="heading_{{forloop.counter}}">
 
                         <div class="card-body">
@@ -37,7 +40,8 @@
 
                             <blockquote>
                                 <p class="review-text">{{review.review_text}}</p>
-                                <footer class="review-date"><strong>Review Date:</strong> {{review.submission_date}}</footer>
+                                <footer class="review-date"><strong>Review Date:</strong> {{review.submission_date}}
+                                </footer>
                             </blockquote>
                         </div>
                     </div>
