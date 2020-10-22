@@ -1,18 +1,17 @@
-import json
 import logging
-import re
-import sys
-from pathlib import Path
 import threading
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import redirect, render, reverse
 from django.views.generic import DetailView, ListView
+from movies_collector.imdb_collector import (
+    get_now_playing_imdb_ids,
+    get_top_rated_movies,
+    search_movies,
+)
 
-from movies.models import Movie, Review
-from movies_collector.imdb_collector import (get_now_playing_imdb_ids,
-                                             get_top_rated_movies,
-                                             search_movies)
+from movies.models import Movie
 
 log = logging.getLogger(__name__)
 
@@ -50,7 +49,7 @@ class MovieDetailView(LoginRequiredMixin, DetailView):
 
         log.warn(f"\nWatched movies before: {profile.watched_movies.all()}")
 
-        if profile.watched_movies.filter(pk = movie.pk).exists():
+        if profile.watched_movies.filter(pk=movie.pk).exists():
             log.warn(f"\nRemoving movie ({movie}) from profile ({profile})")
             profile.watched_movies.remove(movie)
         else:
@@ -60,7 +59,6 @@ class MovieDetailView(LoginRequiredMixin, DetailView):
         log.warn(f"\nWatched movies after: {profile.watched_movies.all()}")
 
         profile.save()
-        # movie.save()
 
         return redirect(reverse("movie_detail", args=[movie.pk]))
 
@@ -88,8 +86,7 @@ class SearchResultsListView(ListView):
         for t in threads:
             t.join()
 
-        # ToDo: change to pk in found_ids ?
-        return Movie.objects.filter(Q(title__icontains=search_term))
+        return Movie.objects.filter(Q(imdb_id__in=found_ids))
 
 
 class WatchedMoviesListView(ListView):
@@ -116,6 +113,7 @@ class NowPlayingMoviesListView(ListView):
             movies.append(movie)
 
         return movies
+
 
 def index(request):
     return render(request, "index.html")
