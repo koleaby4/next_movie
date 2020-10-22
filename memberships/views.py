@@ -24,7 +24,7 @@ def charge(request):
     if request.method == "POST":
         stripe.Charge.create(
             amount=999,
-            currency="usd",
+            currency="gbp",
             description="Prime Membership",
             source=request.POST["stripeToken"],
         )
