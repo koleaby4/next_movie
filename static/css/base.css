@@ -33,6 +33,10 @@ ion-icon {
   background-size: cover;
 }
 
+.membership-levels {
+  margin-top: 1.5rem;
+}
+
 .movie-item {
   margin-bottom: 30px;
 }
