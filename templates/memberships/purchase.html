@@ -4,13 +4,6 @@
 
 {% block content %}
 
-<form action="{% url 'charge' %}" method="post" test-data="payment-form">
-    {% csrf_token %}
-
-    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="{{stripe_key}}"
-        data-name="Prime Membership" data-description="Unlock your Prime Membership" data-amount="999"
-        data-currency="gbp" data-locale="auto">
-        </script>
-</form>
+{% include 'components/membership_features.html' %}
 
 {% endblock content %}

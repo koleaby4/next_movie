@@ -8,68 +8,7 @@
 
     {% include 'components/header_carousel.html' %}
 
-    <!-- Marketing -->
-    <div class="row membership-levels">
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                <h4 class="card-header">Public features</h4>
-                <div class="card-body">
-                    <div class="card-text">
-                        <p>All users can access:</p>
-                        <ul>
-                            <li><a href="{% url 'best_ever' %}">Best Ever </a>list</li>
-                            <li><a href="{% url 'now_playing' %}">Now Playing </a>list</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <ion-icon style="position: inherit" name="heart-outline"></ion-icon>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                <h4 class="card-header">Registered Users</h4>
-                <div class="card-body">
-                    <p>Logged in users can access:</p>
-                    <ul>
-                        <li><a href="{% url 'best_ever' %}">Best Ever </a>list</li>
-                        <li><a href="{% url 'now_playing' %}">Now Playing </a>list</li>
-                        <li>Movie details</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    {% if user.is_authenticated %}
-                        <ion-icon style="position: inherit" name="heart-half"></ion-icon>
-                    {% else %}
-                        <a href="{% url 'account_signup' %}" class="btn btn-primary">Sign Up</a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                <h4 class="card-header">Prime Members</h4>
-                <div class="card-body">
-                    <p>Prime members can access:</p>
-                    <ul>
-                        <li><a href="{% url 'best_ever' %}">Best Ever </a>list</li>
-                        <li><a href="{% url 'now_playing' %}">Now Playing </a>list</li>
-                        <li>Movie details</li>
-                        <li>Browser notifications</li>
-                        <li><a href="{% url 'profile' %}">Profile</a> Insights</li>
-                    </ul>
-                </div>
-                <div class="card-footer">
-                    {% if perms.movies.paid_for_membership %}
-                        <ion-icon style="position: inherit" name="heart"></ion-icon>
-                    {% else %}
-                        <a href="#" class="btn btn-primary">Join Prime</a>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
+    {% include 'components/membership_features.html' %}
 
     <!-- <hr> -->
 

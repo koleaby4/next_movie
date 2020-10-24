@@ -53,3 +53,7 @@ ion-icon {
 .reviews-section{
   margin: 1.5rem 0 1.5rem 0;
 }
+
+.card-footer ion-icon {
+  fill: #28a745
+}

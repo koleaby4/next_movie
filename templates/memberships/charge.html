@@ -5,5 +5,8 @@
 {% block content %}
 
 <p>You now have access to the full functionality of the website.</p>
+
+{% include 'components/membership_features.html' %}
+
 <a href="{% url 'best_ever' %}" rel="noopener noreferrer">Go to movies</a>
 {% endblock content %}
