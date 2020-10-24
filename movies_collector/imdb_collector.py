@@ -1,15 +1,12 @@
+import concurrent.futures
 import json
 import logging
-import os
 import re
-import sys
 from pathlib import Path
 from typing import List
 from urllib.parse import quote
 
 import requests
-from datetime import datetime
-import concurrent.futures
 from utils.utilities import get_secret
 
 log = logging.getLogger(__name__)
@@ -34,7 +31,10 @@ def get_top_rated_movies():
 
 def get_movie_details(movie_id):
     movie_by_imdb_id_url = f"http://www.omdbapi.com/?i={movie_id}&apikey={OMDB_API_KEY}"
+
     result = requests.get(movie_by_imdb_id_url).json()
+    result["images"] = get_movie_images(movie_id)
+
     log.warning(f"\n\nFetched movie details from omdbapi: {result}")
     return result
 
@@ -105,3 +105,18 @@ def get_tmdb_movie_detail(tmdb_id):
     result = requests.request("GET", url).json()
     log.warning(f"TMDB detail: {result}")
     return result
+
+
+def get_movie_images(imdb_id):
+    import requests
+
+    url = "https://imdb8.p.rapidapi.com/title/get-images"
+
+    querystring = { "limit" : "25", "tconst" : imdb_id }
+
+    headers = {
+        'x-rapidapi-host': "imdb8.p.rapidapi.com",
+        'x-rapidapi-key': RAPID_API_IMDB8_KEY
+        }
+
+    return requests.request("GET", url, headers=headers, params=querystring).json()

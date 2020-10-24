@@ -31,6 +31,7 @@ class Movie(models.Model):
     ratings = models.JSONField(default=None, null=True)
     genre = models.CharField(max_length=200, blank=True, null=True)
     full_json_details = models.JSONField(default=None)
+    images = models.JSONField(default=None, null=True)
 
     def __str__(self):
         return self.title
@@ -78,6 +79,7 @@ class Movie(models.Model):
             ratings=movie_details.get("Ratings"),
             genre=movie_details.get("Genre"),
             full_json_details=movie_details,
+            images=movie_details.get("images")
         )
 
         try:
