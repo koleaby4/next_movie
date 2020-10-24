@@ -1,39 +1,46 @@
 {% load static %}
 
 <header>
-    <div id="carouselIndicators" class="carousel slide" data-ride="carousel">
-      <ol class="carousel-indicators">
-        <li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselIndicators" data-slide-to="1"></li>
-        <li data-target="#carouselIndicators" data-slide-to="2"></li>
-      </ol>
-      <div class="carousel-inner" role="listbox">
-        <div class="carousel-item active" style="background-image: url('http://placehold.it/1900x1080')">
-          <div class="carousel-caption d-none d-md-block">
-            <h3>Best Movies</h3>
-            <p>Discover the top ranking movies of all times</p>
-          </div>
-        </div>
-        <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
-          <div class="carousel-caption d-none d-md-block">
-            <h3>Now Playing</h3>
-            <p>Find out which movies are in the cinemas now</p>
-          </div>
-        </div>
-        <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
-          <div class="carousel-caption d-none d-md-block">
-            <h3>Profile Insights</h3>
-            <p>Visualise your watching preferences based on watched movies</p>
-          </div>
+  <div id="carouselIndicators" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselIndicators" data-slide-to="1"></li>
+      <li data-target="#carouselIndicators" data-slide-to="2"></li>
+      <li data-target="#carouselIndicators" data-slide-to="3"></li>
+    </ol>
+    <div class="carousel-inner" role="listbox">
+      <div class="carousel-item active" style="background-image: url('{{next_best_movie.images.images.0.url}}')">
+        <div class="carousel-caption d-none d-md-block">
+          <h3>Best Movies</h3>
+          <p>"{{next_best_movie.title}}"</p>
         </div>
       </div>
-      <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
+      <div class="carousel-item" style="background-image: url('{{playing_now_movie.images.images.0.url}}')">
+        <div class="carousel-caption d-none d-md-block">
+          <h3>Now Playing</h3>
+          <p>"{{playing_now_movie.title}}"</p>
+        </div>
+      </div>
+      <div class="carousel-item" style="background-image: url('{{next_best_movie.images.images.1.url}}')">
+        <div class="carousel-caption d-none d-md-block">
+          <h3>Best Movies</h3>
+          <p>"{{next_best_movie.title}}"</p>
+        </div>
+      </div>
+      <div class="carousel-item" style="background-image: url('{{playing_now_movie.images.images.1.url}}')">
+        <div class="carousel-caption d-none d-md-block">
+          <h3>Now Playing</h3>
+          <p>"{{playing_now_movie.title}}"</p>
+        </div>
+      </div>
     </div>
-  </header>
+    <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+</header>

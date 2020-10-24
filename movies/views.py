@@ -1,15 +1,15 @@
 import logging
 import threading
+from random import choice
+from typing import List
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import redirect, render, reverse
 from django.views.generic import DetailView, ListView
-from movies_collector.imdb_collector import (
-    get_now_playing_imdb_ids,
-    get_top_rated_movies,
-    search_movies,
-)
+from movies_collector.imdb_collector import (get_now_playing_imdb_ids,
+                                             get_top_rated_movies,
+                                             search_movies)
 
 from movies.models import Movie
 
@@ -22,17 +22,22 @@ class BestEverMovieListView(ListView):
     context_object_name = "movies"
 
     def get_queryset(self):
-        results = []
+        return _best_unwatched_movies(self.request)[:22]
 
-        for imdb_id in get_top_rated_movies():
-            if not Movie.objects.filter(pk=imdb_id).exists():
-                movie = Movie.persist_movie(imdb_id)
-                results.append(movie)
-            else:
-                results.append(Movie.objects.get(pk=imdb_id))
 
-        return results
+def _best_unwatched_movies(request):
+    watched_movie_ids = [x.imdb_id for x in request.user.profile.watched_movies.all()]
+    top_rated_movie_ids = tuple(get_top_rated_movies())
 
+    for imdb_id in top_rated_movie_ids:
+        if not Movie.objects.filter(pk=imdb_id).exists():
+            Movie.persist_movie(imdb_id)
+
+    q = Movie.objects.filter(imdb_id__in=top_rated_movie_ids)
+    q = q.exclude(imdb_id__in=watched_movie_ids)
+    q = q.order_by("-imdb_rating")
+
+    return q.all()
 
 class MovieDetailView(LoginRequiredMixin, DetailView):
     model = Movie
@@ -104,16 +109,24 @@ class NowPlayingMoviesListView(ListView):
     context_object_name = "movies"
 
     def get_queryset(self):
-        movies = []
-        for imdb_id in get_now_playing_imdb_ids():
-            try:
-                movie = Movie.objects.get(pk=imdb_id)
-            except Movie.DoesNotExist:
-                movie = Movie.persist_movie(imdb_id)
-            movies.append(movie)
+        return _playing_now_movies()
 
-        return movies
+def _playing_now_movies() -> List[Movie]:
+    movies = []
+    for imdb_id in get_now_playing_imdb_ids():
+        try:
+            movie = Movie.objects.get(pk=imdb_id)
+        except Movie.DoesNotExist:
+            movie = Movie.persist_movie(imdb_id)
+        movies.append(movie)
 
+    return movies
 
 def index(request):
-    return render(request, "index.html")
+
+    context = {
+        "next_best_movie" : choice(_best_unwatched_movies(request)[:10]),
+        "playing_now_movie" : choice(_playing_now_movies())
+    }
+
+    return render(request, "index.html", context=context)
