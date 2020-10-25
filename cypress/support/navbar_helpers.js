@@ -2,53 +2,62 @@ import * as signup_helpers from './signup_helpers'
 import * as login_helpers from './login_helpers'
 
 export const selectors = {
-    logo: '.logo',
+    brand_link: '.navbar-brand',
     searchInput: '.search-input',
     searchButton: '.search-button',
     signupLink: '.sign-up',
     loginLink: '.login',
     logoutLink: '.logout',
+    bestEverLink: '.best-ever',
     nowPlayingLink: '.now-playing',
+    myAccountDropdown: '#navbarDropdownAccount',
     profileLink: '.profile-link',
     primeMembershipLink: '.prime-membership-link',
 }
 
 
 export const clickSingUp = () => {
+    clickMyAccount()
     cy.get(selectors.signupLink).click()
     signup_helpers.assertOnSignUpPage()
 }
 
+export const clickMyAccount = () => {
+    cy.get(selectors.myAccountDropdown).click()
+}
+
 export const clickLogin = () => {
+    clickMyAccount()
     cy.get(selectors.loginLink).click()
     login_helpers.assertOnLoginPage()
 }
 
-export const clickLogOut = () =>
+export const clickLogOut = () => {
+    clickMyAccount()
     cy.get(selectors.logoutLink).click()
+}
 
 export const clickProfile = () => {
+    clickMyAccount()
     cy.get(selectors.profileLink).click()
 
 }
 
 export const assertAlwaysPresentNavbarElements = () => {
-    cy.get(selectors.logo).should('be.visible')
+    cy.get(selectors.brand_link).should('be.visible')
     cy.get(selectors.searchInput).should('be.visible')
     cy.get(selectors.searchButton).should('be.visible')
+    cy.get(selectors.bestEverLink).should('be.visible')
     cy.get(selectors.nowPlayingLink).should('be.visible')
+    cy.get(selectors.myAccountDropdown).should('be.visible')
 }
 
 export const assertUnauthenticatedUserNavbar = () => {
     assertAlwaysPresentNavbarElements()
-    cy.get(selectors.signupLink).should('be.visible')
-    cy.get(selectors.loginLink).should('be.visible')
 }
 
 export const assertAuthenticatedUserNavbar = () => {
     assertAlwaysPresentNavbarElements()
-    cy.get(selectors.logoutLink).should('be.visible')
-    cy.get(selectors.profileLink).should('be.visible')
 }
 
 export const assertOnLoginPage = () =>
