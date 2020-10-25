@@ -19,7 +19,7 @@ import movies.views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", movies.views.index, name="index"),
+    path("", movies.views.indexView, name="index"),
     path("accounts/", include("allauth.urls")),
     path('webpush/', include('webpush.urls')),
     path("movies/", include("movies.urls")),

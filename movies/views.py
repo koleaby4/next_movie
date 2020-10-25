@@ -7,11 +7,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import redirect, render, reverse
 from django.views.generic import DetailView, ListView
-from movies_collector.imdb_collector import (
-    get_now_playing_imdb_ids,
-    get_top_rated_movies,
-    search_movies,
-)
+from movies_collector.imdb_collector import (get_now_playing_imdb_ids,
+                                             get_top_rated_movies,
+                                             search_movies)
 
 from movies.models import Movie
 
@@ -28,6 +26,8 @@ class BestEverMovieListView(ListView):
 
 
 def _best_unwatched_movies(request):
+    """Return best movies excluding the ones watched by the current user"""
+
     watched_movie_ids = []
 
     if request.user.is_authenticated:
@@ -55,8 +55,8 @@ class MovieDetailView(LoginRequiredMixin, DetailView):
 
     @staticmethod
     def toggle_watched(request, pk):
+        """Mark movie watched / unwatched"""
         movie = Movie.objects.get(pk=pk)
-
         profile = request.user.profile
 
         log.warn(f"\nWatched movies before: {profile.watched_movies.all()}")
@@ -120,19 +120,22 @@ class NowPlayingMoviesListView(ListView):
 
 
 def _playing_now_movies() -> List[Movie]:
+    """Persist all movies which are currently playing in cinemas and return them"""
     movies = []
+
     for imdb_id in get_now_playing_imdb_ids():
         try:
             movie = Movie.objects.get(pk=imdb_id)
         except Movie.DoesNotExist:
             movie = Movie.persist_movie(imdb_id)
-        movies.append(movie)
+        finally:
+            movies.append(movie)
 
     return movies
 
 
-def index(request):
-
+def indexView(request):
+    """View for index.html"""
     context = {
         "next_best_movie": choice(_best_unwatched_movies(request)[:10]),
         "playing_now_movie": choice(_playing_now_movies()),
