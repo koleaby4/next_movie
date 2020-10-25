@@ -71,8 +71,8 @@ export const searchFor = (term, expected_matches_count) => {
     cy.get(selectors.searchButton).click()
 
     if (expected_matches_count){
-        cy.get('.card-body p').each( el => cy.wrap(el).contains(term))
-        cy.get('.card-body p').its('length').should('eq', expected_matches_count)
+        cy.get('.card-title p').each( el => cy.wrap(el).contains(term))
+        cy.get('.card').its('length').should('eq', expected_matches_count)
     }
 }
 
