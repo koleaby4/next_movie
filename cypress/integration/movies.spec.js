@@ -18,8 +18,13 @@ context('Movies Tests', () => {
   it('Movie details shown for authenticated non-prime users', () => {
     common.gotoLandingPage()
 
+    navbar_helpers.clickMyAccount()
+    navbar_helpers.assertPrimeMembershipLinkVisibility(false)
+    navbar_helpers.clickMyAccount()
+
     login_helpers.loginAs(data.REGISTERED_EMAIL)
-    // navbar_helpers.assertPrimeMembershipLink(true)
+    navbar_helpers.clickMyAccount()
+    navbar_helpers.assertPrimeMembershipLinkVisibility(true)
 
     common.gotoMoviesPage()
     navbar_helpers.searchFor("Throne of Blood", 1)
@@ -39,9 +44,8 @@ context('Movies Tests', () => {
     common.gotoLandingPage()
 
     login_helpers.loginAs(data.REGISTERED_PAID_EMAIL)
-    navbar_helpers.assertPrimeMembershipLink(false)
 
-    common.gotoMoviesPage()
+    navbar_helpers.searchFor("Portrait of a Lady on Fire", 1)
     movies_helpers.assertMovieCard("Portrait of a Lady on Fire")
       .click()
 
@@ -55,7 +59,7 @@ context('Movies Tests', () => {
 
     login_helpers.loginAs(data.REGISTERED_PAID_EMAIL)
 
-    common.gotoMoviesPage()
+    navbar_helpers.searchFor("Portrait of a Lady on Fire", 1)
     movies_helpers.assertMovieCard("Portrait of a Lady on Fire")
       .click()
 

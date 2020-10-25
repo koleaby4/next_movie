@@ -13,6 +13,7 @@ export const selectors = {
     myAccountDropdown: '#navbarDropdownAccount',
     profileLink: '.profile-link',
     primeMembershipLink: '.prime-membership-link',
+    movieCard: '.card',
 }
 
 
@@ -43,7 +44,7 @@ export const clickProfile = () => {
 
 }
 
-export const assertAlwaysPresentNavbarElements = () => {
+export const assertNavbarElements = () => {
     cy.get(selectors.brand_link).should('be.visible')
     cy.get(selectors.searchInput).should('be.visible')
     cy.get(selectors.searchButton).should('be.visible')
@@ -52,19 +53,9 @@ export const assertAlwaysPresentNavbarElements = () => {
     cy.get(selectors.myAccountDropdown).should('be.visible')
 }
 
-export const assertUnauthenticatedUserNavbar = () => {
-    assertAlwaysPresentNavbarElements()
-}
-
-export const assertAuthenticatedUserNavbar = () => {
-    assertAlwaysPresentNavbarElements()
-}
-
-export const assertOnLoginPage = () =>
-    assertUnauthenticatedUserNavbar()
-
-export const assertPrimeMembershipLink = (expect_visible=true) =>
+export const assertPrimeMembershipLinkVisibility = (expect_visible=true) => {
     cy.get(selectors.primeMembershipLink).should(expect_visible ? 'be.visible' : 'not.exist')
+}
 
 export const searchFor = (term, expected_matches_count) => {
     cy.get(selectors.searchInput).type(term)
@@ -72,11 +63,11 @@ export const searchFor = (term, expected_matches_count) => {
 
     if (expected_matches_count){
         cy.get('.card-title p').each( el => cy.wrap(el).contains(term))
-        cy.get('.card').its('length').should('eq', expected_matches_count)
+        cy.get(selectors.movieCard).its('length').should('eq', expected_matches_count)
     }
 }
 
 export const clickNowPlaying = () => {
     cy.get(selectors.nowPlayingLink).click()
-    cy.get('.card').its('length').should('be.gt', 12)
+    cy.get(selectors.movieCard).its('length').should('be.gt', 12)
 }

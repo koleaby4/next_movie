@@ -16,19 +16,8 @@ context('User Tests', () => {
   })
 
 
-  it('Existing user can login and log out', () => {
+  it('to be added', () => {
     login_helpers.loginAs(data.REGISTERED_PAID_EMAIL)
-    navbar_helpers.assertAuthenticatedUserNavbar()
-
-    movies_helpers.assertMovieCard("Portrait of a Lady on Fire")
-      .click()
-
-    movie_detail_helpers.assureMovieMarkedWatched()
-
-    navbar_helpers.clickProfile()
-
-    profile_helpers.assertProfileContent(data.REGISTERED_PAID_EMAIL)
-
   })
 
 })
