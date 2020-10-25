@@ -7,9 +7,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import redirect, render, reverse
 from django.views.generic import DetailView, ListView
-from movies_collector.imdb_collector import (get_now_playing_imdb_ids,
-                                             get_top_rated_movies,
-                                             search_movies)
+from movies_collector.imdb_collector import (
+    get_now_playing_imdb_ids,
+    get_top_rated_movies,
+    search_movies,
+)
 
 from movies.models import Movie
 
@@ -26,7 +28,11 @@ class BestEverMovieListView(ListView):
 
 
 def _best_unwatched_movies(request):
-    watched_movie_ids = [x.imdb_id for x in request.user.profile.watched_movies.all()]
+    watched_movie_ids = []
+
+    if request.user.is_authenticated:
+        watched_movie_ids = [x.imdb_id for x in request.user.profile.watched_movies.all()]
+
     top_rated_movie_ids = tuple(get_top_rated_movies())
 
     for imdb_id in top_rated_movie_ids:
@@ -38,6 +44,7 @@ def _best_unwatched_movies(request):
     q = q.order_by("-imdb_rating")
 
     return q.all()
+
 
 class MovieDetailView(LoginRequiredMixin, DetailView):
     model = Movie
@@ -111,6 +118,7 @@ class NowPlayingMoviesListView(ListView):
     def get_queryset(self):
         return _playing_now_movies()
 
+
 def _playing_now_movies() -> List[Movie]:
     movies = []
     for imdb_id in get_now_playing_imdb_ids():
@@ -122,11 +130,12 @@ def _playing_now_movies() -> List[Movie]:
 
     return movies
 
+
 def index(request):
 
     context = {
-        "next_best_movie" : choice(_best_unwatched_movies(request)[:10]),
-        "playing_now_movie" : choice(_playing_now_movies())
+        "next_best_movie": choice(_best_unwatched_movies(request)[:10]),
+        "playing_now_movie": choice(_playing_now_movies()),
     }
 
     return render(request, "index.html", context=context)
