@@ -15,6 +15,9 @@ export const assertOnLoginPage = () => {
 }
 
 export const loginAs = (email, password=data.PASSWORD) => {
+    navbar_helpers.clickLogin()
+    navbar_helpers.assertUnauthenticatedUserNavbar()
+
     cy.log(selectors.loginButton)
     cy.get(selectors.email).type(email)
     cy.get(selectors.password).type(password)

@@ -12,14 +12,7 @@ export const gotoLandingPage = (authenticated = false) => {
 }
 
 
-export const gotoMoviesPage = (authenticated = false) => {
-
+export const gotoMoviesPage = () => {
   cy.visit("movies")
-
-  if (authenticated) {
-    navbar_helpers.assertAuthenticatedUserNavbar()
-  } else {
-    navbar_helpers.assertUnauthenticatedUserNavbar()
-  }
-
+  navbar_helpers.assertAlwaysPresentNavbarElements()
 }

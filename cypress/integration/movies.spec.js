@@ -10,20 +10,19 @@ import * as data from "../support/data";
 context('Movies Tests', () => {
 
   it('Unauthenticated user redirected to login page when navigating to movie details', () => {
-    common.gotoLandingPage()
-    movies_helpers.assertMovieCard("The Shawshank Redemption")
-      .click()
+    common.gotoMoviesPage()
+    movies_helpers.assertMovieCard("The Shawshank Redemption").click()
     login_helpers.assertOnLoginPage()
   })
 
   it('Movie details shown for authenticated non-prime users', () => {
     common.gotoLandingPage()
 
-    navbar_helpers.clickLogin()
     login_helpers.loginAs(data.REGISTERED_EMAIL)
-    navbar_helpers.assertPrimeMembershipLink(true)
+    // navbar_helpers.assertPrimeMembershipLink(true)
 
-    common.gotoMoviesPage(true)
+    common.gotoMoviesPage()
+    navbar_helpers.searchFor("Throne of Blood", 1)
     movies_helpers.assertMovieCard("Throne of Blood")
       .click()
 
@@ -39,11 +38,10 @@ context('Movies Tests', () => {
   it('Reviews are shown on movie details', () => {
     common.gotoLandingPage()
 
-    navbar_helpers.clickLogin()
     login_helpers.loginAs(data.REGISTERED_PAID_EMAIL)
     navbar_helpers.assertPrimeMembershipLink(false)
 
-    common.gotoMoviesPage(true)
+    common.gotoMoviesPage()
     movies_helpers.assertMovieCard("Portrait of a Lady on Fire")
       .click()
 
@@ -55,10 +53,9 @@ context('Movies Tests', () => {
   it('Watched / Not Watched toggle for prime members', () => {
     common.gotoLandingPage()
 
-    navbar_helpers.clickLogin()
     login_helpers.loginAs(data.REGISTERED_PAID_EMAIL)
 
-    common.gotoMoviesPage(true)
+    common.gotoMoviesPage()
     movies_helpers.assertMovieCard("Portrait of a Lady on Fire")
       .click()
 
@@ -69,6 +66,8 @@ context('Movies Tests', () => {
     movie_detail_helpers.toggleWatchedStatus()
     movie_detail_helpers.assertMovieMarkedWatched()
 
+    movie_detail_helpers.toggleWatchedStatus()
+    movie_detail_helpers.assureMovieMarkedNotWatched()
   })
 
   it('Now playing page is populated', () => {

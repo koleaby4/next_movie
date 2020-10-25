@@ -78,5 +78,5 @@ export const searchFor = (term, expected_matches_count) => {
 
 export const clickNowPlaying = () => {
     cy.get(selectors.nowPlayingLink).click()
-    cy.get('.card').its('length').should('be.gt', 6)
+    cy.get('.card').its('length').should('be.gt', 12)
 }

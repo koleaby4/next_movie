@@ -3,12 +3,11 @@ import json
 import logging
 import re
 
-from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
 
-from movies_collector.imdb_collector import get_movie_reviews, url_exists, get_movie_details
+from movies_collector.imdb_collector import url_exists, get_movie_details
 from users.models import CustomUser
 
 log = logging.getLogger(__name__)

@@ -21,9 +21,6 @@ context('User Tests', () => {
 
   it('Existing user can login and log out', () => {
 
-    navbar_helpers.clickLogin()
-    navbar_helpers.assertUnauthenticatedUserNavbar()
-
     login_helpers.loginAs(data.REGISTERED_EMAIL)
     navbar_helpers.assertAuthenticatedUserNavbar()
 
