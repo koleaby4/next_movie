@@ -9,15 +9,31 @@ import * as movie_detail_helpers from "../support/movie_detail_helpers";
 import * as movies_helpers from "../support/movies_helpers";
 
 
-context('User Tests', () => {
+context('Profile Tests', () => {
 
   beforeEach(() => {
     common.gotoLandingPage()
   })
 
 
-  it('to be added', () => {
+  it('No Profile link in MyAccount menu for unauthorised users', () => {
+    navbar_helpers.clickMyAccount()
+    cy.get(navbar_helpers.selectors.profileLink).should("not.exist")
+  })
+
+  it('Partial Profile content for registered users', () => {
+    login_helpers.loginAs(data.REGISTERED_EMAIL)
+    navbar_helpers.clickProfile()
+
+    profile_helpers.assertFreeProfileContentIsVisible(data.REGISTERED_EMAIL)
+    profile_helpers.assertPremiumContentIsHidden()
+  })
+
+  it.only('Full Profile content for prime members', () => {
     login_helpers.loginAs(data.REGISTERED_PAID_EMAIL)
+    navbar_helpers.clickProfile()
+
+    profile_helpers.assertPremiumProfileContentIsVisible(data.REGISTERED_PAID_EMAIL)
   })
 
 })
