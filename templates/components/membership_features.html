@@ -34,7 +34,7 @@
                     {% if user.is_authenticated %}
                         <ion-icon style="position: inherit" name="heart-half"></ion-icon>
                     {% else %}
-                        <a href="{% url 'account_signup' %}" class="btn btn-primary">Sign Up</a>
+                        <a href="{% url 'account_signup' %}" class="btn btn-primary sign-up-button">Sign Up</a>
                     {% endif %}
                 </div>
             </div>
@@ -55,7 +55,7 @@
                 <div class="card-footer">
                     {% if user.is_authenticated %}
                         {% if perms.movies.paid_for_membership %}
-                            <ion-icon style="position: inherit" name="heart"></ion-icon>
+                            <ion-icon style="position: inherit" class="prime-membership-heart" name="heart"></ion-icon>
                         {% else %}
                             <form action="{% url 'charge' %}" method="post" test-data="payment-form">
                                 {% csrf_token %}
@@ -67,7 +67,7 @@
                             </form>
                         {% endif %}
                     {% else %}
-                        <p><strong>Only for registered users</strong></p>
+                        <p class="only-4-registered-users-message"><strong>Only for registered users</strong></p>
                     {% endif %}
                 </div>
             </div>

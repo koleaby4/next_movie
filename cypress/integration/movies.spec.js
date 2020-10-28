@@ -40,7 +40,7 @@ context('Movies Tests', () => {
     movie_detail_helpers.assertPrimeInvitationShown()
   })
 
-  it('Reviews are shown on movie details', () => {
+  it('Reviews are shown on movie details for prime members', () => {
     common.gotoLandingPage()
 
     login_helpers.loginAs(data.REGISTERED_PAID_EMAIL)

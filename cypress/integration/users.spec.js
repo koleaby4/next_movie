@@ -3,7 +3,6 @@
 import * as navbar_helpers from "../support/navbar_helpers";
 import * as signup_helpers from "../support/signup_helpers";
 import * as login_helpers from "../support/login_helpers";
-import * as logout_helpers from "../support/logout_helpers";
 import * as common from "../support/common";
 import * as data from "../support/data";
 
