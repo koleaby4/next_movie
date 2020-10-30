@@ -9,6 +9,7 @@ body {
     grid-template-rows: 1fr auto;
   }
 
+
 ion-icon {
     font-size: 40px;
 }
@@ -56,4 +57,14 @@ ion-icon {
 
 .card-footer ion-icon {
   color: #28a745;
+}
+
+
+.image-holder img{
+  width: 100%;
+}
+
+.image-holder {
+  height: 200px;
+  overflow: hidden;
 }

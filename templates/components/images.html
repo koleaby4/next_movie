@@ -1,0 +1,20 @@
+{% load static %}
+
+<div class="image-gallery">
+
+    <h4>Image Gallery</h4>
+
+    <div class="row text-center text-lg-left">
+
+        {% for image_info in movie.images.images %}
+
+        <div class="image-holder col-md-4 col-6">
+            <a href="{{image_info.url}}" class="d-block mb-4 h-100" target="_blank">
+                <img class="img-fluid img-thumbnail" src="{{image_info.url}}"
+                    alt="image number {{forloop.counter1}}">
+            </a>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
