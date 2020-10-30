@@ -58,13 +58,3 @@ ion-icon {
 .card-footer ion-icon {
   color: #28a745;
 }
-
-
-.image-holder img{
-  width: 100%;
-}
-
-.image-holder {
-  height: 200px;
-  overflow: hidden;
-}

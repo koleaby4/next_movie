@@ -1,20 +1,36 @@
 {% load static %}
 
-<div class="image-gallery">
+<h4>Image Gallery</h4>
 
-    <h4>Image Gallery</h4>
+<div id="carouselIndicators" class="carousel slide" data-ride="carousel">
 
-    <div class="row text-center text-lg-left">
+    <ol class="carousel-indicators">
+        {% for image_info in movie.images.images %}
+            {% if forloop.counter0 == 0 %}
+                <li data-target="#carouselIndicators" data-slide-to="{{forloop.counter0}}" class="active"></li>
+            {% else %}
+                <li data-target="#carouselIndicators" data-slide-to="{{forloop.counter0}}"></li>
+            {% endif %}
+        {% endfor %}
+    </ol>
+
+    <div class="carousel-inner" role="listbox">
 
         {% for image_info in movie.images.images %}
-
-        <div class="image-holder col-md-4 col-6">
-            <a href="{{image_info.url}}" class="d-block mb-4 h-100" target="_blank">
-                <img class="img-fluid img-thumbnail" src="{{image_info.url}}"
-                    alt="image number {{forloop.counter1}}">
-            </a>
-        </div>
-        {% endfor %}
+            {% if forloop.counter0 == 0 %}
+                <div class="carousel-item active" style="background-image: url('{{image_info.url}}')"></div>
+            {% else %}
+                <div class="carousel-item" style="background-image: url('{{image_info.url}}')"></div>
+            {% endif %}
+      {% endfor %}
 
     </div>
-</div>
+    <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
