@@ -3,7 +3,6 @@
 <section class="watched-movie-section">
     <h5>Mark 'Watched' or 'Not Watched'</h5>
 
-    {% if perms.movies.paid_for_membership %}
     <div class="watched-movie-block row align-items-center justify-content-start">
         {% if user.profile in movie.profile_set.all %}
         <span class="col-lg-1 col-md-2">
@@ -25,7 +24,4 @@
         </span>
         {% endif %}
     </div>
-    {% else %}
-    {% include 'components/prime_invitation.html' %}
-    {% endif %}
 </section>
