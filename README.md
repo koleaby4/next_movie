@@ -1,5 +1,53 @@
 # next_movie
 
+Welcome to `next_movie` - a movie information portal developed by Nicolai Negru<br>
+as the 4th (and final) milestone project at Code Institute's [Full-stack web developer course](https://codeinstitute.net/full-stack-software-development-diploma-uk)
+
+The target group of this website consists of users who:
+* wish to quickly identify which next movie is worth watching
+* look for movie details and ratings
+* are interesting in getting insights into their watching patterns / statistics.
+
+# Contents:
+
+<To Be added>
+
+# Goals
+
+### Project Goals
+
+The initial project goal is to attract audience by providing information about movies.
+
+It starts with two main categories:
+* Best Ever - movies, which historically have been recognised as the most successful movie
+* Now Playing - movies which currently can be seen in the cinemas across the world
+
+<p>Both lists are available to all users - registered and unregistered.</p>
+
+The project is looking to build deeper relationship with the users by inviting them to register account.<br>
+By signing up users will be able to:
+* access public content of movie details page
+* receive push notifications for highly rated (imdb rating 7+) movies added to the database
+* mark movies as `Watched` to hide them on `Best Ever` page
+* see a part of user's profile statistics
+
+<p>In the future this will open opportunities for data analysis, advertising and referral fees</p>
+
+Finally, the website is aiming to start generating an income stream.<br>
+For one-off fee of £9.99 registered users can become `Prime Members`, getting access to:
+* movie reviews
+* further profile statistics
+* [in the future - discounts to movie-related merchandise]
+
+### Users' Goals
+
+* Users who rely on ratings, get instant access the list of `Best Ever` movies
+* People who consider going to cinema, can see what's `Now Playing`
+* Using search to quickly see ratings and review of a movie
+* Receive notifications of new highly rated movies
+* Ability to navigate website on mobile / tablet / desktop devices
+
+
 # Deployment to heroku
 
 * Create app in heroku website
@@ -57,3 +105,8 @@ We also use [system tests](https://en.wikipedia.org/wiki/System_testing) to veri
 
 1. Front-end style inspirations https://startbootstrap.com/templates/
 2. Responsive photo grid https://css-tricks.com/seamless-responsive-photo-grid
+3. omdb api
+4. rapid api
+5. other movies resourse
+
+# Architecture / design decisions
