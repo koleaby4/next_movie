@@ -14,7 +14,7 @@ The target group of this website consists of users who:
 
 # Goals
 
-### Project Goals
+## Project Goals
 
 The initial project goal is to attract audience by providing information about movies.
 
@@ -39,7 +39,7 @@ For one-off fee of £9.99 registered users can become `Prime Members`, getting a
 * further profile statistics
 * [in the future - discounts to movie-related merchandise]
 
-### Users' Goals
+## Users' Goals
 
 * Users who rely on ratings, get instant access the list of `Best Ever` movies
 * People who consider going to cinema, can see what's `Now Playing`
@@ -47,9 +47,25 @@ For one-off fee of £9.99 registered users can become `Prime Members`, getting a
 * Receive notifications of new highly rated movies
 * Ability to navigate website on mobile / tablet / desktop devices
 
-# Managing Requirements
+# User experience and design decisions
 
-### User Stories
+## Font and colour choices
+
+We assume that the user visiting our website comes in a special "movie-mood".<br>
+In order to preserve it, our designs had to be neutral and non-distracting.
+
+As a result, the following conventional colours were chosen:
+* white background
+* dark grey header and footer
+* [calming blue](https://www.verywellmind.com/the-color-psychology-of-blue-2795815) for Call-To-Action buttons
+* reassuring [green](https://www.verywellmind.com/color-psychology-green-2795817) for icons indicating already unlocked features
+
+It was decided to use [Lora Google font](https://fonts.google.com/specimen/Lora#about)<br>
+because of its contemporary memorable style and friendly curves resulting in clear and functional visuals.
+
+# Project Management
+
+## User Stories
 
 All user stories have been tracked using GitHub's [issues section](https://github.com/koleaby4/next_movie/issues?utf8=%E2%9C%93&q=is%3Aissue).
 GitHub Issues is a lightweight equivalent of [Jira](https://www.atlassian.com/software/jira), <br>
@@ -67,13 +83,14 @@ have been introduced to help marking and filtering Non-Functional Requirements.
 Finally, ['Future' labels](https://github.com/koleaby4/next_movie/issues?q=label%3Afuture)
 were used for stories planned for future releases.
 
-
-#### Non-Functional considerations
+## Non-Functional considerations
 
 * The Website will have a flat easy to navigate structure
 * The Content on the website will dynamically adjust for devices with various screen sizes
 * To maintain sufficient load speed, movies information retrieved from 3rd party services will be stored in the application's database
-* Payment information will be processed using Stripe and will not be stored in the the application's database.
+* Payment information will be processed using Stripe and will not be stored in the the application's database
+* All security keys and sensitive configuration will be managed using environment variables ans [secrets.json](https://github.com/koleaby4/next_movie/blob/master/secrets.json) config file
+* Our website consumes data from several external sources - we should continue operate even if data coming through is incomplete or inconsistent
 
 # Deployment to heroku
 
@@ -132,9 +149,13 @@ We also use [system tests](https://en.wikipedia.org/wiki/System_testing) to veri
 
 1. Front-end style inspirations https://startbootstrap.com/templates/
 2. Responsive photo grid https://css-tricks.com/seamless-responsive-photo-grid
-3. omdb api
-4. rapid api
-5. other movies resourse
+3. normalize.css https://github.com/necolas/normalize.css/
+4. omdb api
+5. rapid api
+6. other movies resourse - TBC
+7. plotly charting library
+8. google fonts
+9. ion-icons
 
 # Architecture / design decisions
 
