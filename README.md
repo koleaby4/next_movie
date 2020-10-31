@@ -56,4 +56,4 @@ We also use [system tests](https://en.wikipedia.org/wiki/System_testing) to veri
 # Resources
 
 1. Front-end style inspirations https://startbootstrap.com/templates/
-2.
+2. Responsive photo grid https://css-tricks.com/seamless-responsive-photo-grid
