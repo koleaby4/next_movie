@@ -1,36 +1,26 @@
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css" />
+{% endblock %}
+
 <h4>Image Gallery</h4>
 
-<div id="carouselIndicators" class="carousel slide" data-ride="carousel">
+<div class="movie-images">
 
-    <ol class="carousel-indicators">
-        {% for image_info in movie.images.images %}
-            {% if forloop.counter0 == 0 %}
-                <li data-target="#carouselIndicators" data-slide-to="{{forloop.counter0}}" class="active"></li>
-            {% else %}
-                <li data-target="#carouselIndicators" data-slide-to="{{forloop.counter0}}"></li>
-            {% endif %}
-        {% endfor %}
-    </ol>
-
-    <div class="carousel-inner" role="listbox">
-
-        {% for image_info in movie.images.images %}
-            {% if forloop.counter0 == 0 %}
-                <div class="carousel-item active" style="background-image: url('{{image_info.url}}')"></div>
-            {% else %}
-                <div class="carousel-item" style="background-image: url('{{image_info.url}}')"></div>
-            {% endif %}
-      {% endfor %}
-
-    </div>
-    <a class="carousel-control-prev" href="#carouselIndicators" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
+    {% for image_info in movie.images.images %}
+    <a href="{{image_info.url}}" data-toggle="lightbox" data-gallery="my-gallery">
+        <img src="{{image_info.url}}" class="img-fluid">
     </a>
-    <a class="carousel-control-next" href="#carouselIndicators" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
+    {% endfor %}
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
+
+<script>
+    $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+        event.preventDefault();
+        $(this).ekkoLightbox();
+    });
+</script>
