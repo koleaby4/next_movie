@@ -18,13 +18,12 @@
               <p class="plot">{{movie.plot}}</p>
               <p class="release-year">Year: {{movie.year}}</p>
 
-              <h4>Movie Details</h4>
+              <h4>Ratings:</h4>
               <ul>
                 <div class="ratings">
-                    <h6>Ratings:</h6>
-                        {% for rating_entry in movie.ratings %}
-                            <li class="rating">{{rating_entry.Source}}: {{rating_entry.Value}}</li>
-                        {% endfor %}
+                    {% for rating_entry in movie.ratings %}
+                        <li class="rating">{{rating_entry.Source}}: {{rating_entry.Value}}</li>
+                    {% endfor %}
                 </div>
             </ul>
                 {% include 'components/watched_movie_icon.html' %}
