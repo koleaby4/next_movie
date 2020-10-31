@@ -47,6 +47,33 @@ For one-off fee of £9.99 registered users can become `Prime Members`, getting a
 * Receive notifications of new highly rated movies
 * Ability to navigate website on mobile / tablet / desktop devices
 
+# Managing Requirements
+
+### User Stories
+
+All user stories have been tracked using GitHub's [issues section](https://github.com/koleaby4/next_movie/issues?utf8=%E2%9C%93&q=is%3Aissue).
+GitHub Issues is a lightweight equivalent of [Jira](https://www.atlassian.com/software/jira), <br>
+which is widely used for planning and tracking software development activities.
+
+By default all tickets represent functional user stories. <br>
+Example of a user story: [Navbar on the top](https://github.com/koleaby4/next_movie/issues/28)
+
+Tickets with ['bug' label](https://github.com/koleaby4/next_movie/issues?q=label%3Abug),
+represent defects in code, which have been found during development and testing.
+
+Additional ['NFR' labels](https://github.com/koleaby4/next_movie/issues?q=label%3ANFR)
+have been introduced to help marking and filtering Non-Functional Requirements.
+
+Finally, ['Future' labels](https://github.com/koleaby4/next_movie/issues?q=label%3Afuture)
+were used for stories planned for future releases.
+
+
+#### Non-Functional considerations
+
+* The Website will have a flat easy to navigate structure
+* The Content on the website will dynamically adjust for devices with various screen sizes
+* To maintain sufficient load speed, movies information retrieved from 3rd party services will be stored in the application's database
+* Payment information will be processed using Stripe and will not be stored in the the application's database.
 
 # Deployment to heroku
 
@@ -110,3 +137,5 @@ We also use [system tests](https://en.wikipedia.org/wiki/System_testing) to veri
 5. other movies resourse
 
 # Architecture / design decisions
+
+to be added
