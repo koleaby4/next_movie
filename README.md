@@ -83,6 +83,20 @@ have been introduced to help marking and filtering Non-Functional Requirements.
 Finally, ['Future' labels](https://github.com/koleaby4/next_movie/issues?q=label%3Afuture)
 were used for stories planned for future releases.
 
+
+## Wireframes
+
+[Balsamiq](https://balsamiq.com) was used to develop wireframes for this project during the requirements collection phase.<br>
+The tool allows to quickly create sketches of pages, amend them if need be and export.
+
+To simplify and speed up development, the wireframes were embedded into user stories - see [issue#20](https://github.com/koleaby4/next_movie/issues/20) as an example.
+
+
+A full collection of the wireframes can also be seen in the [wireframes folder](https://github.com/koleaby4/next_movie/tree/master/wireframes)
+
+ToDo: /!\
+
+
 ## Non-Functional considerations
 
 * The Website will have a flat easy to navigate structure
