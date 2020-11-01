@@ -124,8 +124,8 @@ Very often in the software development world, we have control over the data our 
 As the development of this project progressed, we've learned that there is a lot of inconsistent and missing data<br>
 in the responses we were receiving. A few examples to consider:
 * `1975-` as a movie's release year
-* missing poster urls
-* movies present in `imdb8.p.rapidapi.com` APIs, but missing in `api.themoviedb.org`
+* missing poster urls and review ratings
+* movies present in `imdb8.p.rapidapi.com` APIs, but missing from `api.themoviedb.org`
 
 To allow our website cope with these data anomalies:
 * safety checks were added where possible
@@ -144,7 +144,7 @@ Structure of the custom tables and relationships among them is represented on th
 
 ### `Movie` model
 
-The `movie` table within the `movies` app stores information about individual movies.
+The `Movie` model within the `movies` app, is used to store information about individual movies.
 
 Most of this data comes from `https://imdb8.p.rapidapi.com/title/get-details` end-point,<br>
 except of `images` field, which is populated with the data returned by a separate call to `/get-images` API.
@@ -153,6 +153,44 @@ Keeping in mind that network calls are expensive, it was decided to store full r
 
 That approach allows us to retro-fit more fields to the `Movie` model<br>
 and populate them with real values from `full_json_details` field.
+
+
+### `Review` model
+
+The `Review` model within the `movies` app, was introduced to store information about movie reviews.<br>
+Each review record contains one single review. Reviews are are linked to respective movie via `movie` foreign key.
+
+During the development we came across movies with a very large number of reviews.<br>
+Persisting them all would've been time- and space-consuming.<br>
+To address unnecessary pressure on these resources it was decided to persist top n (by default n=5)  latest reviews.<br>
+If need be, that configuration can be changed in `movies_collector > get_movie_reviews()` function.
+
+### `CustomUser` model
+
+The `CustomUser` model within the `users` application was introduced to eliminate `username` field<br>
+from teh default user registration and authentication process.
+
+`CustomUser` objects are referenced by `Profile` model in the `profile` app via foreign keys.
+
+We also introduced `paid_for_membership` permission.<br>
+That permission is granted to the users who purchased `Prime Membership`<br>
+and indicates that these users should have access to premium features such as:
+  * movie reviews
+  * push notifications when new good movies are persisted
+  * personalised profile charts reflecting users' watching preferences
+
+### `Profile` model
+
+The `Profile` model within the `profile` app is used as a storage of information about the movies user marked as `watched`.
+
+On the one side, reference to the `users.CustomUser` model is maintained via `OneToOneField` Django models field.<br>
+On the other side, we utilise `ManyToManyField` to connect to `movies.Movie` model.
+
+`Profile` model also contains computationally-heavy `watched_movies_years`, `watched_movies_genres` and `watched_movies_average_rating` fields. Their values are dynamically recalculated by specialised `profile.signals` functions every time a movie is marked as `watched` / `unwatched`.
+
+This approach ensures that:
+1. correct values are available instantly when users navigate to the `profile` page
+2. respective values have to be calculated only when collection of watched movies has changed.
 
 
 # Deployment to heroku
@@ -168,7 +206,7 @@ and populate them with real values from `full_json_details` field.
 # Postgresql configuration
 
 * Add postgresql to heroku app using [these steps](https://devcenter.heroku.com/articles/heroku-postgresql#provisioning-heroku-postgres)
-* Fetch configuration from HEroku > App > heroku-postgresql > settings
+* Fetch configuration from Heroku > App > heroku-postgresql > settings
 * Add respective configuration to django project > settings > DATABASES distionary
 * `python manage.py makemigrations`
 * `python manage.py migrate`
@@ -208,6 +246,10 @@ We also use [system tests](https://en.wikipedia.org/wiki/System_testing) to veri
    3. running the following command `npm run cypress:open`
 4. Click "Run all specs"  button to run the tests
 
+# Payments
+
+ToDo: explain that payments are wired to a test end-point (no charges will be incurred) and provide test card details for evaluation purposes.
+
 # Resources
 
 1. Front-end style inspirations https://startbootstrap.com/templates/
@@ -220,3 +262,4 @@ We also use [system tests](https://en.wikipedia.org/wiki/System_testing) to veri
 8. google fonts
 9. ion-icons
 10. database relationship visualiser https://www.dbvis.com/
+11. stripe
