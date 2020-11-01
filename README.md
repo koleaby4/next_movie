@@ -63,6 +63,16 @@ As a result, the following conventional colours were chosen:
 It was decided to use [Lora Google font](https://fonts.google.com/specimen/Lora#about)<br>
 because of its contemporary memorable style and friendly curves resulting in clear and functional visuals.
 
+## Non-Functional considerations
+
+* The Website will have a flat easy to navigate structure
+* The Content on the website will dynamically adjust for devices with various screen sizes
+* To maintain sufficient load speed, movies information retrieved from 3rd party services will be stored in the application's database
+* Payment information will be processed using Stripe and will not be stored in the the application's database
+* All security keys and sensitive configuration will be managed using environment variables ans [secrets.json](https://github.com/koleaby4/next_movie/blob/master/secrets.json) config file
+* Our website consumes data from several external sources - web site should continue operate even if data coming through is incomplete or inconsistent
+
+
 # Project Management
 
 ## User Stories
@@ -71,16 +81,11 @@ All user stories have been tracked using GitHub's [issues section](https://githu
 GitHub Issues is a lightweight equivalent of [Jira](https://www.atlassian.com/software/jira), <br>
 which is widely used for planning and tracking software development activities.
 
-By default all tickets represent functional user stories. <br>
-Example of a user story: [Navbar on the top](https://github.com/koleaby4/next_movie/issues/28)
-
-Tickets with ['bug' label](https://github.com/koleaby4/next_movie/issues?q=label%3Abug),
-represent defects in code, which have been found during development and testing.
-
-Additional ['NFR' labels](https://github.com/koleaby4/next_movie/issues?q=label%3ANFR)
-have been introduced to help marking and filtering Non-Functional Requirements.
-
-Finally, ['Future' labels](https://github.com/koleaby4/next_movie/issues?q=label%3Afuture)
+Tickets grouping and filtering approach:
+1. By default all tickets represent functional user stories. Example of a user story: [Navbar on the top](https://github.com/koleaby4/next_movie/issues/28)
+2. Tickets with ['bug' label](https://github.com/koleaby4/next_movie/issues?q=label%3Abug), represent defects in code, which have been found during development and testing.
+3. Additional ['NFR' labels](https://github.com/koleaby4/next_movie/issues?q=label%3ANFR) have been introduced to help marking and filtering Non-Functional Requirements.
+4. ['Future' labels](https://github.com/koleaby4/next_movie/issues?q=label%3Afuture)
 were used for stories planned for future releases.
 
 
@@ -97,14 +102,58 @@ A full collection of the wireframes can also be seen in the [wireframes folder](
 ToDo: /!\
 
 
-## Non-Functional considerations
+# Data flow
 
-* The Website will have a flat easy to navigate structure
-* The Content on the website will dynamically adjust for devices with various screen sizes
-* To maintain sufficient load speed, movies information retrieved from 3rd party services will be stored in the application's database
-* Payment information will be processed using Stripe and will not be stored in the the application's database
-* All security keys and sensitive configuration will be managed using environment variables ans [secrets.json](https://github.com/koleaby4/next_movie/blob/master/secrets.json) config file
-* Our website consumes data from several external sources - we should continue operate even if data coming through is incomplete or inconsistent
+Data comes from a number of sources - show this on a chart
+ToDo: add chart here
+
+
+# Database
+
+`next_movie` website is using PostgreSQL for storing the data.<br>
+
+The structure of the database was emerging organically during the implementation.<br>
+That approach focuses on real business needs and prevents over-engineering by keeping [You aren't gonna need it](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it) principle in mind.
+
+
+## Application resilience to invalid / missing data
+
+Very often in the software development world, we have control over the data our application deals with.<br>
+`next_movie` is a little bit different in that it relies primarily on the data fetched from a number of 3rd party APIs.
+
+As the development of this project progressed, we've learned that there is a lot of inconsistent and missing data<br>
+in the responses we were receiving. A few examples to consider:
+* `1975-` as a movie's release year
+* missing poster urls
+* movies present in `imdb8.p.rapidapi.com` APIs, but missing in `api.themoviedb.org`
+
+To allow our website cope with these data anomalies:
+* safety checks were added where possible
+* many data model fields were marked as null-able
+* extensive logging was put in place
+* exception handling logic was instructed to skip persisting unrepairable 3rd party data
+
+## Bird's-eye view on tables relationships
+
+Structure of the custom tables and relationships among them is represented on this chart:
+
+<img src="https://github.com/koleaby4/next_movie/blob/master/documentation/db_charts/relationships.jpg?raw=true"
+     alt="Database tables relationships"
+     style="float: left; margin-right: 10px;" />
+
+
+### `Movie` model
+
+The `movie` table within the `movies` app stores information about individual movies.
+
+Most of this data comes from `https://imdb8.p.rapidapi.com/title/get-details` end-point,<br>
+except of `images` field, which is populated with the data returned by a separate call to `/get-images` API.
+
+Keeping in mind that network calls are expensive, it was decided to store full response payloads returned by `get-details` API in `full_json_details` field.
+
+That approach allows us to retro-fit more fields to the `Movie` model<br>
+and populate them with real values from `full_json_details` field.
+
 
 # Deployment to heroku
 
@@ -170,7 +219,4 @@ We also use [system tests](https://en.wikipedia.org/wiki/System_testing) to veri
 7. plotly charting library
 8. google fonts
 9. ion-icons
-
-# Architecture / design decisions
-
-to be added
+10. database relationship visualiser https://www.dbvis.com/
