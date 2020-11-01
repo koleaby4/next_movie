@@ -19,8 +19,8 @@ The target group of this website consists of users who:
 The initial project goal is to attract audience by providing information about movies.
 
 It starts with two main categories:
-* Best Ever - movies, which historically have been recognised as the most successful movie
-* Now Playing - movies which currently can be seen in the cinemas across the world
+* `Best Ever` - movies, which historically have been recognised as the most successful movie
+* `Now Playing` - movies which currently can be seen in the cinemas across the world
 
 <p>Both lists are available to all users - registered and unregistered.</p>
 
@@ -41,11 +41,41 @@ For one-off fee of £9.99 registered users can become `Prime Members`, getting a
 
 ## Users' Goals
 
-* Users who rely on ratings, get instant access the list of `Best Ever` movies
-* People who consider going to cinema, can see what's `Now Playing`
-* Using search to quickly see ratings and review of a movie
-* Receive notifications of new highly rated movies
-* Ability to navigate website on mobile / tablet / desktop devices
+* users who rely on ratings, get instant access the list of `Best Ever` movies
+* people who consider going to cinema, can see what's `Now Playing`
+* using search to quickly see ratings and review of a movie
+* receive notifications of new highly rated movies
+* ability to navigate website on mobile / tablet / desktop devices
+
+# Features
+
+## Implemented functionality
+
+Available to everyone:
+* view list of `Best Ever` movies (dynamically exclude movies marked as `watched` by the current user)
+* view list of `Now Playing` movies
+* account registration, confirmation email, login and log out
+* search movies by name
+
+Available to registered users only:
+* view movie details
+* mark movies as `watched` / `not watched`
+* access some statistics about watched movies on the `/profile` page
+
+Available to Prime Members only:
+* push notifications when new good movies are persisted to the database
+* access movie reviews and images on `movie detail` page
+* charts on `/profile` page
+
+## Features to be added in the future
+
+* connect to Google Analytics and identify most visited pages and potential stumbling blocks in the users' journey
+* redirect to the cinemas showing respective movies in order to collect referral fees
+* scheduled updates of the reviews for persisted movies
+* reset password functionality
+* performance optimisations for searches returning a large number of movies
+
+A full list of `future` tickets can be found [here](https://github.com/koleaby4/next_movie/issues?q=is%3Aissue+is%3Aopen+label%3Afuture).
 
 # User experience and design decisions
 
@@ -65,12 +95,13 @@ because of its contemporary memorable style and friendly curves resulting in cle
 
 ## Non-Functional considerations
 
-* The Website will have a flat easy to navigate structure
-* The Content on the website will dynamically adjust for devices with various screen sizes
+* The website will have a flat easy to navigate structure
+* The content on the website will dynamically adjust for devices with various screen sizes
 * To maintain sufficient load speed, movies information retrieved from 3rd party services will be stored in the application's database
 * Payment information will be processed using Stripe and will not be stored in the the application's database
 * All security keys and sensitive configuration will be managed using environment variables ans [secrets.json](https://github.com/koleaby4/next_movie/blob/master/secrets.json) config file
 * Our website consumes data from several external sources - web site should continue operate even if data coming through is incomplete or inconsistent
+
 
 
 # Project Management
@@ -263,3 +294,4 @@ ToDo: explain that payments are wired to a test end-point (no charges will be in
 9. ion-icons
 10. database relationship visualiser https://www.dbvis.com/
 11. stripe
+12. email notifications API
