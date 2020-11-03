@@ -282,17 +282,46 @@ We also use [system tests](https://en.wikipedia.org/wiki/System_testing) to veri
 
 ToDo: explain that payments are wired to a test end-point (no charges will be incurred) and provide test card details for evaluation purposes.
 
-# Resources
 
-1. Front-end style inspirations https://startbootstrap.com/templates/
-2. Responsive photo grid https://css-tricks.com/seamless-responsive-photo-grid
-3. normalize.css https://github.com/necolas/normalize.css/
-4. omdb api
-5. rapid api
-6. other movies resourse - TBC
-7. plotly charting library
-8. google fonts
-9. ion-icons
-10. database relationship visualiser https://www.dbvis.com/
-11. stripe
-12. email notifications API
+# Technologies Used
+
+## Languages
+
+* [Python](https://www.python.org)
+* [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
+* [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
+* [JavaScript](https://www.w3schools.com/js/)
+
+## Libraries:
+
+* [Django](https://www.djangoproject.com)
+* [Bootstrap](https://getbootstrap.com)
+* [ion-icons](https://ionicons.com)
+* [normalize.css](https://github.com/necolas/normalize.css)
+* [Google Fonts](https://fonts.google.com)
+* [Plotly Graphing Library](https://plotly.com/nodejs)
+* [Gunicorn](https://pypi.org/project/gunicorn)
+
+## Tools
+
+* [Git](https://git-scm.com) and [GitHub](https://github.com/) for source control
+* [Visual Studio Code](https://code.visualstudio.com) as development IDE
+* [cypress](https://www.cypress.io/) for test automation
+* [Database Relationship Visualiser](https://www.dbvis.com) for exactly that - visualising database relationships :)
+
+## 3rd party services
+
+* [OMDb API](http://www.omdbapi.com/)
+* [RapidAPI IMDB end-points](https://rapidapi.com/apidojo/api/imdb8)
+* [The Movie Database (TMDb) API](https://developers.themoviedb.org/3)
+* [Stripe Payments](https://stripe.com)
+* [SendGrid Email Delivery Service](https://sendgrid.com)
+
+## Databases
+
+* [PostgreSQL](https://www.postgresql.org)
+
+# Other Resources
+
+* Front-end style inspirations from [Bootstrap Templates](https://startbootstrap.com/templates)
+* [Responsive photo grid](https://css-tricks.com/seamless-responsive-photo-grid) for dynamically arranging images
