@@ -59,7 +59,8 @@ Available to everyone:
 
 Available to registered users only:
 * view movie details
-* mark movies as `watched` / `not watched`
+* mark movies as `watched` / `not watched` from movie detail page
+* view list of all `watched` movies on (yes, you guessed it!) `/watched` page
 * access some statistics about watched movies on the `/profile` page
 
 Available to Prime Members only:
