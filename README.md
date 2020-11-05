@@ -226,7 +226,35 @@ This approach ensures that:
 2. respective values have to be calculated only when collection of watched movies has changed.
 
 
-# Deployment to heroku
+# Deployment 🚀
+
+## Deploying and running locally
+
+### Prerequisites
+
+* install
+  * [Python3.9+](https://www.python.org/downloads/)
+  * [git](https://git-scm.com)
+  * [postgresql](https://www.postgresql.org/download/)
+* register and obtain keys for the following services:
+  * [Stripe](https://stripe.com)
+  * [OMDB](http://www.omdbapi.com/)
+  * [RapidApi IMDB](https://rapidapi.com/apidojo/api/imdb8)
+  * [TMDB](https://www.themoviedb.org/documentation/api)
+
+### Instructions:
+
+1. Clone next_movie repository by executing `git clone https://github.com/koleaby4/next_movie.git` in console
+2. Change directory to the project folder `cd PATH_TO_THE_PROJECT_FOLDER`
+3. Install dependencies `pip install -r requirements.txt`
+4. Update `secrets.json` file with your database configuration and API keys
+5. Create database structure by running `python3 manage.py migrate`
+6. Create superuser `python3 manage.py createsuperuser` and follow instruction in terminal
+7. Start the server `python3 manage.py runserver`
+
+The application should now be running on `http://127.0.0.1:8000`
+
+## Deployment to heroku
 
 * Create app in heroku website
 * Connect it to github and enable automated deployments
@@ -236,7 +264,7 @@ This approach ensures that:
 * Set python version `runtime.txt`
 * `git push` to trigger deployment
 
-# Postgresql configuration
+### Postgresql configuration
 
 * Add postgresql to heroku app using [these steps](https://devcenter.heroku.com/articles/heroku-postgresql#provisioning-heroku-postgres)
 * Fetch configuration from Heroku > App > heroku-postgresql > settings
