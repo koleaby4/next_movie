@@ -345,6 +345,20 @@ so the following combinations were chosen to cover most common scenarios:
 | Android 11 | Chrome | Tablet |
 | Android 11 | Chrome | Mobile |
 
+
+## Defect Management
+
+All defects identified during development and testing phase were noted.<br>
+When defect could be resolved faster than the overheads of formally documenting it, it was resolved in-place.<br>
+In situations when it was not possible to resolve defect on the spot, it was documented using the following format:
+* Steps to reproduce
+* Expected Results
+* Actual Results
+
+See [issue 38](https://github.com/koleaby4/next_movie/issues/38) as an example.
+
+All defects were labeled by ['bug' label](https://github.com/koleaby4/next_movie/issues?q=label%3Abug).
+
 # Payments
 
 ToDo: explain that payments are wired to a test end-point (no charges will be incurred) and provide test card details for evaluation purposes.
