@@ -117,7 +117,8 @@ Tickets grouping and filtering approach:
 1. By default all tickets represent functional user stories. Example of a user story: [Navbar on the top](https://github.com/koleaby4/next_movie/issues/28)
 2. Tickets with ['bug' label](https://github.com/koleaby4/next_movie/issues?q=label%3Abug), represent defects in code, which have been found during development and testing.
 3. Additional ['NFR' labels](https://github.com/koleaby4/next_movie/issues?q=label%3ANFR) have been introduced to help marking and filtering Non-Functional Requirements.
-4. ['Future' labels](https://github.com/koleaby4/next_movie/issues?q=label%3Afuture)
+4. [`Compatibility` labels](https://github.com/koleaby4/next_movie/labels/compatibility) were used to mark tickets related to browser / platform / screen size compatibility
+5. ['Future' labels](https://github.com/koleaby4/next_movie/issues?q=label%3Afuture)
 were used for stories planned for future releases.
 
 
@@ -247,26 +248,59 @@ This approach ensures that:
 
 # Testing
 
-We use several layers of tests to verify our functionality
+Testing was carried out in several iterations both manually and via automated tests.
 
 ## Unit tests
 
-[Unit tests](https://en.wikipedia.org/wiki/Unit_testing) are our lowest level of test, which we use to verify:
+At the lowest level (closest to the code) [unit tests](https://en.wikipedia.org/wiki/Unit_testing) were implemented to verify:
  * models
  * views
  * usage of the correct templates
+ * individual functions
 
-We use unit testing framework provided by Django and respective 3rd party applications (for example [allauth](https://django-allauth.readthedocs.io/)).<br>
-Unit tests can be found in `tests.py` files of the respective application folders (for example `users/tests.py`).
+I used testing framework provided by [django.test](https://docs.djangoproject.com/en/3.1/topics/testing/overview/) and respective 3rd party applications such as [allauth](https://django-allauth.readthedocs.io/).
 
-Unit tests will be executed against a local instance of Postgresql.<br>
-This is because our unit testing frameworks have to dynamically create and delete test database.
+Unit tests were placed into `tests.py` files of the respective application folders (for example `users/tests.py`)<br>
+and  executed against a local instance of Postgresql.
+
+Sadly as soon as we promoted our project from a local database to the Heroku-hosted instance,<br>
+developing and running unit-tests became problematic because [Heroku does not allow](https://stackoverflow.com/questions/13705328/how-to-run-django-tests-on-heroku) dynamic creation / deletion of test databases.
+
+To work around that security restriction, I continued developing and running tests against a local instance of Postgresql.<br>
+That worked for a while, but as the project was becoming more and more complex (calls to 3rd-party APIs, usage of signals to trigger post_save actions, etc)<br>
+unit tests had to either cover communication between components or to start employing [python mocks](https://docs.python.org/3/library/unittest.mock.html) to simulate parts of functionality.
+
+On the one hand, unit tests are not supposed to be used for verifying integration among components.<br>
+On the other hand, I was reluctant using mocks because their usage in our project would lead to unnecessarily complicated tests and could hide bugs as the codebase continued evolving.
+
+At that point I decided that the project was ready for introducing system tests.
 
 ## System tests
 
-We also use [system tests](https://en.wikipedia.org/wiki/System_testing) to verify end-to-end functionality of the whole website.<br>
-[Cypress](https://www.cypress.io/) is a very popular testing framework which allows user-like interactions with websites and verifications of page's content.
+[System tests](https://en.wikipedia.org/wiki/System_testing) were introduced to verify end-to-end functionality of the whole website.<br>
+I decided to use [cypress](https://www.cypress.io/) for system tests - a very popular JavaScript-based testing framework which allows user-like interactions with websites and verifications of page content.
 
+Cypress tests can be found in `cypress\integration` folder, while a number of helper functions are stored in `cypress\support` folder.
+
+Tests are grouped by functionality in the following categories:
+* `landing.spec` - cover content of the landing page, which changes depending on whether the user is unauthenticated, logged in or registered as a Prime Member
+* `movies.spec` - verifies content of `Best Ever` and `Now PLaying` movie lists
+* `profile.spec` - checks content of profile page for both authenticated and Prime Member
+* `search.spec` - tests for various search scenarios
+* `users.spec` - users creation as well as login/logout functionality
+
+When system tests were implemented, it was decided to remove unit tests for the following reasons:
+* I did not have to maintain two databases (local and Heroku-hosted) just to keep the tests working
+* to save time for fixing broken unit-tests after changing implementation details of the functions which did not affect visible-to-users functionality of the website (system tests are more robust when it comes to refactoring)
+* website's functionality proved to be working and any substantial regression would be captured by system tests, so duplicating test coverage would not provide a higher level of confidence in our code.
+
+The only area not covered by the tests at that point was Stripe payment.<br>
+Automated verification of payment scenarios with 3rd party service in this case is complex for the following reasons:
+1. [cypress has difficulties working with iframes](https://www.cypress.io/blog/2020/02/12/working-with-iframes-in-cypress/) and for [with Selenium the situation is not much better](https://www.guru99.com/handling-iframes-selenium.html)
+2. implementing API-level integration tests proved to be impossible because communication with Stripe back-end is encrypted and the whole process is opaque
+3. we do not control that service, so if its implementation details were to change in the future, our tests could cause [false positive](https://en.wikipedia.org/wiki/False_positives_and_false_negatives) failures.
+
+To manage that risk, it was decided to continue verifying payments scenario manually on regular basis.
 
 ### How to use Cypress
 
@@ -277,6 +311,39 @@ We also use [system tests](https://en.wikipedia.org/wiki/System_testing) to veri
    2. navigating to the project directory
    3. running the following command `npm run cypress:open`
 4. Click "Run all specs"  button to run the tests
+
+## Compatibility tests
+
+To make sure that users of various browsers / platforms / screen sizes could successfully use our website,<br>
+a number of [compatibility user stories](https://github.com/koleaby4/next_movie/labels/compatibility) were added to the requirements.
+
+Screen sizes:
+* mobile
+* tablet
+* desktop
+
+Browsers (based on statistics of [browser usage in 2020](https://gs.statcounter.com/browser-market-share/all/europe)):
+* Google Chrome
+* FireFox
+* Microsoft Edge
+* Safari
+
+Platforms:
+* Windows 10
+* Android 11
+* iOS 14
+
+Testing all permutations of above parameters would've been impractical,<br>
+so the following combinations were chosen to cover most common scenarios:
+
+| Platform | Browser | Screen size |
+| -------- | ------- | ----------- |
+| Windows 10 | FireFox | Desktop |
+| Windows 10 | Edge | Desktop |
+| iOS 14 | Safari | Tablet |
+| iOS 14 | Safari | Mobile |
+| Android 11 | Chrome | Tablet |
+| Android 11 | Chrome | Mobile |
 
 # Payments
 
@@ -295,6 +362,7 @@ ToDo: explain that payments are wired to a test end-point (no charges will be in
 ## Libraries:
 
 * [Django](https://www.djangoproject.com)
+* [allauth](https://django-allauth.readthedocs.io/
 * [Bootstrap](https://getbootstrap.com)
 * [ion-icons](https://ionicons.com)
 * [normalize.css](https://github.com/necolas/normalize.css)
