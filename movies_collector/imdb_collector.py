@@ -18,14 +18,10 @@ TMDB_API_KEY = get_secret("TMDB_API_KEY")
 def get_top_rated_movies():
     """Generator which yields most popular movies of all times"""
 
-    # headers = {"x-rapidapi-host": "imdb8.p.rapidapi.com", "x-rapidapi-key": RAPID_API_IMDB8_KEY}
-    # url = "https://imdb8.p.rapidapi.com/title/get-top-rated-movies"
-    # response = requests.request("GET", url, headers=headers)
-    # records = json.loads(response.text)
-
-    # temporary stub. ToDo: replace when going live
-    content = (Path(__file__).parent / "top_rated_movies_subset.json").read_text()
-    records = json.loads(content)
+    headers = {"x-rapidapi-host": "imdb8.p.rapidapi.com", "x-rapidapi-key": RAPID_API_IMDB8_KEY}
+    url = "https://imdb8.p.rapidapi.com/title/get-top-rated-movies"
+    response = requests.request("GET", url, headers=headers)
+    records = response.json()
 
     for entry in records:
         imdb_id = re.search(r"/title/(tt[0-9]+)/", entry["id"]).group(1)
