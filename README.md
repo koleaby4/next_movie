@@ -286,13 +286,13 @@ At the lowest level (closest to the code) [unit tests](https://en.wikipedia.org/
  * usage of the correct templates
  * individual functions
 
-I used testing framework provided by [django.test](https://docs.djangoproject.com/en/3.1/topics/testing/overview/) and respective 3rd party applications such as [allauth](https://django-allauth.readthedocs.io/).
+I started testing using the testing frameworks provided by [django.test](https://docs.djangoproject.com/en/3.1/topics/testing/overview/).
 
 Unit tests were placed into `tests.py` files of the respective application folders (for example `users/tests.py`)<br>
 and  executed against a local instance of Postgresql.
 
-Sadly as soon as we promoted our project from a local database to the Heroku-hosted instance,<br>
-developing and running unit-tests became problematic because [Heroku does not allow](https://stackoverflow.com/questions/13705328/how-to-run-django-tests-on-heroku) dynamic creation / deletion of test databases.
+Soon after promoting our project from a local database to the Heroku-hosted instance,<br>
+developing and running unit-tests became more challenging because [Heroku does not allow](https://stackoverflow.com/questions/13705328/how-to-run-django-tests-on-heroku) dynamic creation / deletion of test databases.
 
 To work around that security restriction, I continued developing and running tests against a local instance of Postgresql.<br>
 That worked for a while, but as the project was becoming more and more complex (calls to 3rd-party APIs, usage of signals to trigger post_save actions, etc)<br>
@@ -306,7 +306,7 @@ At that point I decided that the project was ready for introducing system tests.
 ## System tests
 
 [System tests](https://en.wikipedia.org/wiki/System_testing) were introduced to verify end-to-end functionality of the whole website.<br>
-I decided to use [cypress](https://www.cypress.io/) for system tests - a very popular JavaScript-based testing framework which allows user-like interactions with websites and verifications of page content.
+I decided to use [cypress](https://www.cypress.io/) for system tests. Cypress is a very popular JavaScript-based testing framework which allows user-like interactions with websites and verifications of page content.
 
 Cypress tests can be found in `cypress\integration` folder, while a number of helper functions are stored in `cypress\support` folder.
 
@@ -320,7 +320,7 @@ Tests are grouped by functionality in the following categories:
 When system tests were implemented, it was decided to remove unit tests for the following reasons:
 * I did not have to maintain two databases (local and Heroku-hosted) just to keep the tests working
 * to save time for fixing broken unit-tests after changing implementation details of the functions which did not affect visible-to-users functionality of the website (system tests are more robust when it comes to refactoring)
-* website's functionality proved to be working and any substantial regression would be captured by system tests, so duplicating test coverage would not provide a higher level of confidence in our code.
+* website's functionality proved to be working and any substantial regression would be captured by system tests. Duplicating test coverage would not provide a higher level of confidence in our code.
 
 The only area not covered by the tests at that point was Stripe payment.<br>
 Automated verification of payment scenarios with 3rd party service in this case is complex for the following reasons:
@@ -385,12 +385,41 @@ In situations when it was not possible to resolve defect on the spot, it was doc
 
 See [issue 38](https://github.com/koleaby4/next_movie/issues/38) as an example.
 
-All defects were labeled by ['bug' label](https://github.com/koleaby4/next_movie/issues?q=label%3Abug).
+All defects were labeled by ['bug' label](https://github.com/koleaby4/next_movie/issues?q=label%3Abug)
 
 # Payments
 
-ToDo: explain that payments are wired to a test end-point (no charges will be incurred) and provide test card details for evaluation purposes.
+Keeping in mind that this website was developed for educational purposes, Stripe payments have been connected to test end-points.<br>
+As a result of this, only specific test card details will be accepted when paying for `Prime Membership` on our website
 
+<img src="https://github.com/koleaby4/next_movie/blob/master/documentation/images/test_payment_details.png?raw=true"
+     alt="Test Payment Details"
+     style="max-width:250px; margin-right: 10px;" />
+
+
+# Performance and cost-efficiency
+
+Having done an initial research of available free movies data sources, I came to conclusion<br>
+that none of them offered a full set of features required for our website.
+
+As a result I decided to combine information from several data sources:
+* [OMDb API](http://www.omdbapi.com/) - free but very limited in terms of data available
+* [RapidAPI IMDB end-points](https://rapidapi.com/apidojo/api/imdb8) - paid for and restricted on the number of calls we can make
+* [The Movie Database (TMDb) API](https://developers.themoviedb.org/3) - free but relies on own movie IDs and thus requires intermediary calls to fetch imdb IDs
+
+To compile together information about every movie, we have to make 3 calls to external APIs to fetch:
+  1. core movie information
+  2. movie images
+  3. movie reviews
+
+Keeping in mind that:
+* we are charged for requests to RapidAPI end-points and requests are throttled to max 5 requests / second
+* network calls are in general time-consuming
+it was important to minimise the number of 3rd API calls.
+
+To address these considerations, movies information once retrieved, is persisted in our internal database. When searching for movie details, we would first check whether this information was previously retrieved. If so - we would use persisted data, otherwise we would fetch and store it.
+
+In several parts of our codebase we used multithreading for fetching information in parallel, in order to keep our website's response time to minimum. However even with these performance optimisations the longest chain of calls to get all movie details is fairly complex and time-consuming.
 
 # Technologies Used
 
@@ -435,3 +464,4 @@ ToDo: explain that payments are wired to a test end-point (no charges will be in
 
 * Front-end style inspirations from [Bootstrap Templates](https://startbootstrap.com/templates)
 * [Responsive photo grid](https://css-tricks.com/seamless-responsive-photo-grid) for dynamically arranging images
+* [coolors.co](https://coolors.co)
