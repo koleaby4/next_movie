@@ -1,16 +1,55 @@
-# next_movie
+# Overview
 
-Welcome to `next_movie` - a movie information portal developed by Nicolai Negru<br>
-as the 4th (and final) milestone project at Code Institute's [Full-stack web developer course](https://codeinstitute.net/full-stack-software-development-diploma-uk)
+Welcome to `next_movie` - a movie information portal developed by [Nicolai Negru](linkedin.com/in/nicolai-negru) as the 4th (and final) milestone project at Code Institute's [Full-stack web developer course](https://codeinstitute.net/full-stack-software-development-diploma-uk).
 
 The target group of this website consists of users who:
-* wish to quickly identify which next movie is worth watching
+* wish to quickly identify which next movie is worth watching next
 * look for movie details and ratings
 * are interesting in getting insights into their watching patterns / statistics.
 
 # Contents:
 
-<To Be added>
+- [Overview](#overview)
+- [Contents:](#contents)
+- [Goals](#goals)
+  - [Project Goals](#project-goals)
+  - [Users' Goals](#users-goals)
+- [Features](#features)
+  - [Implemented functionality](#implemented-functionality)
+  - [Features to be added in the future](#features-to-be-added-in-the-future)
+- [User experience and design decisions](#user-experience-and-design-decisions)
+  - [Font and colour choices](#font-and-colour-choices)
+  - [Non-Functional considerations](#non-functional-considerations)
+- [Project Management](#project-management)
+  - [User Stories](#user-stories)
+  - [Wireframes](#wireframes)
+- [Database](#database)
+  - [Application resilience to invalid / missing data](#application-resilience-to-invalid--missing-data)
+  - [Bird's-eye view on tables relationships](#birds-eye-view-on-tables-relationships)
+    - [`Movie` model](#movie-model)
+    - [`Review` model](#review-model)
+    - [`CustomUser` model](#customuser-model)
+    - [`Profile` model](#profile-model)
+- [Deployment](#deployment)
+  - [Prerequisites](#prerequisites)
+  - [Deploying and running locally](#deploying-and-running-locally)
+  - [Deployment to Heroku](#deployment-to-heroku)
+- [Testing](#testing)
+  - [Unit tests](#unit-tests)
+  - [System tests](#system-tests)
+    - [How to use Cypress](#how-to-use-cypress)
+  - [Compatibility tests](#compatibility-tests)
+  - [Defect Management](#defect-management)
+- [Payments](#payments)
+- [Performance and cost-efficiency](#performance-and-cost-efficiency)
+- [Technologies Used](#technologies-used)
+  - [Languages](#languages)
+  - [Libraries:](#libraries)
+  - [Tools](#tools)
+  - [3rd party services](#3rd-party-services)
+  - [Databases](#databases)
+- [Other Resources](#other-resources)
+
 
 # Goals
 
@@ -24,20 +63,20 @@ It starts with two main categories:
 
 <p>Both lists are available to all users - registered and unregistered.</p>
 
-The project is looking to build deeper relationship with the users by inviting them to register account.<br>
+The project is looking to build a deeper relationship with the users by inviting them to register an account.<br>
 By signing up users will be able to:
 * access public content of movie details page
 * receive push notifications for highly rated (imdb rating 7+) movies added to the database
 * mark movies as `Watched` to hide them on `Best Ever` page
 * see a part of user's profile statistics
 
-<p>In the future this will open opportunities for data analysis, advertising and referral fees</p>
+<p>In the future this will open opportunities for data analysis, advertising and referral fees.</p>
 
 Finally, the website is aiming to start generating an income stream.<br>
 For one-off fee of £9.99 registered users can become `Prime Members`, getting access to:
 * movie reviews
 * further profile statistics
-* [in the future - discounts to movie-related merchandise]
+* [in the future - discounts to movie-related merchandise anf cinema tickets]
 
 ## Users' Goals
 
@@ -61,12 +100,12 @@ Available to registered users only:
 * view movie details
 * mark movies as `watched` / `not watched` from movie detail page
 * view list of all `watched` movies on (yes, you guessed it!) `/watched` page
-* access some statistics about watched movies on the `/profile` page
+* push notifications when new good movies are persisted to the database
+* access some statistics about watched movies on profile page
 
 Available to Prime Members only:
-* push notifications when new good movies are persisted to the database
-* access movie reviews and images on `movie detail` page
-* charts on `/profile` page
+* access movie reviews on `movie detail` page
+* additional statistics about watched movies on profile page
 
 ## Features to be added in the future
 
@@ -96,30 +135,26 @@ because of its contemporary memorable style and friendly curves resulting in cle
 
 ## Non-Functional considerations
 
-* The website will have a flat easy to navigate structure
-* The content on the website will dynamically adjust for devices with various screen sizes
-* To maintain sufficient load speed, movies information retrieved from 3rd party services will be stored in the application's database
-* Payment information will be processed using Stripe and will not be stored in the the application's database
-* All security keys and sensitive configuration will be managed using environment variables ans [secrets.json](https://github.com/koleaby4/next_movie/blob/master/secrets.json) config file
-* Our website consumes data from several external sources - web site should continue operate even if data coming through is incomplete or inconsistent
-
-
+* the website will have a flat easy to navigate structure
+* the content on the website will dynamically adjust for devices with various screen sizes
+* to maintain sufficient load speed, movies information retrieved from 3rd party services will be stored in the application's database
+* payment information will be processed using Stripe and will not be stored in the the application's database
+* all security keys and sensitive configuration will be managed using environment variables and [secrets.json](https://github.com/koleaby4/next_movie/blob/master/secrets.json) config file
+* the web site should continue operate even if data coming from 3rd party services is incomplete or inconsistent
 
 # Project Management
 
 ## User Stories
 
 All user stories have been tracked using GitHub's [issues section](https://github.com/koleaby4/next_movie/issues?utf8=%E2%9C%93&q=is%3Aissue).
-GitHub Issues is a lightweight equivalent of [Jira](https://www.atlassian.com/software/jira), <br>
-which is widely used for planning and tracking software development activities.
+GitHub Issues is a lightweight equivalent of [Jira](https://www.atlassian.com/software/jira), which is widely used for planning and tracking software development activities.
 
 Tickets grouping and filtering approach:
-1. By default all tickets represent functional user stories. Example of a user story: [Navbar on the top](https://github.com/koleaby4/next_movie/issues/28)
-2. Tickets with ['bug' label](https://github.com/koleaby4/next_movie/issues?q=label%3Abug), represent defects in code, which have been found during development and testing.
+1. by default all tickets represent functional user stories. Example of a user story: [#28 - Navbar on the top](https://github.com/koleaby4/next_movie/issues/28)
+2. tickets with ['bug' label](https://github.com/koleaby4/next_movie/issues?q=label%3Abug), represent defects in code, which have been found during development and testing.
 3. Additional ['NFR' labels](https://github.com/koleaby4/next_movie/issues?q=label%3ANFR) have been introduced to help marking and filtering Non-Functional Requirements.
 4. [`Compatibility` labels](https://github.com/koleaby4/next_movie/labels/compatibility) were used to mark tickets related to browser / platform / screen size compatibility
-5. ['Future' labels](https://github.com/koleaby4/next_movie/issues?q=label%3Afuture)
-were used for stories planned for future releases.
+5. ['Future' labels](https://github.com/koleaby4/next_movie/issues?q=label%3Afuture) were used for stories planned for future releases.
 
 
 ## Wireframes
@@ -133,12 +168,6 @@ To simplify and speed up development, the wireframes were embedded into user sto
 A full collection of the wireframes can also be seen in the [wireframes folder](https://github.com/koleaby4/next_movie/tree/master/wireframes)
 
 ToDo: /!\
-
-
-# Data flow
-
-Data comes from a number of sources - show this on a chart
-ToDo: add chart here
 
 
 # Database
@@ -226,7 +255,7 @@ This approach ensures that:
 2. respective values have to be calculated only when collection of watched movies has changed.
 
 
-# Deployment 🚀
+# Deployment
 
 ## Prerequisites
 
@@ -418,6 +447,10 @@ Keeping in mind that:
 it was important to minimise the number of 3rd API calls.
 
 To address these considerations, movies information once retrieved, is persisted in our internal database. When searching for movie details, we would first check whether this information was previously retrieved. If so - we would use persisted data, otherwise we would fetch and store it.
+
+<img src="https://github.com/koleaby4/next_movie/blob/master/documentation/images/data_flow.png?raw=true"
+     alt="Data flow diagram"
+     style="max-width:800px; margin-right: 10px;" />
 
 In several parts of our codebase we used multithreading for fetching information in parallel, in order to keep our website's response time to minimum. However even with these performance optimisations the longest chain of calls to get all movie details is fairly complex and time-consuming.
 
