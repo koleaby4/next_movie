@@ -199,7 +199,7 @@ To allow our website cope with these data anomalies:
 
 Structure of the custom tables and relationships among them is represented on this chart:
 
-<img src="https://github.com/koleaby4/next_movie/blob/master/documentation/db_charts/relationships.jpg?raw=true"
+<img src="https://github.com/koleaby4/next_movie/blob/master/documentation/images/db_relationships.jpg?raw=true"
      alt="Database tables relationships"
      style="float: left; margin-right: 10px;" />
 
