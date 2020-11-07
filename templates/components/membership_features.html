@@ -11,6 +11,7 @@
                         <ul>
                             <li><a href="{% url 'best_ever' %}">Best Ever </a>list</li>
                             <li><a href="{% url 'now_playing' %}">Now Playing </a>list</li>
+                            <li>Search</li>
                         </ul>
                     </div>
                 </div>
@@ -25,9 +26,9 @@
                 <div class="card-body">
                     <p>Logged in users can access:</p>
                     <ul>
-                        <li><a href="{% url 'best_ever' %}">Best Ever </a>list</li>
-                        <li><a href="{% url 'now_playing' %}">Now Playing </a>list</li>
-                        <li>Movie details</li>
+                        <li>All Public features</li>
+                        <li>Browser notifications</li>
+                        <li>Movie details (without reviews)</li>
                     </ul>
                 </div>
                 <div class="card-footer">
@@ -45,10 +46,8 @@
                 <div class="card-body">
                     <p>Prime members can access:</p>
                     <ul>
-                        <li><a href="{% url 'best_ever' %}">Best Ever </a>list</li>
-                        <li><a href="{% url 'now_playing' %}">Now Playing </a>list</li>
-                        <li>Movie details</li>
-                        <li>Browser notifications</li>
+                        <li>All Registered Users' features</li>
+                        <li>Movie details (with reviews)</li>
                         <li><a href="{% url 'profile' %}">Profile</a> Insights</li>
                     </ul>
                 </div>
