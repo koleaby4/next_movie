@@ -33,7 +33,7 @@ def _best_unwatched_movies(request):
     log.warning(f"Identifying _best_unwatched_movies")
     top_rated_movie_ids = tuple(get_top_rated_imdb_ids())
 
-    unwatched_top_rated_slice = tuple(id for id in top_rated_movie_ids if id not in watched_movie_ids)
+    unwatched_top_rated_slice = tuple(id for id in top_rated_movie_ids if id not in watched_movie_ids)[:42]
 
     movie_ids_to_save = set(id for id in unwatched_top_rated_slice if not Movie.objects.filter(pk=id).exists())
     persist_movies(movie_ids_to_save)
