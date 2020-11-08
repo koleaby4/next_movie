@@ -1,5 +1,4 @@
 import logging
-import threading
 
 from django.contrib.auth.models import Permission
 from django.db.models import Q
@@ -26,9 +25,7 @@ def persist_reviews(sender, instance, created, **kwargs):
     log.warning(f"\n\nFetched reviews: {reviews}")
 
     for review_details in reviews:
-        t = threading.Thread(target=Review.from_review_details, args=(instance, review_details))
-        t.start()
-
+        Review.from_review_details(instance, review_details)
 
 @receiver(post_save, sender=Movie)
 def notify_users_of_new_movie(sender, instance, created, **kwargs):
