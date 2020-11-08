@@ -1,5 +1,5 @@
 """
-ASGI config for next_movie project.
+ASGI config for Next_movie project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

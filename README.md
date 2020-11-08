@@ -1,6 +1,6 @@
 # Overview
 
-Welcome to `next_movie` - a movie information portal developed by [Nicolai Negru](linkedin.com/in/nicolai-negru) as the 4th (and final) milestone project at Code Institute's [Full-stack web developer course](https://codeinstitute.net/full-stack-software-development-diploma-uk).
+Welcome to `Next_movie` - a movie information portal developed by [Nicolai Negru](linkedin.com/in/nicolai-negru) as the 4th (and final) milestone project at Code Institute's [Full-stack web developer course](https://codeinstitute.net/full-stack-software-development-diploma-uk).
 
 The target group of this website consists of users who:
 * wish to quickly identify which next movie is worth watching next
@@ -172,7 +172,7 @@ ToDo: /!\
 
 # Database
 
-`next_movie` website is using PostgreSQL for storing the data.<br>
+`Next_movie` website is using PostgreSQL for storing the data.<br>
 
 The structure of the database was emerging organically during the implementation.<br>
 That approach focuses on real business needs and prevents over-engineering by keeping [You aren't gonna need it](https://en.wikipedia.org/wiki/You_aren%27t_gonna_need_it) principle in mind.
@@ -181,7 +181,7 @@ That approach focuses on real business needs and prevents over-engineering by ke
 ## Application resilience to invalid / missing data
 
 Very often in the software development world, we have control over the data our application deals with.<br>
-`next_movie` is a little bit different in that it relies primarily on the data fetched from a number of 3rd party APIs.
+`Next_movie` is a little bit different in that it relies primarily on the data fetched from a number of 3rd party APIs.
 
 As the development of this project progressed, we've learned that there is a lot of inconsistent and missing data<br>
 in the responses we were receiving. A few examples to consider:
@@ -273,7 +273,7 @@ Register and obtain keys for the following services:
 ## Deploying and running locally
 
 1. Install [postgresql](https://www.postgresql.org/download/)
-2. Clone next_movie repository by executing `git clone https://github.com/koleaby4/next_movie.git` in console
+2. Clone `Next_movie` repository by executing `git clone https://github.com/koleaby4/next_movie.git` in console
 3. Change directory to the project folder `cd PATH_TO_THE_PROJECT_FOLDER`
 4. Install dependencies `pip install -r requirements.txt`
 5. Update `secrets.json` file with your database configuration and API keys
