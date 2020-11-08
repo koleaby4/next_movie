@@ -454,6 +454,8 @@ To address these considerations, movies information once retrieved, is persisted
 
 In several parts of our codebase we used multithreading for fetching information in parallel, in order to keep our website's response time to minimum. However even with these performance optimisations the longest chain of calls to get all movie details is fairly complex and time-consuming.
 
+Finally, to increase performance of the website on `Best Ever` and `Now Playing` pages, we introduced caching mechanisms. The first time data is retrieved from 3rd party APIs, the results are stored in `top_rated_cache.json` and `now_playing_cache.json` respectively. Every time users request these lists, the results will be fetched from the cache files. The the application then checks whether the cache files are older than 24h and if so - will spawn a separate thread to fetch the latest data and update the cache. In the meantime cached results will be returned. In this manner the system is not waiting for the latest data to be fetched, but makes sure that cache is updated and the next request will contain most up-to-date results.
+
 # Technologies Used
 
 ## Languages
