@@ -25,15 +25,15 @@ class BestEverMovieListView(ListView):
         return _best_unwatched_movies(self.request)
 
 
-def _best_unwatched_movies(request):
-    """Return best movies excluding the ones watched by the current user"""
+def _best_unwatched_movies(request, limit=42):
+    """Return up to `limit` best movies excluding the ones watched by the current user"""
 
     watched_movie_ids = tuple(x.imdb_id for x in request.user.profile.watched_movies.all()) if request.user.is_authenticated else tuple()
 
     log.warning(f"Identifying _best_unwatched_movies")
     top_rated_movie_ids = tuple(get_top_rated_imdb_ids())
 
-    unwatched_top_rated_slice = tuple(id for id in top_rated_movie_ids if id not in watched_movie_ids)[:42]
+    unwatched_top_rated_slice = tuple(id for id in top_rated_movie_ids if id not in watched_movie_ids)[:limit]
 
     movie_ids_to_save = set(id for id in unwatched_top_rated_slice if not Movie.objects.filter(pk=id).exists())
     persist_movies(movie_ids_to_save)
