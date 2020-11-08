@@ -1,5 +1,5 @@
+import concurrent.futures
 import logging
-import threading
 from random import choice
 from typing import List
 
@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.shortcuts import redirect, render, reverse
 from django.views.generic import DetailView, ListView
 from movies_collector.imdb_collector import (get_now_playing_imdb_ids,
-                                             get_top_rated_movies,
+                                             get_top_rated_imdb_ids,
                                              search_movies)
 
 from movies.models import Movie
@@ -28,21 +28,21 @@ class BestEverMovieListView(ListView):
 def _best_unwatched_movies(request):
     """Return best movies excluding the ones watched by the current user"""
 
-    watched_movie_ids = []
+    watched_movie_ids = tuple(x.imdb_id for x in request.user.profile.watched_movies.all()) if request.user.is_authenticated else tuple()
 
-    if request.user.is_authenticated:
-        watched_movie_ids = [x.imdb_id for x in request.user.profile.watched_movies.all()]
+    log.warning(f"Identifying _best_unwatched_movies")
+    top_rated_movie_ids = tuple(get_top_rated_imdb_ids())
 
-    top_rated_movie_ids = tuple(get_top_rated_movies())
+    unwatched_top_rated_slice = tuple(id for id in top_rated_movie_ids if id not in watched_movie_ids)[:21]
 
-    for imdb_id in top_rated_movie_ids:
-        if not Movie.objects.filter(pk=imdb_id).exists():
-            Movie.persist_movie(imdb_id)
+    movie_ids_to_save = set(id for id in unwatched_top_rated_slice if not Movie.objects.filter(pk=id).exists())
+    persist_movies(movie_ids_to_save)
 
-    q = Movie.objects.filter(imdb_id__in=top_rated_movie_ids)
-    q = q.exclude(imdb_id__in=watched_movie_ids)
+    log.warning(f"Filtering watched movies")
+    q = Movie.objects.filter(imdb_id__in=unwatched_top_rated_slice)
     q = q.order_by("-imdb_rating")
 
+    log.warning(f"Finished filtering watched movies")
     return q.all()
 
 
@@ -88,18 +88,31 @@ class SearchResultsListView(ListView):
         found_ids = [x["imdbID"] for x in search_movies(search_term)]
         log.warning(f"Matching IDs: {', '.join(found_ids)}")
 
-        threads = []
-        for imdb_id in found_ids:
-            if not Movie.objects.filter(pk=imdb_id).exists():
-                t = threading.Thread(target=Movie.persist_movie, args=(imdb_id,))
-                t.start()
-                threads.append(t)
-
-        for t in threads:
-            t.join()
+        movie_ids_to_save = [id for id in found_ids if not Movie.objects.filter(pk=id).exists()]
+        persist_movies(movie_ids_to_save)
 
         return Movie.objects.filter(Q(imdb_id__in=found_ids))
 
+
+def persist_movies(movie_ids):
+    if not movie_ids:
+        return
+
+    log.warning(f"Movie IDs to persist: {', '.join(movie_ids)}")
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        futures = []
+
+        for imdb_id in movie_ids:
+            futures.append(executor.submit(Movie.persist_movie, imdb_id))
+
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                movie = future.result()
+            except Exception as exc:
+                log.error(f"Unable to persist movie with imdb_id {imdb_id}. Error detail: {exc}")
+            else:
+                log.warning(f"Successfully saved movie {movie}")
 
 class WatchedMoviesListView(ListView):
     model = Movie
