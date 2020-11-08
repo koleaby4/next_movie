@@ -22,7 +22,7 @@ class BestEverMovieListView(ListView):
     context_object_name = "movies"
 
     def get_queryset(self):
-        return _best_unwatched_movies(self.request)[:22]
+        return _best_unwatched_movies(self.request)
 
 
 def _best_unwatched_movies(request):
