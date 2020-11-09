@@ -162,12 +162,10 @@ Tickets grouping and filtering approach:
 [Balsamiq](https://balsamiq.com) was used to develop wireframes for this project during the requirements collection phase.<br>
 The tool allows to quickly create sketches of pages, amend them if need be and export.
 
-To simplify and speed up development, the wireframes were embedded into user stories - see [issue#20](https://github.com/koleaby4/next_movie/issues/20) as an example.
+To simplify and speed up development, the wireframes were embedded into user stories - see  [issue#49](https://github.com/koleaby4/next_movie/issues/49) and [issue#50](https://github.com/koleaby4/next_movie/issues/50) as an example.
 
 
 A full collection of the wireframes can also be seen in the [wireframes folder](https://github.com/koleaby4/next_movie/tree/master/wireframes)
-
-ToDo: /!\
 
 
 # Database
