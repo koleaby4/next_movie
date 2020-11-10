@@ -5,8 +5,6 @@ from django.views.generic.base import TemplateView
 
 from project.settings import STRIPE_PUBLISHABLE_KEY, STRIPE_SECRET_KEY
 
-# Create your views here.
-
 
 stripe.api_key = STRIPE_SECRET_KEY
 

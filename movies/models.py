@@ -6,14 +6,13 @@ import re
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.urls import reverse
-
-from movies_collector.imdb_collector import url_exists, get_movie_details
-from users.models import CustomUser
+from movies_collector.imdb_collector import get_movie_details, url_exists
 
 log = logging.getLogger(__name__)
 
 
 def max_value_current_year(value):
+    """Release year validator - value should not exceed next year"""
     next_year = datetime.date.today().year + 1
     return MaxValueValidator(next_year)(value)
 
@@ -120,7 +119,7 @@ class Review(models.Model):
         try:
             review.save()
         except Exception as e:
-            log.error(f"\n\n/!\ Unable to save review  /!\ \n{json.dumps(review_details)}")
+            log.error(f"\n\n/!\\ Unable to save review  /!\\ \n{json.dumps(review_details)}")
             log.error(f"Error details: {e}")
             return
 

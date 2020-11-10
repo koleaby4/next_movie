@@ -14,9 +14,9 @@ from movies.models import Movie, Review
 log = logging.getLogger(__name__)
 
 
-# fetch and save reviews when a new movie is created
 @receiver(post_save, sender=Movie)
 def persist_reviews(sender, instance, created, **kwargs):
+    """Fetch and save reviews when a new movie is created"""
 
     if not created:
         return
