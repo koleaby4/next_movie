@@ -130,7 +130,7 @@ As a result, the following conventional colours were chosen:
 * [calming blue](https://www.verywellmind.com/the-color-psychology-of-blue-2795815) for Call-To-Action buttons
 * reassuring [green](https://www.verywellmind.com/color-psychology-green-2795817) for icons indicating already unlocked features
 
-It was decided to use [Lora Google font](https://fonts.google.com/specimen/Lora#about)<br>
+It was decided to use [Open Sans Google font](https://fonts.google.com/specimen/Open+Sans?selection.family=Open+Sans)<br>
 because of its contemporary memorable style and friendly curves resulting in clear and functional visuals.
 
 ## Non-Functional considerations
