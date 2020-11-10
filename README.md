@@ -466,7 +466,7 @@ Finally, to increase performance of the website on `Best Ever` and `Now Playing`
 ## Libraries:
 
 * [Django](https://www.djangoproject.com)
-* [allauth](https://django-allauth.readthedocs.io/
+* [allauth](https://django-allauth.readthedocs.io)
 * [Bootstrap](https://getbootstrap.com)
 * [ion-icons](https://ionicons.com)
 * [normalize.css](https://github.com/necolas/normalize.css)
