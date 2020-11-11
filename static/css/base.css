@@ -87,3 +87,9 @@ ion-icon {
   column-count:         1;
   }
 }
+
+
+#webpush-subscribe-button{
+  margin: 0.5rem;
+  padding: .375rem;
+}
