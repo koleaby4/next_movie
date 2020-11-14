@@ -3,61 +3,65 @@
 <section class="reviews-section">
 
     <div class="reviews-container">
+
         <h4 class="reviews-header">Reviews</h4>
 
         {% if perms.movies.paid_for_membership %}
-        <div class="reviews-list">
+            <div class="reviews-list">
 
-            <div class="mb-4" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="mb-4" id="accordion" role="tablist" aria-multiselectable="true">
 
-                {% for review in movie.reviews.all %}
+                    {% for review in movie.reviews.all %}
 
-                <div class="card">
-                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapse_{{forloop.counter}}"
-                        aria-expanded="true" aria-controls="collapse_{{forloop.counter}}" >
+                    <div class="card">
 
-                        {% if review.contains_spoilers %}
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
+                            href="#collapse_{{forloop.counter}}" aria-expanded="true"
+                            aria-controls="collapse_{{forloop.counter}}">
+
+                            {% if review.contains_spoilers %}
                             <div class="card-header alert-danger" role="tab alert" id="heading_{{forloop.counter}}">
                                 <h5 class="mb-0">
-                                        {{review.review_title}}&emsp;/SPOILER ALERT/
+                                    {{review.review_title}}&emsp;/SPOILER ALERT/
                                 </h5>
                             </div>
-                        {% else %}
+                            {% else %}
                             <div class="card-header" role="tab" id="heading_{{forloop.counter}}">
                                 <h5 class="mb-0">
                                     {{review.review_title}}
                                 </h5>
                             </div>
-                        {% endif %}
+                            {% endif %}
 
-                    </a>
+                        </a>
 
-                    <div id="collapse_{{forloop.counter}}" class="collapse" role="tabpanel"
-                        aria-labelledby="heading_{{forloop.counter}}">
+                        <div id="collapse_{{forloop.counter}}" class="collapse" role="tabpanel"
+                            aria-labelledby="heading_{{forloop.counter}}">
 
-                        <div class="card-body">
-                            <p class="review-rating"><strong>Author's Rating:</strong> {{review.author_rating}}</p>
+                            <div class="card-body">
+                                <p class="review-rating"><strong>Author's Rating:</strong> {{review.author_rating}}</p>
 
-                            <blockquote>
-                                <p class="review-text">{{review.review_text}}</p>
-                                <footer class="review-date"><strong>Review Date:</strong> {{review.submission_date}}
-                                </footer>
-                            </blockquote>
+                                <blockquote>
+                                    <p class="review-text">{{review.review_text}}</p>
+                                    <footer class="review-date"><strong>Review Date:</strong> {{review.submission_date}}
+                                    </footer>
+                                </blockquote>
+                            </div>
                         </div>
+
                     </div>
-                </div>
 
-                <div class="review-detail">
+                    {% empty %}
+                        <p class="no-reviews">There are no reviews for this movies</p>
+                    {% endfor %}
 
                 </div>
-                {% empty %}
-                <p class="no-reviews">There are no reviews for this movies</p>
-                {% endfor %}
             </div>
-            {% else %}
-                {% include 'components/prime_invitation.html' %}
-            {% endif %}
+        {% else %}
+            {% include 'components/prime_invitation.html' %}
+        {% endif %}
 
-        </div>
+
+    </div>
 
 </section>
