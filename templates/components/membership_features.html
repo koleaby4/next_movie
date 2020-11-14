@@ -5,7 +5,6 @@
         <div class="col-lg-4 mb-4">
             <div class="card h-100">
                 <h4 class="card-header">Public features</h4>
-                <ion-icon name="bicycle-outline"></ion-icon>
                 <div class="card-body">
                     <div class="card-text">
                         <p>All users can access:</p>
@@ -17,14 +16,13 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <ion-icon style="position: inherit" name="heart-outline"></ion-icon>
+                    <ion-icon style="position: inherit" name="bicycle-outline"></ion-icon>
                 </div>
             </div>
         </div>
         <div class="col-lg-4 mb-4">
             <div class="card h-100">
                 <h4 class="card-header">Registered Users</h4>
-                <ion-icon name="car-sport-outline"></ion-icon>
                 <div class="card-body">
                     <p>Logged in users can access:</p>
                     <ul>
@@ -35,7 +33,7 @@
                 </div>
                 <div class="card-footer">
                     {% if user.is_authenticated %}
-                        <ion-icon style="position: inherit" name="heart-half"></ion-icon>
+                        <ion-icon style="position: inherit" name="car-sport-outline"></ion-icon>
                     {% else %}
                         <a href="{% url 'account_signup' %}" class="btn btn-primary sign-up-button">Sign Up</a>
                     {% endif %}
@@ -45,7 +43,6 @@
         <div class="col-lg-4 mb-4">
             <div class="card h-100">
                 <h4 class="card-header bg-primary text-white">Prime Members</h4>
-                <ion-icon name="rocket-outline"></ion-icon>
                 <div class="card-body">
                     <p>Prime members can access:</p>
                     <ul>
@@ -57,7 +54,7 @@
                 <div class="card-footer">
                     {% if user.is_authenticated %}
                         {% if perms.movies.paid_for_membership %}
-                            <ion-icon style="position: inherit" class="prime-membership-heart" name="heart"></ion-icon>
+                            <ion-icon style="position: inherit" name="rocket-outline"></ion-icon>
                         {% else %}
                             <form action="{% url 'charge' %}" method="post" test-data="payment-form">
                                 {% csrf_token %}

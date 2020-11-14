@@ -17,11 +17,11 @@ context('Profile Tests', () => {
     landing_helpers.assertPublicContent()
 
     cy.get(landing_helpers.selectors.signupButton).should("be.visible")
-    cy.get(landing_helpers.selectors.registeredUserHalfHeart).should("not.exist")
+    cy.get(landing_helpers.selectors.registeredUserIcon).should("not.exist")
 
     cy.get(landing_helpers.selectors.only4registeredUsersMessage).should("be.visible")
     cy.get(landing_helpers.selectors.paymentButton).should("not.exist")
-    cy.get(landing_helpers.selectors.primeMemberFullHeart).should("not.exist")
+    cy.get(landing_helpers.selectors.primeMemberIcon).should("not.exist")
   })
 
   it('Content shown to logged in users', () => {
@@ -32,7 +32,7 @@ context('Profile Tests', () => {
 
     cy.get(landing_helpers.selectors.only4registeredUsersMessage).should("not.exist")
     cy.get(landing_helpers.selectors.paymentButton).should("be.visible")
-    cy.get(landing_helpers.selectors.primeMemberFullHeart).should("not.exist")
+    cy.get(landing_helpers.selectors.primeMemberIcon).should("not.exist")
   })
 
   it('Content shown to prime members', () => {
