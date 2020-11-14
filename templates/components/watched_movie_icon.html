@@ -24,19 +24,19 @@
 
     </script>
 
-    <h5>Mark 'Watched' or 'Not Watched'</h5>
+    <h4>Mark 'Watched' or 'Not Watched'</h4>
 
     <div class="watched-movie-block row align-items-center justify-content-start">
         {% if user.profile in movie.profile_set.all %}
         <span class="col-lg-1 col-md-2 icon-container">
-            <ion-icon class="watched-icon" onclick="updateWatchedStatus(this)" name="eye-sharp"/>
+            <ion-icon class="watched-icon" onclick="updateWatchedStatus(this)" name="eye-sharp"></ion-icon>
         </span>
         <span class="col watched-text">
             <span>Watched</span>
         </span>
         {% else %}
         <span class="col-lg-1 col-md-2 icon-container">
-            <ion-icon class="not-watched-icon" onclick="updateWatchedStatus(this)" name="eye-off-outline"/>
+            <ion-icon class="not-watched-icon" onclick="updateWatchedStatus(this)" name="eye-off-outline"></ion-icon>
         </span>
         <span class="col watched-text">
             <span>Not watched</span>
