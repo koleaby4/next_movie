@@ -37,12 +37,21 @@
                         {% if user.is_authenticated %}
 
                         {% if not perms.movies.paid_for_membership %}
-                            <a class="dropdown-item prime-membership-link" href="{% url 'memberships' %}">Join Prime
-                                Membership</a>
+                        <a class="dropdown-item prime-membership-link" href="{% url 'memberships' %}">Join Prime
+                            Membership</a>
                         {% endif %}
 
                         <a class="dropdown-item watched" href="{% url 'watched' %}">Watched</a>
-                        <a class="dropdown-item profile-link" href="{% url 'profile' %}">Profile</a>
+
+                        <a class="dropdown-item profile-link" href="{% url 'profile' %}">
+                            Profile
+                            {% if perms.movies.paid_for_membership %}
+                            <ion-icon size="small" name="rocket-outline"></ion-icon>
+                            {% else %}
+                            <ion-icon size="small" name="car-sport-outline"></ion-icon>
+                            {% endif %}
+                        </a>
+
                         <a class="dropdown-item logout" href="{% url 'account_logout' %}">Log out</a>
 
                         <div>
