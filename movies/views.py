@@ -5,11 +5,10 @@ from typing import List
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.shortcuts import redirect, render, reverse
+from django.http import JsonResponse
+from django.shortcuts import render
 from django.views.generic import DetailView, ListView
-from movies_collector.imdb_collector import (get_now_playing_imdb_ids,
-                                             get_top_rated_imdb_ids,
-                                             search_movies)
+from movies_collector.imdb_collector import get_now_playing_imdb_ids, get_top_rated_imdb_ids, search_movies
 
 from movies.models import Movie
 
@@ -72,7 +71,7 @@ class MovieDetailView(LoginRequiredMixin, DetailView):
 
         profile.save()
 
-        return redirect(reverse("movie_detail", args=[movie.pk]))
+        return JsonResponse({"watched" : profile.watched_movies.filter(pk=movie.pk).exists()})
 
 
 class SearchResultsListView(ListView):

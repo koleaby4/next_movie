@@ -1,27 +1,49 @@
 {% load static %}
 
 <section class="watched-movie-section">
+    <script>
+
+        function updateWatchedStatus (e) {
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'toggle_watched' movie.pk %}",
+                success: function (response) {
+                    let watched = JSON.parse(response["watched"]);
+
+                    let icon = document.querySelector(".icon-container ion-icon")
+                    icon.setAttribute("name", watched ? "eye-sharp" : "eye-off-outline")
+
+                    let watchedText = document.querySelector(".watched-text span")
+                    watchedText.innerHTML = watched ? "Watched" : "Not watched"
+                },
+                error: function (response) {
+                    console.error(response["responseJSON"]["error"]);
+                }
+            })
+        }
+
+    </script>
+
     <h5>Mark 'Watched' or 'Not Watched'</h5>
 
     <div class="watched-movie-block row align-items-center justify-content-start">
         {% if user.profile in movie.profile_set.all %}
-        <span class="col-lg-1 col-md-2">
-            <a href="{% url 'toggle_watched' movie.pk %}">
-                <ion-icon class="watched-icon" name="eye-sharp"></ion-icon>
-            </a>
+        <span class="col-lg-1 col-md-2 icon-container">
+            <ion-icon class="watched-icon" onclick="updateWatchedStatus(this)" name="eye-sharp"/>
         </span>
-        <span class=col>
+        <span class="col watched-text">
             <span>Watched</span>
         </span>
         {% else %}
-        <span class="col-lg-1 col-md-2">
-            <a href="{% url 'toggle_watched' movie.pk %}">
-                <ion-icon class="not-watched-icon" name="eye-off-outline"></ion-icon>
-            </a>
+        <span class="col-lg-1 col-md-2 icon-container">
+            <ion-icon class="not-watched-icon" onclick="updateWatchedStatus(this)" name="eye-off-outline"/>
         </span>
-        <span class=col>
+        <span class="col watched-text">
             <span>Not watched</span>
         </span>
         {% endif %}
     </div>
+
+
+
 </section>

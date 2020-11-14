@@ -10,8 +10,8 @@ export const selectors = {
     prime_invitation: '.prime-invitation',
     watched_movie_block: '.watched-movie-block',
     watched_movie_block_icon: '.watched-movie-block ion-icon',
-    not_watched_movie_icon: ".not-watched-icon",
-    watched_movie_icon: ".watched-icon",
+    not_watched_movie_icon: "ion-icon[name=eye-off-outline]",
+    watched_movie_icon: "ion-icon[name=eye-sharp]",
 }
 
 export const assertMovieDetail = (title, rating) => {

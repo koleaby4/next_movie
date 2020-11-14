@@ -3,26 +3,25 @@ html {
 }
 
 body {
-    padding-top: 56px;
-    height: 100%;
-    display: grid;
-    grid-template-rows: 1fr auto;
-    font-family: 'Open Sans', sans-serif;
-  }
-
+  padding-top: 56px;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  font-family: 'Open Sans', sans-serif;
+}
 
 ion-icon {
-    font-size: 40px;
+  font-size: 40px;
 }
 
 .card {
-    position: relative;
+  position: relative;
 }
 
 .card ion-icon {
-    top: 2.5%;
-    right: 5%;
-    position: absolute;
+  top: 2.5%;
+  right: 5%;
+  position: absolute;
 }
 
 .carousel-item {
@@ -43,16 +42,15 @@ ion-icon {
   margin-bottom: 30px;
 }
 
-
 .profile-item {
   margin-bottom: 30px;
 }
 
 .profile-item .card-title {
-  color: dodgerblue
+  color: #1e90ff
 }
 
-.reviews-section{
+.reviews-section {
   margin: 1.5rem 0 1.5rem 0;
 }
 
@@ -60,36 +58,34 @@ ion-icon {
   color: #28a745;
 }
 
-
 .movie-images {
   /* Prevent vertical gaps */
   line-height: 0;
-
   -webkit-column-count: 3;
-  -moz-column-count:    3;
-  column-count:         3;
-  -webkit-column-gap:   0px;
-  -moz-column-gap:      0px;
-  column-gap:           0px;
+  -moz-column-count: 3;
+  column-count: 3;
+  -webkit-column-gap: 0px;
+  -moz-column-gap: 0px;
+  column-gap: 0px;
 }
 
 @media (max-width: 800px) {
   .movie-images {
-  -moz-column-count:    2;
-  -webkit-column-count: 2;
-  column-count:         2;
+    -moz-column-count: 2;
+    -webkit-column-count: 2;
+    column-count: 2;
   }
 }
+
 @media (max-width: 400px) {
   .movie-images {
-  -moz-column-count:    1;
-  -webkit-column-count: 1;
-  column-count:         1;
+    -moz-column-count: 1;
+    -webkit-column-count: 1;
+    column-count: 1;
   }
 }
 
-
-#webpush-subscribe-button{
+#webpush-subscribe-button {
   margin: 0.5rem;
   padding: .375rem;
 }
@@ -97,4 +93,9 @@ ion-icon {
 .membership-levels .card .card-footer {
   height: 70px;
   vertical-align: middle;
+}
+
+ion-icon[name*=eye] {
+  color: #1e90ff;
+  cursor: pointer;
 }
