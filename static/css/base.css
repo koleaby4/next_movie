@@ -93,3 +93,8 @@ ion-icon {
   margin: 0.5rem;
   padding: .375rem;
 }
+
+.membership-levels .card .card-footer {
+  height: 70px;
+  vertical-align: middle;
+}
