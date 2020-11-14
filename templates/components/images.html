@@ -14,7 +14,7 @@
 
     {% for image_info in movie.images.images %}
     <a href="{{image_info.url}}" data-toggle="lightbox" data-gallery="my-gallery">
-        <img src="{{image_info.url}}" class="img-fluid">
+        <img src="{{image_info.url}}" class="img-fluid" alt="image nr {{forloop.counter}}">
     </a>
     {% endfor %}
 
