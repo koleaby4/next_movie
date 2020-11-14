@@ -3,7 +3,7 @@ export const selectors = {
 
     freeContentIcon: 'ion-icon[name=bicycle-outline]',
     registeredUserIcon: 'ion-icon[name=car-sport-outline]',
-    primeMemberIcon: 'ion-icon[name=car-sport-outline]',
+    primeMemberIcon: 'ion-icon[name=rocket-outline]',
 
     signupButton: '.sign-up-button',
     only4registeredUsersMessage: '.only-4-registered-users-message',
