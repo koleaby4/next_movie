@@ -76,7 +76,7 @@ Finally, the website is aiming to start generating an income stream.<br>
 For one-off fee of £9.99 registered users can become `Prime Members`, getting access to:
 * movie reviews
 * further profile statistics
-* [in the future - discounts to movie-related merchandise anf cinema tickets]
+* [in the future - discounts to movie-related merchandise and cinema tickets]
 
 ## Users' Goals
 
@@ -138,7 +138,7 @@ because of its contemporary memorable style and friendly curves resulting in cle
 * the website will have a flat easy to navigate structure
 * the content on the website will dynamically adjust for devices with various screen sizes
 * to maintain sufficient load speed, movies information retrieved from 3rd party services will be stored in the application's database
-* payment information will be processed using Stripe and will not be stored in the the application's database
+* payment information will be processed using Stripe and will not be stored in the application's database
 * all security keys and sensitive configuration will be managed using environment variables and [secrets.json](https://github.com/koleaby4/next_movie/blob/master/secrets.json) config file
 * the web site should continue operate even if data coming from 3rd party services is incomplete or inconsistent
 
@@ -412,7 +412,7 @@ In situations when it was not possible to resolve defect on the spot, it was doc
 
 See [issue 38](https://github.com/koleaby4/next_movie/issues/38) as an example.
 
-All defects were labeled by ['bug' label](https://github.com/koleaby4/next_movie/issues?q=label%3Abug)
+All defects were marked by a ['bug' label](https://github.com/koleaby4/next_movie/issues?q=label%3Abug)
 
 # Payments
 
