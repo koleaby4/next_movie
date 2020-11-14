@@ -10,6 +10,11 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+.movie-detail-section h4 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
 ion-icon {
   font-size: 40px;
 }
