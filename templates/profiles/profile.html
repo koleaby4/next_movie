@@ -2,7 +2,6 @@
 
 {% load static %}
 
-
 {% block title %}Profile{% endblock title %}
 
 {% block content %}
@@ -49,7 +48,7 @@
     </div>
 </div>
 
-    {% if perms.movies.paid_for_membership %}
+{% if perms.movies.paid_for_membership %}
 
     <div class="row profile-row">
         <div class="col-lg-6 col-sm-6 profile-item">
@@ -69,18 +68,6 @@
     <script src='{% static "js/profile_charts.js" %}'></script>
 
     <script>
-
-        function javaScriptObjectFromDjangoJson(djangoPayload) {
-            if (djangoPayload === "None") {
-                return {}
-            }
-            try {
-                return JSON.parse(djangoPayload.replaceAll(`&#x27;`, `"`))
-            } catch (error) {
-                console.error(error)
-                return {}
-            }
-        }
 
         // chart for watched_movies_genres
         const watched_genres = javaScriptObjectFromDjangoJson("{{profile.watched_movies_genres}}")

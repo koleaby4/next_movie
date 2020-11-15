@@ -74,3 +74,15 @@ function renderWatchedMoviesYearsChart(data, divId){
     Plotly.newPlot(divId, data, layout, config );
 
 }
+
+function javaScriptObjectFromDjangoJson(djangoPayload) {
+    if (djangoPayload === "None") {
+        return {}
+    }
+    try {
+        return JSON.parse(djangoPayload.replaceAll(`&#x27;`, `"`))
+    } catch (error) {
+        console.error(error)
+        return {}
+    }
+}
