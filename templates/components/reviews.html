@@ -16,11 +16,10 @@
                     <div class="card">
 
                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion"
-                            href="#collapse_{{forloop.counter}}" aria-expanded="true"
-                            aria-controls="collapse_{{forloop.counter}}">
+                            href="#collapse_{{forloop.counter}}" aria-controls="collapse_{{forloop.counter}}">
 
                             {% if review.contains_spoilers %}
-                            <div class="card-header alert-danger" role="tab alert" id="heading_{{forloop.counter}}">
+                            <div class="card-header alert-danger" role="alert" id="heading_{{forloop.counter}}">
                                 <h5 class="mb-0">
                                     {{review.review_title}}&emsp;/SPOILER ALERT/
                                 </h5>
