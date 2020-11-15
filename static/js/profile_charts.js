@@ -51,6 +51,7 @@ function renderWatchedMoviesGenreChart(data, divId){
     const layout = {
         title: "By genre",
         font: {size: 16, color: "dodgerblue" },
+        // keeping these commented out - will need them for future improvements in charts' style
         // margin: { l: 30, r: 30, b: 30, t: 30 },
         // width: 500,
         // height: 500
