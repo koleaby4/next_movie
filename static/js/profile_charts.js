@@ -1,4 +1,3 @@
-console.log("profile_charts.js imported successfully")
 
 function getWatchedMoviesGenreChartData(watched_genres){
     let items_count = (Object.keys(watched_genres)).length
