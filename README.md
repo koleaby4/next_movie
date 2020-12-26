@@ -2,6 +2,8 @@
 
 Welcome to `Next_movie` - a movie information portal developed by [Nicolai Negru](linkedin.com/in/nicolai-negru) as the 4th (and final) milestone project at Code Institute's [Full-stack web developer course](https://codeinstitute.net/full-stack-software-development-diploma-uk).
 
+The application can be accessed on https://koleaby4-next-movie.herokuapp.com/
+
 The target group of this website consists of users who:
 * wish to quickly identify which next movie is worth watching next
 * look for movie details and ratings
