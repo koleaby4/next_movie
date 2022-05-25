@@ -37,7 +37,7 @@ psycopg2-binary==2.9.2
 py==1.11.0
 py-vapid==1.8.2
 pycparser==2.21
-PyJWT==2.3.0
+PyJWT==2.4.0
 pylint==2.12.2
 pyparsing==3.0.6
 pytest==6.2.5
